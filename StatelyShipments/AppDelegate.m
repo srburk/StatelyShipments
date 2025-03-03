@@ -6,6 +6,8 @@
 //
 
 #import "AppDelegate.h"
+#import "Utility/StatesLoader/StatesLoader.h"
+
 
 @interface AppDelegate ()
 
@@ -15,10 +17,12 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    // testing state loader
+    [StatesLoader loadStatesFromPlistAtPath:@"States"];
+    
     return YES;
 }
-
 
 #pragma mark - UISceneSession lifecycle
 
