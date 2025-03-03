@@ -11,7 +11,6 @@
 @interface PriorityQueue ()
 
 @property NSMutableArray* items;
-@property int size;
 
 - (void)swap:(int)a with:(int)b;
 
@@ -19,10 +18,13 @@
 
 @implementation PriorityQueue
 
-- (id)init {
+- (id)initWithCapacity:(int)capacity comparator:(PriorityQueueComparator)comparator {
     if (self = [super init]) {
-        self.items = [NSMutableArray array];
+        self.items = [NSMutableArray arrayWithCapacity:capacity];
         self.size = 0;
+        self.comparator =  comparator ? comparator : ^NSComparisonResult(id obj1, id obj2) {
+            return [obj1 compare:obj2];
+        };
     }
     return self;
 }
@@ -53,7 +55,7 @@
 - (void)heapifyUp:(int)index {
     while (index > 0) {
         int parentIndex = (index - 1) / 2;
-        if ([self.items[index] compare:self.items[parentIndex]] == NSOrderedAscending) {
+        if (self.comparator(self.items[index], self.items[parentIndex]) == NSOrderedAscending) {
             [self swap:index with:parentIndex];
             index = parentIndex;
         } else {
@@ -69,11 +71,11 @@
         rightChild = 2 * index + 2;
         smallest = index;
 
-        if (leftChild < self.size && [self.items[leftChild] compare:self.items[smallest]] == NSOrderedAscending) {
+        if (leftChild < self.size && self.comparator(self.items[leftChild], self.items[smallest]) == NSOrderedAscending) {
             smallest = leftChild;
         }
 
-        if (rightChild < self.size && [self.items[rightChild] compare:self.items[smallest]] == NSOrderedAscending) {
+        if (rightChild < self.size && self.comparator(self.items[rightChild], self.items[smallest]) == NSOrderedAscending) {
             smallest = rightChild;
         }
 

@@ -14,5 +14,6 @@
 
 -(id)init;
 - (void)cheapestRouteBetweenStates:(State*)stateA andState:(State*)stateB;
++ (id) shared;
 
 @end

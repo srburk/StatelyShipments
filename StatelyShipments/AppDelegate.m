@@ -6,8 +6,8 @@
 //
 
 #import "AppDelegate.h"
-#import "Services/FuelCostService/FuelCostService.h"
-
+#import "Services/ShippingCostService/ShippingCostService.h"
+#import "Models/State/State.h"
 
 @interface AppDelegate ()
 
@@ -22,7 +22,20 @@
     
 //    NSDictionary* countryGraph = [StatesLoader loadStatesFromPlistAtPath:@"States"];
     
-    // testing fetching a bunch of fuel costs    
+    ShippingCostService* shippingCostService = [[ShippingCostService alloc] init];
+    NSUInteger index1 = arc4random_uniform((uint32_t)shippingCostService.countryGraph.count);
+    NSUInteger index2;
+    
+    do {
+        index2 = arc4random_uniform((uint32_t)shippingCostService.countryGraph.count);
+    } while (index1 == index2);
+    
+    State* state1 = shippingCostService.countryGraph[shippingCostService.countryGraph.allKeys[index1]];
+    State* state2 = shippingCostService.countryGraph[shippingCostService.countryGraph.allKeys[index2]];
+    
+    [shippingCostService cheapestRouteBetweenStates:state1 andState:state2];
+    
+    // testing fetching a bunch of fuel costs
 //    State *ohio = countryGraph[@"OH"];
 //    
 //    for (State *neighbor in ohio.stateNeighbors) {

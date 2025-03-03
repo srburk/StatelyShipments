@@ -7,9 +7,14 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NSComparisonResult (^PriorityQueueComparator)(id obj1, id obj2);
+
 @interface PriorityQueue : NSObject
 
-- (id)init;
+@property int size;
+@property (nonatomic, copy) PriorityQueueComparator comparator;
+
+- (id)initWithCapacity:(int)capacity comparator:(PriorityQueueComparator)comparator;
 
 - (void)heapifyUp:(int)index;
 - (void)heapifyDown:(int)index;

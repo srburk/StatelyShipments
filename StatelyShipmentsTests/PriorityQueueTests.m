@@ -15,7 +15,7 @@
 @implementation PriorityQueueTests
 
 - (void)testPriorityQueue {
-    PriorityQueue *pq = [[PriorityQueue alloc] init];
+    PriorityQueue *pq = [[PriorityQueue alloc] initWithCapacity:50 comparator:nil];
 
     [pq enqueue:@5];
     [pq enqueue:@3];

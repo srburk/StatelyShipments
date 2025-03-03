@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!--
-   States.plist
-   StatelyShipments
-
-   Created by Sam Burkhard on 3/2/25.
-   Copyright (c) 2025 ___ORGANIZATIONNAME___. All rights reserved.
--->
 <plist version="1.0">
 <array>
-	<dict>
-		<key>stateCode</key>
-		<string>AK</string>
-		<key>stateName</key>
-		<string>Alaska</string>
-		<key>stateNeighbors</key>
-		<array>
-			<string>WA</string>
-		</array>
-	</dict>
 	<dict>
 		<key>stateCode</key>
 		<string>AL</string>
@@ -148,16 +131,6 @@
 			<string>NC</string>
 			<string>SC</string>
 			<string>TN</string>
-		</array>
-	</dict>
-	<dict>
-		<key>stateCode</key>
-		<string>HI</string>
-		<key>stateName</key>
-		<string>Hawaii</string>
-		<key>stateNeighbors</key>
-		<array>
-			<string>CA</string>
 		</array>
 	</dict>
 	<dict>
