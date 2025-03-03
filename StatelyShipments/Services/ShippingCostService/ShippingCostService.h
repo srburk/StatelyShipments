@@ -10,6 +10,9 @@
 
 @interface ShippingCostService : NSObject
 
+@property (nonatomic) NSDictionary* countryGraph;
+
+-(id)init;
 - (void)cheapestRouteBetweenStates:(State*)stateA andState:(State*)stateB;
 
 @end

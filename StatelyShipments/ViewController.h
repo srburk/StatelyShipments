@@ -9,5 +9,8 @@
 
 @interface ViewController : UIViewController
 
+- (id)initWithNavigationController:(UINavigationController*)navController;
+-(void)chooseState;
+
 @end
 
