@@ -11,8 +11,9 @@
 
 @property NSString* stateCode;
 @property NSString* stateName;
-@property NSPointerArray* stateNeighbors; // holds array of weak references to States
+@property NSMutableArray* stateNeighbors; // holds array of weak references to States
 
 - (NSString *)description;
+- (void)dealloc;
 
 @end

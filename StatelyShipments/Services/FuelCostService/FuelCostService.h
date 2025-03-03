@@ -10,9 +10,11 @@
 
 @interface FuelCostService : NSObject
 
-- (float)fuelCostBetweenNeighborStates:(State*)stateA andState:(State*)stateB;
+- (void)fuelCostBetweenNeighborStates:(State*)stateA andState:(State*)stateB completion: (void(^)(float result))completion;
 - (BOOL)isRoadUsableBetweenNeighborStates:(State*)stateA andState:(State*)stateB;
 
+- (void)flushFuelCostCache;
+- (void)saveFuelCostCache;
 - (id)init;
 
 @end

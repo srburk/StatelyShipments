@@ -24,4 +24,8 @@
     return [[NSString alloc] initWithFormat:@"%@, %@, Neighbors [%@]", self.stateCode, self.stateName, neighborList];
 }
 
+- (void)dealloc {
+    NSLog(@"Deallocating %@", self.stateCode);
+}
+
 @end

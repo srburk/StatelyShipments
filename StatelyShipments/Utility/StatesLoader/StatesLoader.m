@@ -29,7 +29,7 @@
         State *newState = [[State alloc] init];
         newState.stateCode = dict[@"stateCode"];
         newState.stateName = dict[@"stateName"];
-        newState.stateNeighbors = [NSPointerArray weakObjectsPointerArray];
+        newState.stateNeighbors = [NSMutableArray array];
         countryGraph[newState.stateCode] = newState;
     }
     
@@ -39,7 +39,7 @@
         for (NSString *neighborCode in dict[@"stateNeighbors"]) {
             State *neighbor = countryGraph[neighborCode];
             if (neighbor) {
-                [state.stateNeighbors addPointer:(__bridge void * _Nullable)(neighbor)];
+                [state.stateNeighbors addObject:neighbor];
             }
         }
     }

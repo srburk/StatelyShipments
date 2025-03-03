@@ -7,6 +7,7 @@
 
 #import "AppDelegate.h"
 #import "Utility/StatesLoader/StatesLoader.h"
+#import "Services/FuelCostService/FuelCostService.h"
 
 
 @interface AppDelegate ()
@@ -19,8 +20,39 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // testing state loader
-    [StatesLoader loadStatesFromPlistAtPath:@"States"];
     
+    NSDictionary* countryGraph = [StatesLoader loadStatesFromPlistAtPath:@"States"];
+    
+    // testing fetching a bunch of fuel costs
+    FuelCostService* fuelCostService = [[FuelCostService alloc] init];
+    
+    State *ohio = countryGraph[@"OH"];
+    
+    for (State *neighbor in ohio.stateNeighbors) {
+        [fuelCostService fuelCostBetweenNeighborStates:ohio andState:neighbor completion:^(float result) {
+            NSLog(@"%@-%@ | Cost: %f", ohio.stateCode, neighbor.stateCode, result);
+        }];
+    }
+    
+    // test wait for 3 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        for (State *neighbor in ohio.stateNeighbors) {
+            [fuelCostService fuelCostBetweenNeighborStates:ohio andState:neighbor completion:^(float result) {
+                NSLog(@"%@-%@ | Cost: %f", ohio.stateCode, neighbor.stateCode, result);
+            }];
+        }
+    });
+    
+    // test wait for 3 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+        for (State *neighbor in ohio.stateNeighbors) {
+            [fuelCostService fuelCostBetweenNeighborStates:ohio andState:neighbor completion:^(float result) {
+                NSLog(@"%@-%@ | Cost: %f", ohio.stateCode, neighbor.stateCode, result);
+            }];
+        }
+    });
+        
     return YES;
 }
 
