@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "../../Models/State/State.h"
+#import "../Models/State.h"
 
 @protocol ShippingCostServiceDelegate <NSObject>
 - (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost;

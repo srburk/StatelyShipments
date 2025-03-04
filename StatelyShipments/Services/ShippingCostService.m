@@ -6,11 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "../../Utility/StatesLoader/StatesLoader.h"
-#import "../../Utility/PriorityQueue/PriorityQueue.h"
+#import "../Utility/StatesLoader.h"
+#import "../Utility/PriorityQueue.h"
 
 #import "ShippingCostService.h"
-#import "../FuelCostService/FuelCostService.h"
+#import "FuelCostService.h"
 
 @interface ShippingCostService ()
 @property (atomic) NSMutableDictionary *fuelCostCache;

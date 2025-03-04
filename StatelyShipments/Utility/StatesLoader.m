@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "StatesLoader.h"
-#import "../../Models/State/State.h"
+#import "../Models/State.h"
 
 @implementation StatesLoader
 

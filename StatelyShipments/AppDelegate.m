@@ -6,8 +6,8 @@
 //
 
 #import "AppDelegate.h"
-#import "Services/ShippingCostService/ShippingCostService.h"
-#import "Models/State/State.h"
+#import "Services/ShippingCostService.h"
+#import "Models/State.h"
 
 @interface AppDelegate ()
 
