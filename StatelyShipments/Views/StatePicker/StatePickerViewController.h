@@ -15,7 +15,7 @@
 
 @property NSInteger selectedIndex;
 @property NSArray *states;
-@property (nonatomic, weak) id delegate;
+@property (nonatomic, weak) id <StatePickerViewControllerDelegate> delegate;
 
 - (id) initWithStates:(NSArray*)stateList;
 

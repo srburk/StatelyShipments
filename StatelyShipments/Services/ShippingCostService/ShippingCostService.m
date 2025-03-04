@@ -22,15 +22,6 @@
 
 @implementation ShippingCostService
 
-+ (id) shared {
-    static dispatch_once_t pred = 0;
-    static id _sharedObject = nil;
-    dispatch_once(&pred, ^{
-        _sharedObject = [[self alloc] init];
-    });
-    return _sharedObject;
-}
-
 - (id)init {
     if (self = [super init]) {
         self.countryGraph = [StatesLoader loadStatesFromPlistAtPath:@"States"];
@@ -46,18 +37,19 @@
 }
 
 // TODO: Cache algorithm results from A in case only B is changed
-- (void)cheapestRouteBetweenStates:(State *)stateA andState:(State *)stateB {
+- (void)cheapestRouteBetweenStates:(State*)stateA andState:(State*)stateB {
     
+    // do everything in the background to keep main thread running well
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        NSLog(@"Fetching fuel costs");
+        NSLog(@"Fetching fuel costs from %@ to %@", stateA.stateCode, stateB.stateCode);
         for (State *state in self.countryGraph.allValues) {
             for (State *neighbor in state.stateNeighbors) {
                 dispatch_group_enter(self.fuelCostGroup);
                 
                 NSString *cacheKey = [self standardizedCacheKeyForState:state andNeighbor:neighbor];
                 
-                if (self.fuelCostCache[cacheKey]) {
+                if ([self.fuelCostCache valueForKey:cacheKey]) {
                     // already exists in cache, exit this iteration early
                     dispatch_group_leave(self.fuelCostGroup);
                     continue;
@@ -82,10 +74,9 @@
             }
         }
         
+        // wait for all fuel costs to be collected
         dispatch_group_wait(self.fuelCostGroup, DISPATCH_TIME_FOREVER);
-        
-        NSLog(@"Calculating cheapest route from %@ to %@", stateA.stateCode, stateB.stateCode);
-        
+                
         PriorityQueue *queue = [[PriorityQueue alloc] initWithCapacity:(int)self.countryGraph.count comparator:^NSComparisonResult(id obj1, id obj2) {
             // we know how these objects are structured, but we'll check just in case
             if (![obj1 isKindOfClass:[NSArray class]] || ![obj2 isKindOfClass:[NSArray class]]) {
@@ -97,10 +88,10 @@
 
         // keep track of distances to all nodes from State A
         NSMutableDictionary *distance = [[NSMutableDictionary alloc] initWithCapacity:50];
-        
-        // keep track of paths to all nodes from State A
+        // keep track of all previous nodes for all nodes
         NSMutableDictionary *previous = [[NSMutableDictionary alloc] initWithCapacity:50];
-
+        
+        // initialize distances to INF (using INT_MAX) except for start, which is 0
         for (NSString *stateCode in self.countryGraph.allKeys) {
             // set distances to max, (bad for now, make better pq with heap later)
             if ([stateCode isEqualToString:stateA.stateCode]) {
@@ -110,17 +101,17 @@
             }
         }
 
+        // prep first State (starting node) with highest priority
         [queue enqueue:@[stateA.stateCode, @0]];
 
+        // iterate through priority queue until finished
         while (queue.size > 0) {
             NSArray* current = (NSArray*)[queue dequeue];
             NSString* currentStateCode = current[0];
             State* currentState = (State*)self.countryGraph[currentStateCode];
-            NSLog(@"Current State: %@", currentState);
             
             // MARK: Determine if you want to use early exit or instead cache everything for reuse with other destinations
             if ([currentState isEqual:stateB]) {
-                NSLog(@"Reached destination, exiting...");
                 break;
             }
             
@@ -129,40 +120,44 @@
                 float weight = [(NSNumber*)self.fuelCostCache[[self standardizedCacheKeyForState:currentState andNeighbor:neighbor]] floatValue];
                 
                 if (weight < 0) {
-                    // can't traverse
-                    NSLog(@"\t - %@ | weight = %f | distance = %@, SKIPPING", neighbor.stateCode, weight, distance[neighbor.stateCode]);
+                    // can't traverse for whatever reason, move to next iteration
                     continue;
                 }
-                NSLog(@"\t - %@ | weight = %f | distance = %@", neighbor.stateCode, weight, distance[neighbor.stateCode]);
                 
-                float tentativeWeight = [distance[currentStateCode] floatValue] + weight;
-                if ([distance[neighbor.stateCode] floatValue] > tentativeWeight) {
-                    [distance setValue:[[NSNumber alloc] initWithFloat:tentativeWeight] forKey:neighbor.stateCode];
+                // calculate what the distance be if used
+                float tentativeDistance = [distance[currentStateCode] floatValue] + weight;
+                if ([distance[neighbor.stateCode] floatValue] > tentativeDistance) {
+                    [distance setValue:[[NSNumber alloc] initWithFloat:tentativeDistance] forKey:neighbor.stateCode];
                     [previous setValue:currentState.stateCode forKey:neighbor.stateCode];
-                    NSLog(@"\t Set neighbor %@ to %f", neighbor.stateCode, tentativeWeight);
+//                    NSLog(@"\t Set neighbor %@ to %f", neighbor.stateCode, tentativeDistance);
+                    // queue for exploration
                     [queue enqueue:@[neighbor.stateCode, distance[neighbor.stateCode]]];
                 }
             }
-            
-            NSLog(@"\tPriorityQueue State after %@: %@", currentState.stateCode, queue);
-            
         }
         
-        NSLog(@"Finished Algorithm, final distances are: %@", distance);
-        
-        NSLog(@"Finished Algorithm, final paths are: %@", previous);
-        
         if ([distance[stateB.stateCode] compare:[NSNumber numberWithInt:INT_MAX]]) {
-            NSLog(@"Shipping from %@->%@ is possible and will cost: %@", stateA.stateCode, stateB.stateCode, distance[stateB.stateCode]);
-            NSLog(@"Route will be (in reverse):");
+            
+            NSMutableArray* route = [NSMutableArray array];
+            
             NSString* currentStateCode = stateB.stateCode;
             while (currentStateCode) {
-                NSLog(@"\t%@", currentStateCode);
+                [route addObject:self.countryGraph[currentStateCode]];
                 currentStateCode = previous[currentStateCode];
             }
             
+            // reverse to be in proper order (StateA -> StateB)
+            NSArray* reversedRoute = [[route reverseObjectEnumerator] allObjects];
+                        
+            // use delegate pattern for return info
+            if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFindRoute: withFuelCost:)]) {
+                [self.delegate shippingCostServiceDidFindRoute:reversedRoute withFuelCost:[distance[stateB.stateCode] floatValue]];
+            }
+            
         } else {
-            NSLog(@"Shipping from %@->%@ is not possible", stateA.stateCode, stateB.stateCode);
+            if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFailToFindRoute)]) {
+                [self.delegate shippingCostServiceDidFailToFindRoute];
+            }
         }
         
     });

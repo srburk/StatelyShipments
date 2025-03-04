@@ -4,6 +4,14 @@
 <array>
 	<dict>
 		<key>stateCode</key>
+		<string>AK</string>
+		<key>stateName</key>
+		<string>Alaska</string>
+		<key>stateNeighbors</key>
+		<array/>
+	</dict>
+	<dict>
+		<key>stateCode</key>
 		<string>AL</string>
 		<key>stateName</key>
 		<string>Alabama</string>
@@ -87,17 +95,6 @@
 	</dict>
 	<dict>
 		<key>stateCode</key>
-		<string>DC</string>
-		<key>stateName</key>
-		<string>District of Columbia</string>
-		<key>stateNeighbors</key>
-		<array>
-			<string>MD</string>
-			<string>VA</string>
-		</array>
-	</dict>
-	<dict>
-		<key>stateCode</key>
 		<string>DE</string>
 		<key>stateName</key>
 		<string>Delaware</string>
@@ -131,6 +128,16 @@
 			<string>NC</string>
 			<string>SC</string>
 			<string>TN</string>
+		</array>
+	</dict>
+	<dict>
+		<key>stateCode</key>
+		<string>HI</string>
+		<key>stateName</key>
+		<string>Hawaii</string>
+		<key>stateNeighbors</key>
+		<array>
+			<string>CA</string>
 		</array>
 	</dict>
 	<dict>
@@ -595,6 +602,72 @@
 			<string>NC</string>
 			<string>TN</string>
 			<string>WV</string>
+		</array>
+	</dict>
+	<dict>
+		<key>stateCode</key>
+		<string>VT</string>
+		<key>stateName</key>
+		<string>Vermont</string>
+		<key>stateNeighbors</key>
+		<array>
+			<string>MA</string>
+			<string>NH</string>
+			<string>NY</string>
+		</array>
+	</dict>
+	<dict>
+		<key>stateCode</key>
+		<string>WA</string>
+		<key>stateName</key>
+		<string>Washington</string>
+		<key>stateNeighbors</key>
+		<array>
+			<string>AK</string>
+			<string>ID</string>
+			<string>OR</string>
+		</array>
+	</dict>
+	<dict>
+		<key>stateCode</key>
+		<string>WI</string>
+		<key>stateName</key>
+		<string>Wisconsin</string>
+		<key>stateNeighbors</key>
+		<array>
+			<string>IA</string>
+			<string>IL</string>
+			<string>MI</string>
+			<string>MN</string>
+		</array>
+	</dict>
+	<dict>
+		<key>stateCode</key>
+		<string>WV</string>
+		<key>stateName</key>
+		<string>West Virginia</string>
+		<key>stateNeighbors</key>
+		<array>
+			<string>KY</string>
+			<string>MD</string>
+			<string>OH</string>
+			<string>PA</string>
+			<string>VA</string>
+		</array>
+	</dict>
+	<dict>
+		<key>stateCode</key>
+		<string>WY</string>
+		<key>stateName</key>
+		<string>Wyoming</string>
+		<key>stateNeighbors</key>
+		<array>
+			<string>CO</string>
+			<string>ID</string>
+			<string>MT</string>
+			<string>NE</string>
+			<string>SD</string>
+			<string>UT</string>
 		</array>
 	</dict>
 </array>

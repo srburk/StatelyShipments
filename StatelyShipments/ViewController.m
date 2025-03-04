@@ -10,7 +10,7 @@
 
 #import "Views/StatePicker/StatePickerViewController.h"
 
-@interface ViewController () <StatePickerViewControllerDelegate>
+@interface ViewController () <StatePickerViewControllerDelegate, ShippingCostServiceDelegate>
 
 @property (nonatomic, weak) UINavigationController *navigationController;
 
@@ -43,6 +43,7 @@
     
     // init service first
     self.shippingCostService = [[ShippingCostService alloc] init];
+    self.shippingCostService.delegate = self;
     
 //    self.navigationController;
 //    NSLog(@"%@", self.navigationController);
@@ -138,7 +139,7 @@
     State* state1 = self.shippingCostService.countryGraph[self.shippingCostService.countryGraph.allKeys[index1]];
     State* state2 = self.shippingCostService.countryGraph[self.shippingCostService.countryGraph.allKeys[index2]];
     
-    [self.shippingCostService cheapestRouteBetweenStates:state1 andState:state2];
+    [self.shippingCostService cheapestRouteBetweenStates:state1 andState:state2]; // testing with $4 per state fee
 }
 
 - (void)chooseState {
@@ -153,6 +154,15 @@
 
 - (void)statePicker:(UIViewController *)picker didSelectOption:(NSString *)option { 
     [self.openSourceStatePicker setTitle:option forState:UIControlStateNormal];
+}
+
+- (void)shippingCostServiceDidFailToFindRoute {
+    // show some error in UI
+    NSLog(@"Failed to find route");
+}
+
+- (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost {
+    NSLog(@"Found route %@ at cost $%.2f", route, cost);
 }
 
 @end
