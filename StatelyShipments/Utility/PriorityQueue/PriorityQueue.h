@@ -22,4 +22,6 @@ typedef NSComparisonResult (^PriorityQueueComparator)(id obj1, id obj2);
 - (void)enqueue:(id)object;
 - (id)dequeue;
 
+- (NSString*)description;
+
 @end

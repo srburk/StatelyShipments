@@ -41,6 +41,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // init service first
+    self.shippingCostService = [[ShippingCostService alloc] init];
+    
 //    self.navigationController;
 //    NSLog(@"%@", self.navigationController);
     // testing overlay with solid color background
@@ -71,7 +74,26 @@
         [stackView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
     ]];
     
-    self.shippingCostService = [[ShippingCostService alloc] init];
+    // MARK: Testing Algorithm with this button
+    
+    UIButton* solveAlgorithmButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [solveAlgorithmButton setTitle:@"Algorithm check" forState:UIControlStateNormal];
+    [solveAlgorithmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    [solveAlgorithmButton addTarget:self action:@selector(testAlgorithm) forControlEvents:UIControlEventTouchUpInside];
+    solveAlgorithmButton.translatesAutoresizingMaskIntoConstraints = NO;
+    solveAlgorithmButton.layer.cornerRadius = 15;
+    solveAlgorithmButton.layer.cornerCurve = kCACornerCurveCircular;
+    
+    solveAlgorithmButton.backgroundColor = [UIColor systemBlueColor];
+    [self.view addSubview:solveAlgorithmButton];
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [solveAlgorithmButton.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:20],
+        [solveAlgorithmButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-20],
+        [solveAlgorithmButton.topAnchor constraintEqualToAnchor:self.view.topAnchor constant: 150],
+        [solveAlgorithmButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor]
+    ]];
     
     // State pickers
     
@@ -102,6 +124,21 @@
         [statePickerStack.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-20],
         [statePickerStack.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant: -50]
     ]];
+}
+
+-(void)testAlgorithm {
+    // blah blah blah
+    NSUInteger index1 = arc4random_uniform((uint32_t)self.shippingCostService.countryGraph.count);
+    NSUInteger index2;
+    
+    do {
+        index2 = arc4random_uniform((uint32_t)self.shippingCostService.countryGraph.count);
+    } while (index1 == index2);
+    
+    State* state1 = self.shippingCostService.countryGraph[self.shippingCostService.countryGraph.allKeys[index1]];
+    State* state2 = self.shippingCostService.countryGraph[self.shippingCostService.countryGraph.allKeys[index2]];
+    
+    [self.shippingCostService cheapestRouteBetweenStates:state1 andState:state2];
 }
 
 - (void)chooseState {

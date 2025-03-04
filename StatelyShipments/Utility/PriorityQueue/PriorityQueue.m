@@ -94,4 +94,12 @@
     self.items[index2] = temp;
 }
 
+- (NSString*)description {
+    NSMutableString* stringBase = [NSMutableString stringWithString:@"PriorityQueue\n"];
+    for (id item in self.items) {
+        [stringBase appendFormat:@"\t%@\n", item];
+    }
+    return stringBase;
+}
+
 @end
