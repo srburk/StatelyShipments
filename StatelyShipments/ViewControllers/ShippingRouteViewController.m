@@ -15,11 +15,19 @@
 
 @implementation ShippingRouteViewController
 
-- (id)initWithRoute:(NSArray<State *> *)route {
+- (id)initWithRoute:(NSArray<State*>*)route andTotalCost:(float)totalCost {
     if (self = [super init]) {
         self.shippingRoute = route;
+        self.totalCost = totalCost;
+    } else {
+        self.totalCost = 0.0;
     }
     return self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    // hide navbar
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewDidLoad {
@@ -27,6 +35,20 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor systemBackgroundColor];
+    
+    // show navbar
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    // configure total cost label in nav bar
+    UILabel *totalCostLabel = [[UILabel alloc] init];
+    totalCostLabel.text = [NSString stringWithFormat:@"$%.2f", self.totalCost];
+    totalCostLabel.textColor = [UIColor blackColor];
+    totalCostLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
+
+    // using a button because I need a label in the menu bar but don't want it to be interactive yet
+    UIBarButtonItem *totalCostButton = [[UIBarButtonItem alloc] initWithCustomView:totalCostLabel];
+    self.navigationItem.rightBarButtonItem = totalCostButton;
+    
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleInsetGrouped];
 //    self.tableView.dataSource = [

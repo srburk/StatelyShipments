@@ -10,7 +10,7 @@
 
 @protocol ShippingCostServiceDelegate <NSObject>
 - (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost;
-- (void)shippingCostServiceDidFailToFindRoute;
+- (void)shippingCostServiceDidFailWithMessage:(NSString *)message;
 @end
 
 @interface ShippingCostService : NSObject

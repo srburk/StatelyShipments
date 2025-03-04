@@ -7,8 +7,7 @@
 
 #import "SceneDelegate.h"
 
-#import "ViewController.h"
-#import "ViewControllers/ShippingEntryViewController.h"
+#import "ViewControllers/MainViewController.h"
 
 @interface SceneDelegate ()
 @end
@@ -24,14 +23,9 @@
     UIWindowScene *windowScene = (UIWindowScene *)scene;
     self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
 
-    UINavigationController *navController = [[UINavigationController alloc] init];
-//    ViewController *root = [[ViewController alloc] initWithNavigationController:navController];
-    
-    ShippingEntryViewController *root = [[ShippingEntryViewController alloc] initWithNavigationController:navController];
+    MainViewController *mainViewController = [[MainViewController alloc] init];
 
-    [navController setViewControllers:@[root]];
-
-    self.window.rootViewController = navController;
+    self.window.rootViewController = mainViewController;
     [self.window makeKeyAndVisible];
 }
 

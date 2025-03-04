@@ -14,7 +14,8 @@
 
 @property(nonatomic, strong) UINavigationController* navigationController;
 @property (nonatomic, strong) NSArray<State*>* shippingRoute;
+@property (nonatomic, assign) float totalCost;
 
-- (id)initWithRoute:(NSArray<State*>*)route;
+- (id)initWithRoute:(NSArray<State*>*)route andTotalCost:(float)totalCost;
 
 @end

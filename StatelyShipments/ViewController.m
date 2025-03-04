@@ -7,9 +7,8 @@
 
 #import "ViewController.h"
 #import "Services/ShippingCostService.h"
-#import "ViewControllers/StatePickerViewController.h"
 
-@interface ViewController () <StatePickerViewControllerDelegate, ShippingCostServiceDelegate>
+@interface ViewController () <ShippingCostServiceDelegate>
 
 @property (nonatomic, weak) UINavigationController *navigationController;
 
@@ -17,7 +16,6 @@
 
 @property (nonatomic, strong) UILabel* sourceLabelTitle;
 @property (nonatomic, strong) UILabel* sourceLabel;
-@property (nonatomic, strong) StatePickerViewController* sourceStatePicker;
 @property (nonatomic, strong) UIButton* openSourceStatePicker;
 
 @property (nonatomic, strong) UILabel* destinationLabelTitle;
@@ -139,20 +137,6 @@
     State* state2 = self.shippingCostService.countryGraph[self.shippingCostService.countryGraph.allKeys[index2]];
     
     [self.shippingCostService cheapestRouteBetweenStates:state1 andState:state2]; // testing with $4 per state fee
-}
-
-- (void)chooseState {
-    if (self.navigationController) {
-        self.sourceStatePicker = [[StatePickerViewController alloc] initWithStates:self.shippingCostService.countryGraph.allKeys];
-        self.sourceStatePicker.delegate = self;
-        [self.navigationController pushViewController:self.sourceStatePicker animated:YES];
-    } else {
-        NSLog(@"No nav controller");
-    }
-}
-
-- (void)statePicker:(UIViewController *)picker didSelectOption:(NSString *)option { 
-    [self.openSourceStatePicker setTitle:option forState:UIControlStateNormal];
 }
 
 - (void)shippingCostServiceDidFailToFindRoute {

@@ -41,7 +41,9 @@
     
     // check that states are not nil
     if (![stateA isKindOfClass:[State class]] || ![stateA isKindOfClass:[State class]]) {
-        NSLog(@"Error: Please provide valid State objects");
+        if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFailWithMessage:)]) {
+            [self.delegate shippingCostServiceDidFailWithMessage:@"Please provide valid State objects"];
+        }
         return;
     }
     
@@ -161,8 +163,8 @@
             }
             
         } else {
-            if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFailToFindRoute)]) {
-                [self.delegate shippingCostServiceDidFailToFindRoute];
+            if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFailWithMessage:)]) {
+                [self.delegate shippingCostServiceDidFailWithMessage:@"Route does not exist"];
             }
         }
         

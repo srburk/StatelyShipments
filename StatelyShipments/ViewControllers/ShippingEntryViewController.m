@@ -17,6 +17,9 @@
 
 @property (nonatomic, strong) ShippingCostService* shippingCostService;
 
+// indicator that shipping calculation is happening
+@property (nonatomic, strong) UIActivityIndicatorView* spinnerView;
+
 @property (nonatomic, strong) StatePickerButton* sourcePickerButton;
 @property (nonatomic, strong) State* sourceState;
 @property (nonatomic, strong) StatePickerButton* destinationPickerButton;
@@ -52,7 +55,7 @@
     mainStackView.translatesAutoresizingMaskIntoConstraints = NO;
     
     // padding
-    mainStackView.layoutMargins = UIEdgeInsetsMake(0, 25, 0, 25);
+    mainStackView.layoutMargins = UIEdgeInsetsMake(25, 25, 0, 25);
     mainStackView.layoutMarginsRelativeArrangement = YES;
     
     [self.view addSubview:mainStackView];
@@ -68,7 +71,7 @@
     // horizontal section for state pickers and swap button
     UIStackView *statePickerHStack = [[UIStackView alloc] init];
     statePickerHStack.axis = UILayoutConstraintAxisHorizontal;
-    statePickerHStack.alignment = UIStackViewAlignmentCenter;
+    statePickerHStack.alignment = UIStackViewAlignmentTop;
     statePickerHStack.distribution = UIStackViewDistributionEqualCentering;
     statePickerHStack.spacing = 0;
     statePickerHStack.translatesAutoresizingMaskIntoConstraints = NO;
@@ -139,13 +142,22 @@
     UIButton *calculateButton = [UIButton buttonWithConfiguration:calculateButtonConfiguration primaryAction:nil];
     [calculateButton addTarget:self action:@selector(calculateShippingCost) forControlEvents:UIControlEventTouchUpInside];
     
+    self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+    self.spinnerView.hidesWhenStopped = YES;
+    self.spinnerView.color = [UIColor whiteColor];
+    self.spinnerView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [calculateButton addSubview:self.spinnerView];
+    
     [mainStackView addArrangedSubview:calculateButton];
     
     [NSLayoutConstraint activateConstraints:@[
         [calculateButton.bottomAnchor constraintEqualToAnchor:mainStackView.bottomAnchor],
-//        [calculateButton.leadingAnchor constraintEqualToAnchor:mainStackView.leadingAnchor constant:30],
-//        [calculateButton.trailingAnchor constraintEqualToAnchor:mainStackView.trailingAnchor constant:-30],
         [calculateButton.heightAnchor constraintEqualToConstant:55],
+        
+        // put spinner label to the left of button label
+        [self.spinnerView.trailingAnchor constraintEqualToAnchor:calculateButton.titleLabel.leadingAnchor constant:-10],
+        [self.spinnerView.centerYAnchor constraintEqualToAnchor:calculateButton.titleLabel.centerYAnchor],
     ]];
     
 }
@@ -163,27 +175,32 @@
 
 - (void)calculateShippingCost {
     NSLog(@"Triggered calculate shipping cost calculation");
+    [self.spinnerView startAnimating];
     [self.shippingCostService cheapestRouteBetweenStates:self.sourceState andState:self.destinationState];
 }
 
 #pragma mark Delegate Actions
 
-- (void)shippingCostServiceDidFailToFindRoute {
-    NSLog(@"Failed to find route");
+- (void)shippingCostServiceDidFailWithMessage:(NSString *)message {
+    NSLog(@"Failed to find route: %@", message);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.spinnerView stopAnimating];
+    });
 }
 
-- (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost { 
-    NSLog(@"Found route %@ at cost $%.2f", route, cost);
-    // push to navigation
-    if ([self.navigationController isKindOfClass:[UINavigationController class]]) {
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            ShippingRouteViewController *shippingRouteViewController = [[ShippingRouteViewController alloc] initWithRoute:route];
+- (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self.spinnerView stopAnimating];
+        
+        if ([self.navigationController isKindOfClass:[UINavigationController class]]) {
+            ShippingRouteViewController *shippingRouteViewController = [[ShippingRouteViewController alloc] initWithRoute:route andTotalCost:cost];
             shippingRouteViewController.navigationController = self.navigationController;
             
             [self.navigationController pushViewController:shippingRouteViewController animated:YES];
-        });
-    }
+        }
+    });
 }
 
 @end
