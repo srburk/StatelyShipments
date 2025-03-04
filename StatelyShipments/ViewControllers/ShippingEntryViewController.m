@@ -1,17 +1,19 @@
 //
-//  ShippingCostViewController.m
+//  ShippingEntryViewController.m
 //  StatelyShipments
 //
 //  Created by Sam Burkhard on 3/3/25.
 //
 
 #import <Foundation/Foundation.h>
-#import "ShippingCostViewController.h"
+#import "ShippingEntryViewController.h"
 
 #import "../Services/ShippingCostService.h"
 #import "../Views/StatePickerButton.h"
 
-@interface ShippingCostViewController () <ShippingCostServiceDelegate>
+#import "ShippingRouteViewController.h"
+
+@interface ShippingEntryViewController () <ShippingCostServiceDelegate>
 
 @property (nonatomic, strong) ShippingCostService* shippingCostService;
 
@@ -22,7 +24,14 @@
 
 @end
 
-@implementation ShippingCostViewController
+@implementation ShippingEntryViewController
+
+- (id)initWithNavigationController:(UINavigationController *)navController {
+    if (self = [super init]) {
+        self.navigationController = navController;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     
@@ -65,15 +74,20 @@
     statePickerHStack.translatesAutoresizingMaskIntoConstraints = NO;
     [mainStackView addArrangedSubview: statePickerHStack];
     
+    // for state pickers
+    NSArray* statesAlphabetical = [self.shippingCostService.countryGraph.allValues sortedArrayUsingComparator:^NSComparisonResult(State *state1, State *state2) {
+        return [state2.stateCode localizedCaseInsensitiveCompare:state1.stateCode];
+    }];
+    
     // source picker
     self.sourcePickerButton = [[StatePickerButton alloc] init];
     [self.sourcePickerButton.button setTitle:@"Pick me" forState:UIControlStateNormal];
     [self.sourcePickerButton.label setText:@"Source"];
-    [self.sourcePickerButton setupPickerMenu:self.shippingCostService.countryGraph.allValues];
+    [self.sourcePickerButton setupPickerMenu:statesAlphabetical];
     
     [statePickerHStack addArrangedSubview:self.sourcePickerButton];
     
-    ShippingCostViewController* __weak weakSelf = self;
+    ShippingEntryViewController* __weak weakSelf = self;
     self.sourcePickerButton.selectionHandler = ^(State *selectedState) {
         weakSelf.sourceState = selectedState;
     };
@@ -93,10 +107,11 @@
     ]];
     
     // destination picker
+    
     self.destinationPickerButton = [[StatePickerButton alloc] init];
     [self.destinationPickerButton.button setTitle:@"Pick me" forState:UIControlStateNormal];
     [self.destinationPickerButton.label setText:@"Destination"];
-    [self.destinationPickerButton setupPickerMenu:self.shippingCostService.countryGraph.allValues];
+    [self.destinationPickerButton setupPickerMenu:statesAlphabetical];
 
     [statePickerHStack addArrangedSubview:self.destinationPickerButton];
     
@@ -159,6 +174,16 @@
 
 - (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost { 
     NSLog(@"Found route %@ at cost $%.2f", route, cost);
+    // push to navigation
+    if ([self.navigationController isKindOfClass:[UINavigationController class]]) {
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            ShippingRouteViewController *shippingRouteViewController = [[ShippingRouteViewController alloc] initWithRoute:route];
+            shippingRouteViewController.navigationController = self.navigationController;
+            
+            [self.navigationController pushViewController:shippingRouteViewController animated:YES];
+        });
+    }
 }
 
 @end

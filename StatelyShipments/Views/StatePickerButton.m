@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import "StatePickerButton.h"
 
+#import "../Utility/StatesLoader.h"
+
 @interface StatePickerButton ()
 @property (nonatomic, strong) UIButton *button;
 @property (nonatomic, strong) UILabel *label;
