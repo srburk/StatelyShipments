@@ -39,6 +39,12 @@
 // TODO: Cache algorithm results from A in case only B is changed
 - (void)cheapestRouteBetweenStates:(State*)stateA andState:(State*)stateB {
     
+    // check that states are not nil
+    if (![stateA isKindOfClass:[State class]] || ![stateA isKindOfClass:[State class]]) {
+        NSLog(@"Error: Please provide valid State objects");
+        return;
+    }
+    
     // do everything in the background to keep main thread running well
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         

@@ -7,7 +7,7 @@
 
 #import "ViewController.h"
 #import "Services/ShippingCostService.h"
-#import "Views/StatePickerViewController.h"
+#import "ViewControllers/StatePickerViewController.h"
 
 @interface ViewController () <StatePickerViewControllerDelegate, ShippingCostServiceDelegate>
 

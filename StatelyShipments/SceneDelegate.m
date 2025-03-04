@@ -8,6 +8,7 @@
 #import "SceneDelegate.h"
 
 #import "ViewController.h"
+#import "ViewControllers/ShippingCostViewController.h"
 
 @interface SceneDelegate ()
 @end
@@ -23,8 +24,9 @@
     self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
 
     UINavigationController *navController = [[UINavigationController alloc] init];
-    ViewController *root = [[ViewController alloc] initWithNavigationController:navController];
-    
+//    ViewController *root = [[ViewController alloc] initWithNavigationController:navController];
+    ShippingCostViewController *root = [[ShippingCostViewController alloc] init];
+
     [navController setViewControllers:@[root]];
 
     self.window.rootViewController = navController;
