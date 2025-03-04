@@ -6,6 +6,8 @@
 //
 
 #import "AppDelegate.h"
+#import "Services/ShippingCostService/ShippingCostService.h"
+#import "Models/State/State.h"
 
 @interface AppDelegate ()
 
@@ -15,10 +17,41 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    // testing state loader
+    
+//    NSDictionary* countryGraph = [StatesLoader loadStatesFromPlistAtPath:@"States"];
+    
+    // testing fetching a bunch of fuel costs
+//    State *ohio = countryGraph[@"OH"];
+//    
+//    for (State *neighbor in ohio.stateNeighbors) {
+//        [fuelCostService fuelCostBetweenNeighborStates:ohio andState:neighbor completion:^(float result) {
+//            NSLog(@"%@-%@ | Cost: %f", ohio.stateCode, neighbor.stateCode, result);
+//        }];
+//    }
+//    
+//    // test wait for 3 seconds
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        for (State *neighbor in ohio.stateNeighbors) {
+//            [fuelCostService fuelCostBetweenNeighborStates:ohio andState:neighbor completion:^(float result) {
+//                NSLog(@"%@-%@ | Cost: %f", ohio.stateCode, neighbor.stateCode, result);
+//            }];
+//        }
+//    });
+//    
+//    // test wait for 3 seconds
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            
+//        for (State *neighbor in ohio.stateNeighbors) {
+//            [fuelCostService fuelCostBetweenNeighborStates:ohio andState:neighbor completion:^(float result) {
+//                NSLog(@"%@-%@ | Cost: %f", ohio.stateCode, neighbor.stateCode, result);
+//            }];
+//        }
+//    });
+        
     return YES;
 }
-
 
 #pragma mark - UISceneSession lifecycle
 
