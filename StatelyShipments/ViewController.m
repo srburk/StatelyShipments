@@ -156,8 +156,7 @@
 }
 
 - (void)shippingCostServiceDidFailToFindRoute {
-    // show some error in UI
-    NSLog(@"Failed to find route");
+//    State* temp = self.
 }
 
 - (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost {

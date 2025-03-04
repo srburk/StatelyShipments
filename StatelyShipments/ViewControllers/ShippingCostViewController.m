@@ -9,7 +9,6 @@
 #import "ShippingCostViewController.h"
 
 #import "../Services/ShippingCostService.h"
-
 #import "../Views/StatePickerButton.h"
 
 @interface ShippingCostViewController () <ShippingCostServiceDelegate>
@@ -17,7 +16,9 @@
 @property (nonatomic, strong) ShippingCostService* shippingCostService;
 
 @property (nonatomic, strong) StatePickerButton* sourcePickerButton;
+@property (nonatomic, strong) State* sourceState;
 @property (nonatomic, strong) StatePickerButton* destinationPickerButton;
+@property (nonatomic, strong) State* destinationState;
 
 @end
 
@@ -36,10 +37,15 @@
     // main vertical stack
     UIStackView *mainStackView = [[UIStackView alloc] init];
     mainStackView.axis = UILayoutConstraintAxisVertical;
-    mainStackView.alignment = UIStackViewAlignmentCenter;
+    mainStackView.alignment = UIStackViewAlignmentFill;
     mainStackView.distribution = UIStackViewDistributionFill;
-    mainStackView.spacing = 0;
+    mainStackView.spacing = 15;
     mainStackView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // padding
+    mainStackView.layoutMargins = UIEdgeInsetsMake(0, 25, 0, 25);
+    mainStackView.layoutMarginsRelativeArrangement = YES;
+    
     [self.view addSubview:mainStackView];
     
     UILayoutGuide *guide = self.view.safeAreaLayoutGuide;
@@ -59,25 +65,54 @@
     statePickerHStack.translatesAutoresizingMaskIntoConstraints = NO;
     [mainStackView addArrangedSubview: statePickerHStack];
     
+    // source picker
     self.sourcePickerButton = [[StatePickerButton alloc] init];
     [self.sourcePickerButton.button setTitle:@"Pick me" forState:UIControlStateNormal];
     [self.sourcePickerButton.label setText:@"Source"];
+    [self.sourcePickerButton setupPickerMenu:self.shippingCostService.countryGraph.allValues];
     
     [statePickerHStack addArrangedSubview:self.sourcePickerButton];
     
-//    destinationPicker
+    ShippingCostViewController* __weak weakSelf = self;
+    self.sourcePickerButton.selectionHandler = ^(State *selectedState) {
+        weakSelf.sourceState = selectedState;
+    };
+    
+    // swap button
+    UIButton *swapButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [swapButton setImage:[UIImage systemImageNamed:@"arrow.left.arrow.right"] forState:UIControlStateNormal];
+    [swapButton addTarget:self action:@selector(swapStates) forControlEvents:UIControlEventTouchUpInside];
+    swapButton.tintColor = [UIColor blackColor];
+    swapButton.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [statePickerHStack addArrangedSubview:swapButton];
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [swapButton.heightAnchor constraintEqualToConstant:55],
+        [swapButton.widthAnchor constraintEqualToConstant:55],
+    ]];
+    
+    // destination picker
     self.destinationPickerButton = [[StatePickerButton alloc] init];
     [self.destinationPickerButton.button setTitle:@"Pick me" forState:UIControlStateNormal];
     [self.destinationPickerButton.label setText:@"Destination"];
-    
+    [self.destinationPickerButton setupPickerMenu:self.shippingCostService.countryGraph.allValues];
+
     [statePickerHStack addArrangedSubview:self.destinationPickerButton];
     
-    [NSLayoutConstraint activateConstraints:@[
-//        [statePickerHStack.topAnchor constraintEqualToAnchor:mainStackView.topAnchor],
-//        [statePickerHStack.bottomAnchor constraintEqualToAnchor:typeContainer. constant:-7],
-        [statePickerHStack.leadingAnchor constraintEqualToAnchor:mainStackView.leadingAnchor constant:30],
-        [statePickerHStack.trailingAnchor constraintEqualToAnchor:mainStackView.trailingAnchor constant:-30]
-    ]];
+    self.destinationPickerButton.selectionHandler = ^(State *selectedState) {
+        weakSelf.destinationState = selectedState;
+    };
+    
+//    // seperator line
+//    UIView *separator = [[UIView alloc] init];
+//    separator.translatesAutoresizingMaskIntoConstraints = NO;
+//    separator.backgroundColor = [UIColor separatorColor];
+//
+//    [mainStackView addArrangedSubview:separator];
+//    [NSLayoutConstraint activateConstraints:@[
+//        [separator.heightAnchor constraintEqualToConstant:(1.0 / [UIScreen mainScreen].scale)],
+//    ]];
     
     // Setup calculation button
     UIButtonConfiguration *calculateButtonConfiguration = [UIButtonConfiguration filledButtonConfiguration];
@@ -93,8 +128,8 @@
     
     [NSLayoutConstraint activateConstraints:@[
         [calculateButton.bottomAnchor constraintEqualToAnchor:mainStackView.bottomAnchor],
-        [calculateButton.leadingAnchor constraintEqualToAnchor:mainStackView.leadingAnchor constant:30],
-        [calculateButton.trailingAnchor constraintEqualToAnchor:mainStackView.trailingAnchor constant:-30],
+//        [calculateButton.leadingAnchor constraintEqualToAnchor:mainStackView.leadingAnchor constant:30],
+//        [calculateButton.trailingAnchor constraintEqualToAnchor:mainStackView.trailingAnchor constant:-30],
         [calculateButton.heightAnchor constraintEqualToConstant:55],
     ]];
     
@@ -102,18 +137,28 @@
 
 #pragma mark Button Actions
 
+- (void)swapStates {
+    NSLog(@"Swapping states...");
+    State *temp = self.sourceState;
+    self.sourceState = self.destinationState;
+    self.destinationState = temp;
+    [self.sourcePickerButton updateSelectedState:self.sourceState];
+    [self.destinationPickerButton updateSelectedState:self.destinationState];
+}
+
 - (void)calculateShippingCost {
     NSLog(@"Triggered calculate shipping cost calculation");
+    [self.shippingCostService cheapestRouteBetweenStates:self.sourceState andState:self.destinationState];
 }
 
 #pragma mark Delegate Actions
 
 - (void)shippingCostServiceDidFailToFindRoute {
-    
+    NSLog(@"Failed to find route");
 }
 
 - (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost { 
-    
+    NSLog(@"Found route %@ at cost $%.2f", route, cost);
 }
 
 @end

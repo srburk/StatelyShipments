@@ -14,5 +14,9 @@
 
 @property (nonatomic, strong, readonly) UIButton *button;
 @property (nonatomic, strong, readonly) UILabel *label;
+@property (nonatomic, copy) void (^selectionHandler)(State *selectedState);
+
+- (void)setupPickerMenu:(NSArray<State *>*)states;
+- (void)updateSelectedState:(State*) newSelectedState;
 
 @end
