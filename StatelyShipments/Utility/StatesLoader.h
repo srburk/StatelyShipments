@@ -6,9 +6,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "../Models/State.h"
 
 @interface StatesLoader : NSObject
 
-+ (NSDictionary *)loadStatesFromPlistAtPath:(NSString*)path;
+@property (nonatomic, strong, readonly) NSArray<State*>* allStates;
+
++ (id)shared;
+
+- (id)init;
+- (NSDictionary *)loadStatesFromPlistAtPath:(NSString*)path;
 
 @end

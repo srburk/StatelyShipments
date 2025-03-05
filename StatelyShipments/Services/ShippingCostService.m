@@ -24,7 +24,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.countryGraph = [StatesLoader loadStatesFromPlistAtPath:@"States"];
+        self.countryGraph = [[StatesLoader shared] loadStatesFromPlistAtPath:@"States"];
         self.fuelCostCache = [NSMutableDictionary dictionary];
         self.stateBorderFee = 0.0;
         self.fuelCostGroup = dispatch_group_create();

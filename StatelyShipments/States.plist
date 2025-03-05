@@ -3,6 +3,10 @@
 <plist version="1.0">
 <array>
 	<dict>
+		<key>latitude</key>
+		<string>63.588753</string>
+		<key>longitude</key>
+		<string>-154.493062</string>
 		<key>stateCode</key>
 		<string>AK</string>
 		<key>stateName</key>
@@ -11,6 +15,10 @@
 		<array/>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>32.318231</string>
+		<key>longitude</key>
+		<string>-86.902298</string>
 		<key>stateCode</key>
 		<string>AL</string>
 		<key>stateName</key>
@@ -24,6 +32,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>35.20105</string>
+		<key>longitude</key>
+		<string>-91.831833</string>
 		<key>stateCode</key>
 		<string>AR</string>
 		<key>stateName</key>
@@ -39,6 +51,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>34.048928</string>
+		<key>longitude</key>
+		<string>-111.093731</string>
 		<key>stateCode</key>
 		<string>AZ</string>
 		<key>stateName</key>
@@ -53,6 +69,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>36.778261</string>
+		<key>longitude</key>
+		<string>-119.417932</string>
 		<key>stateCode</key>
 		<string>CA</string>
 		<key>stateName</key>
@@ -66,6 +86,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>39.550051</string>
+		<key>longitude</key>
+		<string>-105.782067</string>
 		<key>stateCode</key>
 		<string>CO</string>
 		<key>stateName</key>
@@ -82,6 +106,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>41.603221</string>
+		<key>longitude</key>
+		<string>-73.087749</string>
 		<key>stateCode</key>
 		<string>CT</string>
 		<key>stateName</key>
@@ -94,6 +122,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>38.910832</string>
+		<key>longitude</key>
+		<string>-75.52767</string>
 		<key>stateCode</key>
 		<string>DE</string>
 		<key>stateName</key>
@@ -106,6 +138,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>27.664827</string>
+		<key>longitude</key>
+		<string>-81.515754</string>
 		<key>stateCode</key>
 		<string>FL</string>
 		<key>stateName</key>
@@ -117,6 +153,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>32.157435</string>
+		<key>longitude</key>
+		<string>-82.907123</string>
 		<key>stateCode</key>
 		<string>GA</string>
 		<key>stateName</key>
@@ -131,6 +171,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>19.898682</string>
+		<key>longitude</key>
+		<string>-155.665857</string>
 		<key>stateCode</key>
 		<string>HI</string>
 		<key>stateName</key>
@@ -141,6 +185,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>41.878003</string>
+		<key>longitude</key>
+		<string>-93.097702</string>
 		<key>stateCode</key>
 		<string>IA</string>
 		<key>stateName</key>
@@ -156,6 +204,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>44.068202</string>
+		<key>longitude</key>
+		<string>-114.742041</string>
 		<key>stateCode</key>
 		<string>ID</string>
 		<key>stateName</key>
@@ -171,6 +223,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>40.633125</string>
+		<key>longitude</key>
+		<string>-89.398528</string>
 		<key>stateCode</key>
 		<string>IL</string>
 		<key>stateName</key>
@@ -185,6 +241,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>40.551217</string>
+		<key>longitude</key>
+		<string>-85.602364</string>
 		<key>stateCode</key>
 		<string>IN</string>
 		<key>stateName</key>
@@ -198,6 +258,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>39.011902</string>
+		<key>longitude</key>
+		<string>-98.484246</string>
 		<key>stateCode</key>
 		<string>KS</string>
 		<key>stateName</key>
@@ -211,6 +275,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>37.839333</string>
+		<key>longitude</key>
+		<string>-84.270018</string>
 		<key>stateCode</key>
 		<string>KY</string>
 		<key>stateName</key>
@@ -227,6 +295,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>31.244823</string>
+		<key>longitude</key>
+		<string>-92.145024</string>
 		<key>stateCode</key>
 		<string>LA</string>
 		<key>stateName</key>
@@ -239,6 +311,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>42.407211</string>
+		<key>longitude</key>
+		<string>-71.382437</string>
 		<key>stateCode</key>
 		<string>MA</string>
 		<key>stateName</key>
@@ -253,6 +329,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>39.045755</string>
+		<key>longitude</key>
+		<string>-76.641271</string>
 		<key>stateCode</key>
 		<string>MD</string>
 		<key>stateName</key>
@@ -267,6 +347,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>45.253783</string>
+		<key>longitude</key>
+		<string>-69.445469</string>
 		<key>stateCode</key>
 		<string>ME</string>
 		<key>stateName</key>
@@ -277,6 +361,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>44.314844</string>
+		<key>longitude</key>
+		<string>-85.602364</string>
 		<key>stateCode</key>
 		<string>MI</string>
 		<key>stateName</key>
@@ -289,6 +377,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>46.729553</string>
+		<key>longitude</key>
+		<string>-94.6859</string>
 		<key>stateCode</key>
 		<string>MN</string>
 		<key>stateName</key>
@@ -302,6 +394,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>37.964253</string>
+		<key>longitude</key>
+		<string>-91.831833</string>
 		<key>stateCode</key>
 		<string>MO</string>
 		<key>stateName</key>
@@ -319,6 +415,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>32.354668</string>
+		<key>longitude</key>
+		<string>-89.398528</string>
 		<key>stateCode</key>
 		<string>MS</string>
 		<key>stateName</key>
@@ -332,6 +432,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>46.879682</string>
+		<key>longitude</key>
+		<string>-110.362566</string>
 		<key>stateCode</key>
 		<string>MT</string>
 		<key>stateName</key>
@@ -345,6 +449,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>35.759573</string>
+		<key>longitude</key>
+		<string>-79.0193</string>
 		<key>stateCode</key>
 		<string>NC</string>
 		<key>stateName</key>
@@ -358,6 +466,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>47.551493</string>
+		<key>longitude</key>
+		<string>-101.002012</string>
 		<key>stateCode</key>
 		<string>ND</string>
 		<key>stateName</key>
@@ -370,6 +482,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>41.492537</string>
+		<key>longitude</key>
+		<string>-99.901813</string>
 		<key>stateCode</key>
 		<string>NE</string>
 		<key>stateName</key>
@@ -385,6 +501,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>43.193852</string>
+		<key>longitude</key>
+		<string>-71.572395</string>
 		<key>stateCode</key>
 		<string>NH</string>
 		<key>stateName</key>
@@ -397,6 +517,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>40.058324</string>
+		<key>longitude</key>
+		<string>-74.405661</string>
 		<key>stateCode</key>
 		<string>NJ</string>
 		<key>stateName</key>
@@ -409,6 +533,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>34.97273</string>
+		<key>longitude</key>
+		<string>-105.032363</string>
 		<key>stateCode</key>
 		<string>NM</string>
 		<key>stateName</key>
@@ -423,6 +551,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>38.80261</string>
+		<key>longitude</key>
+		<string>-116.419389</string>
 		<key>stateCode</key>
 		<string>NV</string>
 		<key>stateName</key>
@@ -437,6 +569,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>43.299428</string>
+		<key>longitude</key>
+		<string>-74.217933</string>
 		<key>stateCode</key>
 		<string>NY</string>
 		<key>stateName</key>
@@ -451,6 +587,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>40.417287</string>
+		<key>longitude</key>
+		<string>-82.907123</string>
 		<key>stateCode</key>
 		<string>OH</string>
 		<key>stateName</key>
@@ -465,6 +605,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>35.007752</string>
+		<key>longitude</key>
+		<string>-97.092877</string>
 		<key>stateCode</key>
 		<string>OK</string>
 		<key>stateName</key>
@@ -480,6 +624,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>43.804133</string>
+		<key>longitude</key>
+		<string>-120.554201</string>
 		<key>stateCode</key>
 		<string>OR</string>
 		<key>stateName</key>
@@ -493,6 +641,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>41.203322</string>
+		<key>longitude</key>
+		<string>-77.194525</string>
 		<key>stateCode</key>
 		<string>PA</string>
 		<key>stateName</key>
@@ -508,6 +660,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>41.580095</string>
+		<key>longitude</key>
+		<string>-71.477429</string>
 		<key>stateCode</key>
 		<string>RI</string>
 		<key>stateName</key>
@@ -519,6 +675,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>33.836081</string>
+		<key>longitude</key>
+		<string>-81.163725</string>
 		<key>stateCode</key>
 		<string>SC</string>
 		<key>stateName</key>
@@ -530,6 +690,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>43.969515</string>
+		<key>longitude</key>
+		<string>-99.901813</string>
 		<key>stateCode</key>
 		<string>SD</string>
 		<key>stateName</key>
@@ -545,6 +709,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>35.517491</string>
+		<key>longitude</key>
+		<string>-86.580447</string>
 		<key>stateCode</key>
 		<string>TN</string>
 		<key>stateName</key>
@@ -562,6 +730,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>31.968599</string>
+		<key>longitude</key>
+		<string>-99.901813</string>
 		<key>stateCode</key>
 		<string>TX</string>
 		<key>stateName</key>
@@ -575,6 +747,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>39.32098</string>
+		<key>longitude</key>
+		<string>-111.093731</string>
 		<key>stateCode</key>
 		<string>UT</string>
 		<key>stateName</key>
@@ -590,6 +766,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>37.431573</string>
+		<key>longitude</key>
+		<string>-78.656894</string>
 		<key>stateCode</key>
 		<string>VA</string>
 		<key>stateName</key>
@@ -605,6 +785,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>44.558803</string>
+		<key>longitude</key>
+		<string>-72.577841</string>
 		<key>stateCode</key>
 		<string>VT</string>
 		<key>stateName</key>
@@ -617,6 +801,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>47.751074</string>
+		<key>longitude</key>
+		<string>-120.740139</string>
 		<key>stateCode</key>
 		<string>WA</string>
 		<key>stateName</key>
@@ -629,6 +817,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>43.78444</string>
+		<key>longitude</key>
+		<string>-88.787868</string>
 		<key>stateCode</key>
 		<string>WI</string>
 		<key>stateName</key>
@@ -642,6 +834,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>38.597626</string>
+		<key>longitude</key>
+		<string>-80.454903</string>
 		<key>stateCode</key>
 		<string>WV</string>
 		<key>stateName</key>
@@ -656,6 +852,10 @@
 		</array>
 	</dict>
 	<dict>
+		<key>latitude</key>
+		<string>43.075968</string>
+		<key>longitude</key>
+		<string>-107.290284</string>
 		<key>stateCode</key>
 		<string>WY</string>
 		<key>stateName</key>

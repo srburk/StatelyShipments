@@ -50,8 +50,9 @@
     UIBarButtonItem *totalCostButton = [[UIBarButtonItem alloc] initWithCustomView:totalCostLabel];
     self.navigationItem.rightBarButtonItem = totalCostButton;
     
+    // TODO: Make a header that has the total cost instead
     
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleInsetGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.dataSource = self;
     self.tableView.scrollEnabled = YES;
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;

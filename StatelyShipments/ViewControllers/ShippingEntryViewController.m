@@ -47,7 +47,7 @@
     self.shippingCostService = [[ShippingCostService alloc] init];
     self.shippingCostService.delegate = self;
     
-    self.view.backgroundColor = [UIColor systemGray6Color];
+    self.view.backgroundColor = [UIColor systemBackgroundColor];
     
     // main vertical stack
     UIStackView *mainStackView = [[UIStackView alloc] init];
@@ -182,11 +182,11 @@
 
 - (void)calculateShippingCost {
     
-    #ifdef DEBUG
-    NSArray* debugStates = [[self.shippingCostService.countryGraph allValues] subarrayWithRange:NSMakeRange(0, 10)];
-    [self shippingCostServiceDidFindRoute:debugStates withTotalCost:50.0];
-    return;
-    #endif
+//    #ifdef DEBUG
+//    NSArray* debugStates = [[self.shippingCostService.countryGraph allValues] subarrayWithRange:NSMakeRange(0, 10)];
+//    [self shippingCostServiceDidFindRoute:debugStates withTotalCost:50.0];
+//    return;
+//    #endif
     
     NSLog(@"Triggered calculate shipping cost calculation");
     [self.spinnerView startAnimating];
