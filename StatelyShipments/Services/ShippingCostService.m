@@ -26,6 +26,7 @@
     if (self = [super init]) {
         self.countryGraph = [StatesLoader loadStatesFromPlistAtPath:@"States"];
         self.fuelCostCache = [NSMutableDictionary dictionary];
+        self.stateBorderFee = 0.0;
         self.fuelCostGroup = dispatch_group_create();
     }
     return self;
@@ -158,8 +159,9 @@
             NSArray* reversedRoute = [[route reverseObjectEnumerator] allObjects];
                         
             // use delegate pattern for return info
-            if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFindRoute: withFuelCost:)]) {
-                [self.delegate shippingCostServiceDidFindRoute:reversedRoute withFuelCost:[distance[stateB.stateCode] floatValue]];
+            if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFindRoute: withTotalCost:)]) {
+                float totalCost = (reversedRoute.count * self.stateBorderFee) + [distance[stateB.stateCode] floatValue];
+                [self.delegate shippingCostServiceDidFindRoute:reversedRoute withTotalCost:totalCost];
             }
             
         } else {

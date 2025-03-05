@@ -143,7 +143,7 @@
 //    State* temp = self.
 }
 
-- (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost {
+- (void)shippingCostServiceDidFindRoute:(NSArray *)route withTotalCost:(float)cost {
     NSLog(@"Found route %@ at cost $%.2f", route, cost);
 }
 

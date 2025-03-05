@@ -10,6 +10,7 @@
 
 #import "../Services/ShippingCostService.h"
 #import "../Views/StatePickerButton.h"
+#import "../Views/GovernmentFeeInputView.h"
 
 #import "ShippingRouteViewController.h"
 
@@ -24,6 +25,8 @@
 @property (nonatomic, strong) State* sourceState;
 @property (nonatomic, strong) StatePickerButton* destinationPickerButton;
 @property (nonatomic, strong) State* destinationState;
+
+@property (nonatomic, strong) GovernmentFeeInputView* feeInputView;
 
 @end
 
@@ -44,14 +47,14 @@
     self.shippingCostService = [[ShippingCostService alloc] init];
     self.shippingCostService.delegate = self;
     
-    self.view.backgroundColor = [UIColor systemBackgroundColor];
+    self.view.backgroundColor = [UIColor systemGray6Color];
     
     // main vertical stack
     UIStackView *mainStackView = [[UIStackView alloc] init];
     mainStackView.axis = UILayoutConstraintAxisVertical;
     mainStackView.alignment = UIStackViewAlignmentFill;
     mainStackView.distribution = UIStackViewDistributionFill;
-    mainStackView.spacing = 15;
+    mainStackView.spacing = 25;
     mainStackView.translatesAutoresizingMaskIntoConstraints = NO;
     
     // padding
@@ -132,6 +135,10 @@
 //        [separator.heightAnchor constraintEqualToConstant:(1.0 / [UIScreen mainScreen].scale)],
 //    ]];
     
+    // government fee input
+    self.feeInputView = [[GovernmentFeeInputView alloc] init];
+    [mainStackView addArrangedSubview:self.feeInputView];
+    
     // Setup calculation button
     UIButtonConfiguration *calculateButtonConfiguration = [UIButtonConfiguration filledButtonConfiguration];
     NSAttributedString *calculateButtonAttributedTitle = [[NSAttributedString alloc] initWithString:@"Calculate" attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]}];
@@ -176,6 +183,16 @@
 - (void)calculateShippingCost {
     NSLog(@"Triggered calculate shipping cost calculation");
     [self.spinnerView startAnimating];
+    
+    // get float value
+    NSCharacterSet *nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    NSString *digitsOnly = [[self.feeInputView.textField.text componentsSeparatedByCharactersInSet:nonDigits] componentsJoinedByString:@""];
+        
+    double fee = [digitsOnly doubleValue] / 100.0;
+        
+    NSLog(@"Using fee: %f", fee);
+    
+    self.shippingCostService.stateBorderFee = fee;
     [self.shippingCostService cheapestRouteBetweenStates:self.sourceState andState:self.destinationState];
 }
 
@@ -188,8 +205,8 @@
     });
 }
 
-- (void)shippingCostServiceDidFindRoute:(NSArray *)route withFuelCost:(float)cost {
-    
+- (void)shippingCostServiceDidFindRoute:(NSArray *)route withTotalCost:(float)cost {
+        
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [self.spinnerView stopAnimating];
