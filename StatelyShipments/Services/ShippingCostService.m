@@ -16,7 +16,7 @@
 @property (atomic) NSMutableDictionary *fuelCostCache;
 @property (nonatomic) dispatch_group_t fuelCostGroup;
 
-- (NSString *)standardizedCacheKeyForState:(State *)stateA andNeighbor:(State *)stateB;
+- (NSString *)standardizedCacheKeyForState:(NSString *)stateA andNeighbor:(NSString *)stateB;
 
 @end
 
@@ -32,8 +32,8 @@
     return self;
 }
 
-- (NSString *)standardizedCacheKeyForState:(State *)stateA andNeighbor:(State *)stateB {
-    NSArray *sortedStates = [@[stateA.stateCode, stateB.stateCode] sortedArrayUsingSelector:@selector(compare:)];
+- (NSString *)standardizedCacheKeyForState:(NSString *)stateCodeA andNeighbor:(NSString *)stateCodeB {
+    NSArray *sortedStates = [@[stateCodeA, stateCodeB] sortedArrayUsingSelector:@selector(compare:)];
     return [NSString stringWithFormat:@"%@-%@", sortedStates[0], sortedStates[1]];
 }
 
@@ -56,7 +56,7 @@
             for (State *neighbor in state.stateNeighbors) {
                 dispatch_group_enter(self.fuelCostGroup);
                 
-                NSString *cacheKey = [self standardizedCacheKeyForState:state andNeighbor:neighbor];
+                NSString *cacheKey = [self standardizedCacheKeyForState:state.stateCode andNeighbor:neighbor.stateCode];
                 
                 if ([self.fuelCostCache valueForKey:cacheKey]) {
                     // already exists in cache, exit this iteration early
@@ -68,7 +68,7 @@
                     
                     [[FuelCostService shared] fuelCostBetweenNeighborStates:state andState:neighbor completion:^(float result) {
                         @synchronized (self.fuelCostCache) {
-                            [self.fuelCostCache setObject:[NSNumber numberWithFloat:result] forKey:cacheKey];
+                            [self.fuelCostCache setObject:[NSNumber numberWithFloat:(roundf(result * 100) / 100)] forKey:cacheKey];
                         }
                         dispatch_group_leave(self.fuelCostGroup);
                     }];
@@ -126,7 +126,7 @@
             
             for (State* neighbor in currentState.stateNeighbors) {
                 
-                float weight = [(NSNumber*)self.fuelCostCache[[self standardizedCacheKeyForState:currentState andNeighbor:neighbor]] floatValue];
+                float weight = [(NSNumber*)self.fuelCostCache[[self standardizedCacheKeyForState:currentState.stateCode andNeighbor:neighbor.stateCode]] floatValue];
                 
                 if (weight < 0) {
                     // can't traverse for whatever reason, move to next iteration
@@ -152,16 +152,27 @@
             NSString* currentStateCode = stateB.stateCode;
             while (currentStateCode) {
                 [route addObject:self.countryGraph[currentStateCode]];
-                currentStateCode = previous[currentStateCode];
+                currentStateCode = previous[currentStateCode]; // next
             }
             
             // reverse to be in proper order (StateA -> StateB)
             NSArray* reversedRoute = [[route reverseObjectEnumerator] allObjects];
+            
+            // array for keeping track of costs
+            NSMutableArray *borderCrossingCosts = [NSMutableArray array];
+            
+            for (NSUInteger i = 0; i < reversedRoute.count - 1; i++) {
+                State* currentState = reversedRoute[i];
+                State* nextState = reversedRoute[i + 1];
+                NSNumber* fuelCost = self.fuelCostCache[[self standardizedCacheKeyForState:currentState.stateCode andNeighbor:nextState.stateCode]];
+                [borderCrossingCosts addObject:fuelCost];
+            }
                         
             // use delegate pattern for return info
-            if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFindRoute: withTotalCost:)]) {
+            if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFindRoute: withCosts: withTotalCost:)]) {
                 float totalCost = (reversedRoute.count * self.stateBorderFee) + [distance[stateB.stateCode] floatValue];
-                [self.delegate shippingCostServiceDidFindRoute:reversedRoute withTotalCost:totalCost];
+//                [self.delegate shippingCostServiceDidFindRoute:reversedRoute withTotalCost:totalCost];
+                [self.delegate shippingCostServiceDidFindRoute:reversedRoute withCosts:borderCrossingCosts withTotalCost:totalCost];
             }
             
         } else {

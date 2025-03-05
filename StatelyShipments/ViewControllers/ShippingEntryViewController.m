@@ -183,8 +183,17 @@
 - (void)calculateShippingCost {
     
 //    #ifdef DEBUG
-//    NSArray* debugStates = [[self.shippingCostService.countryGraph allValues] subarrayWithRange:NSMakeRange(0, 10)];
-//    [self shippingCostServiceDidFindRoute:debugStates withTotalCost:50.0];
+//    NSUInteger index1 = arc4random_uniform((uint32_t)self.shippingCostService.countryGraph.count);
+//    NSUInteger index2;
+//    
+//    do {
+//        index2 = arc4random_uniform((uint32_t)self.shippingCostService.countryGraph.count);
+//    } while (index1 == index2);
+//    
+//    State* state1 = self.shippingCostService.countryGraph[self.shippingCostService.countryGraph.allKeys[index1]];
+//    State* state2 = self.shippingCostService.countryGraph[self.shippingCostService.countryGraph.allKeys[index2]];
+//    
+//    [self.shippingCostService cheapestRouteBetweenStates:state1 andState:state2];
 //    return;
 //    #endif
     
@@ -213,14 +222,18 @@
     });
 }
 
-- (void)shippingCostServiceDidFindRoute:(NSArray *)route withTotalCost:(float)cost {
+- (void)shippingCostServiceDidFindRoute:(NSArray *)route withCosts:(NSArray *)fuelCosts withTotalCost:(float)cost {
         
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [self.spinnerView stopAnimating];
         
         if ([self.navigationController isKindOfClass:[UINavigationController class]]) {
-            ShippingRouteViewController *shippingRouteViewController = [[ShippingRouteViewController alloc] initWithRoute:route andTotalCost:cost];
+            ShippingRouteViewController *shippingRouteViewController = [[ShippingRouteViewController alloc] init];
+            shippingRouteViewController.shippingRoute = route;
+            shippingRouteViewController.fuelCosts = fuelCosts;
+            shippingRouteViewController.totalCost = cost;
+            
             shippingRouteViewController.navigationController = self.navigationController;
             
             [self.navigationController pushViewController:shippingRouteViewController animated:YES];

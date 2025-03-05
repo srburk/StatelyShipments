@@ -37,7 +37,6 @@
     for (State* state in [[StatesLoader shared] allStates]) {
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
         annotation.coordinate = CLLocationCoordinate2DMake([state.latitude doubleValue], [state.longitude doubleValue]);
-        NSLog(@"Coordinate: %f | %f", annotation.coordinate.latitude, annotation.coordinate.longitude);
         annotation.title = state.stateName;
         
         [self.mapView addAnnotation:annotation];

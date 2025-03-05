@@ -6,6 +6,7 @@
 //
 
 #import "ShippingRouteViewController.h"
+#import "../Views/ShippingRouteViewCell.h"
 
 @interface ShippingRouteViewController ()
 
@@ -15,15 +16,15 @@
 
 @implementation ShippingRouteViewController
 
-- (id)initWithRoute:(NSArray<State*>*)route andTotalCost:(float)totalCost {
-    if (self = [super init]) {
-        self.shippingRoute = route;
-        self.totalCost = totalCost;
-    } else {
-        self.totalCost = 0.0;
-    }
-    return self;
-}
+//- (id)initWithRoute:(NSArray<State*>*)route andTotalCost:(float)totalCost {
+//    if (self = [super init]) {
+//        self.shippingRoute = route;
+//        self.totalCost = totalCost;
+//    } else {
+//        self.totalCost = 0.0;
+//    }
+//    return self;
+//}
 
 - (void)viewWillDisappear:(BOOL)animated {
     // hide navbar
@@ -40,6 +41,13 @@
     // show navbar
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
+    // force medium detent
+    [self.navigationController.sheetPresentationController animateChanges:^{
+        UISheetPresentationControllerDetent *mediumDetent = [UISheetPresentationControllerDetent mediumDetent];
+        self.navigationController.sheetPresentationController.detents = @[mediumDetent];
+        self.navigationController.sheetPresentationController.prefersGrabberVisible = NO;
+    }];
+    
     // configure total cost label in nav bar
     UILabel *totalCostLabel = [[UILabel alloc] init];
     totalCostLabel.text = [NSString stringWithFormat:@"$%.2f", self.totalCost];
@@ -50,7 +58,8 @@
     UIBarButtonItem *totalCostButton = [[UIBarButtonItem alloc] initWithCustomView:totalCostLabel];
     self.navigationItem.rightBarButtonItem = totalCostButton;
     
-    // TODO: Make a header that has the total cost instead
+    // TODO: validate states
+    self.navigationItem.title = [NSString stringWithFormat:@"%@ → %@", self.shippingRoute.firstObject.stateCode, self.shippingRoute.lastObject.stateCode];
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.dataSource = self;
@@ -69,19 +78,31 @@
     
 }
 
+#pragma mark Delegate TableView Actions
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // fixed height for all cells
+    return 50;
+}
+
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath { 
-    static NSString * const cellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString * const cellIdentifier = @"ShippingRouteViewCell";
+    ShippingRouteViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
-         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+         cell = [[ShippingRouteViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     cell.textLabel.text = self.shippingRoute[indexPath.row].stateName;
+    
+    if (indexPath.row > 0) {
+        cell.fuelCostLabel.text = [NSString stringWithFormat:@"+$%.2f", [self.fuelCosts[indexPath.row - 1] floatValue]];
+    }
     
     return cell;
 }

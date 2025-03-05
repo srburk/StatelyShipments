@@ -9,7 +9,8 @@
 #import "../Models/State.h"
 
 @protocol ShippingCostServiceDelegate <NSObject>
-- (void)shippingCostServiceDidFindRoute:(NSArray *)route withTotalCost:(float)cost;
+//- (void)shippingCostServiceDidFindRoute:(NSArray *)route withTotalCost:(float)cost;
+- (void)shippingCostServiceDidFindRoute:(NSArray *)route withCosts:(NSArray *)fuelCosts withTotalCost:(float)cost;
 - (void)shippingCostServiceDidFailWithMessage:(NSString *)message;
 @end
 
