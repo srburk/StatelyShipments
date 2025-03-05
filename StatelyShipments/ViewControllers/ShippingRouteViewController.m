@@ -8,6 +8,8 @@
 #import "ShippingRouteViewController.h"
 #import "../Views/ShippingRouteViewCell.h"
 
+#import "../Utility/Extensions/UINavigationController+SheetControlAdditions.h"
+
 @interface ShippingRouteViewController ()
 
 @property (nonatomic, strong) UITableView* tableView;
@@ -42,11 +44,7 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     // force medium detent
-    [self.navigationController.sheetPresentationController animateChanges:^{
-        UISheetPresentationControllerDetent *mediumDetent = [UISheetPresentationControllerDetent mediumDetent];
-        self.navigationController.sheetPresentationController.detents = @[mediumDetent];
-        self.navigationController.sheetPresentationController.prefersGrabberVisible = NO;
-    }];
+    [self.navigationController setMediumDetentOnly];
     
     // configure total cost label in nav bar
     UILabel *totalCostLabel = [[UILabel alloc] init];

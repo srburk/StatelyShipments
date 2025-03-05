@@ -14,6 +14,8 @@
 
 #import "ShippingRouteViewController.h"
 
+#import "../Utility/Extensions/UINavigationController+SheetControlAdditions.h"
+
 @interface ShippingEntryViewController () <ShippingCostServiceDelegate>
 
 @property (nonatomic, strong) ShippingCostService* shippingCostService;
@@ -42,6 +44,9 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    // force small height
+    [self.navigationController setSmallDetentOnly];
     
     // assign services
     self.shippingCostService = [[ShippingCostService alloc] init];

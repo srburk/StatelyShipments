@@ -63,17 +63,6 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    if (self.drawerNavigationController.sheetPresentationController) {
-        UISheetPresentationControllerDetent *mediumDetent = [UISheetPresentationControllerDetent mediumDetent];
-        UISheetPresentationControllerDetent *smallDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"customSmall" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext>  _Nonnull context) {
-            return 250.0;
-        }];
-
-        self.drawerNavigationController.sheetPresentationController.detents = @[smallDetent, mediumDetent];
-        self.drawerNavigationController.sheetPresentationController.largestUndimmedDetentIdentifier = UISheetPresentationControllerDetentIdentifierMedium;
-        self.drawerNavigationController.sheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = NO;
-        self.drawerNavigationController.sheetPresentationController.prefersGrabberVisible = YES;
-    }
     [self presentViewController:self.drawerNavigationController animated:NO completion:nil];
 }
 
