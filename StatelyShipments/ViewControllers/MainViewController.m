@@ -40,6 +40,7 @@
         UISheetPresentationControllerDetent *mediumDetent = [UISheetPresentationControllerDetent mediumDetent];
         self.drawerNavigationController.sheetPresentationController.detents = @[mediumDetent];
         self.drawerNavigationController.sheetPresentationController.largestUndimmedDetentIdentifier = UISheetPresentationControllerDetentIdentifierMedium;
+        self.drawerNavigationController.sheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = NO;
     }
     [self presentViewController:self.drawerNavigationController animated:NO completion:nil];
 }

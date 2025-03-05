@@ -181,6 +181,13 @@
 }
 
 - (void)calculateShippingCost {
+    
+    #ifdef DEBUG
+    NSArray* debugStates = [[self.shippingCostService.countryGraph allValues] subarrayWithRange:NSMakeRange(0, 10)];
+    [self shippingCostServiceDidFindRoute:debugStates withTotalCost:50.0];
+    return;
+    #endif
+    
     NSLog(@"Triggered calculate shipping cost calculation");
     [self.spinnerView startAnimating];
     
@@ -193,6 +200,7 @@
     NSLog(@"Using fee: %f", fee);
     
     self.shippingCostService.stateBorderFee = fee;
+    
     [self.shippingCostService cheapestRouteBetweenStates:self.sourceState andState:self.destinationState];
 }
 
