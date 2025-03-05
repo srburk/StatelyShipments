@@ -13,6 +13,7 @@
 #import "../Views/GovernmentFeeInputView.h"
 
 #import "ShippingRouteViewController.h"
+#import "StatePickerViewController.h"
 
 #import "../Utility/Extensions/UINavigationController+SheetControlAdditions.h"
 
@@ -30,6 +31,8 @@
 
 @property (nonatomic, strong) GovernmentFeeInputView* feeInputView;
 
+- (void)navigateToStateSelection:(UIButton *)sender;
+
 @end
 
 @implementation ShippingEntryViewController
@@ -45,8 +48,7 @@
     
     [super viewDidLoad];
     
-    // force small height
-    [self.navigationController setSmallDetentOnly];
+    [self.navigationController animateSmallDetent];
     
     // assign services
     self.shippingCostService = [[ShippingCostService alloc] init];
@@ -85,60 +87,31 @@
     statePickerHStack.translatesAutoresizingMaskIntoConstraints = NO;
     [mainStackView addArrangedSubview: statePickerHStack];
     
-    // for state pickers
-    NSArray* statesAlphabetical = [self.shippingCostService.countryGraph.allValues sortedArrayUsingComparator:^NSComparisonResult(State *state1, State *state2) {
-        return [state2.stateCode localizedCaseInsensitiveCompare:state1.stateCode];
-    }];
-    
     // source picker
     self.sourcePickerButton = [[StatePickerButton alloc] init];
     [self.sourcePickerButton.button setTitle:@"Pick me" forState:UIControlStateNormal];
     [self.sourcePickerButton.label setText:@"Source"];
-    [self.sourcePickerButton setupPickerMenu:statesAlphabetical];
     
     [statePickerHStack addArrangedSubview:self.sourcePickerButton];
-    
-    ShippingEntryViewController* __weak weakSelf = self;
-    self.sourcePickerButton.selectionHandler = ^(State *selectedState) {
-        weakSelf.sourceState = selectedState;
-    };
+    [self.sourcePickerButton.button addTarget:self action:@selector(navigateToStateSelection:) forControlEvents:UIControlEventTouchUpInside];
     
     // swap button
     UIButton *swapButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [swapButton setImage:[UIImage systemImageNamed:@"arrow.left.arrow.right"] forState:UIControlStateNormal];
     [swapButton addTarget:self action:@selector(swapStates) forControlEvents:UIControlEventTouchUpInside];
+    
     swapButton.tintColor = [UIColor blackColor];
     swapButton.translatesAutoresizingMaskIntoConstraints = NO;
     
     [statePickerHStack addArrangedSubview:swapButton];
     
-    [NSLayoutConstraint activateConstraints:@[
-        [swapButton.heightAnchor constraintEqualToConstant:55],
-        [swapButton.widthAnchor constraintEqualToConstant:55],
-    ]];
-    
     // destination picker
-    
     self.destinationPickerButton = [[StatePickerButton alloc] init];
     [self.destinationPickerButton.button setTitle:@"Pick me" forState:UIControlStateNormal];
     [self.destinationPickerButton.label setText:@"Destination"];
-    [self.destinationPickerButton setupPickerMenu:statesAlphabetical];
 
     [statePickerHStack addArrangedSubview:self.destinationPickerButton];
-    
-    self.destinationPickerButton.selectionHandler = ^(State *selectedState) {
-        weakSelf.destinationState = selectedState;
-    };
-    
-//    // seperator line
-//    UIView *separator = [[UIView alloc] init];
-//    separator.translatesAutoresizingMaskIntoConstraints = NO;
-//    separator.backgroundColor = [UIColor separatorColor];
-//
-//    [mainStackView addArrangedSubview:separator];
-//    [NSLayoutConstraint activateConstraints:@[
-//        [separator.heightAnchor constraintEqualToConstant:(1.0 / [UIScreen mainScreen].scale)],
-//    ]];
+    [self.destinationPickerButton.button addTarget:self action:@selector(navigateToStateSelection:) forControlEvents:UIControlEventTouchUpInside];
     
     // government fee input
     self.feeInputView = [[GovernmentFeeInputView alloc] init];
@@ -183,6 +156,33 @@
     self.destinationState = temp;
     [self.sourcePickerButton updateSelectedState:self.sourceState];
     [self.destinationPickerButton updateSelectedState:self.destinationState];
+}
+
+- (void)navigateToStateSelection:(UIButton *)sender {
+    if ([self.navigationController isKindOfClass:[UINavigationController class]]) {
+        StatePickerViewController *statePickerViewController = [[StatePickerViewController alloc] init];
+        statePickerViewController.navigationController = self.navigationController;
+        
+        if (sender == self.sourcePickerButton.button) {
+            statePickerViewController.selectedState = self.sourceState;
+        } else if (sender == self.destinationPickerButton.button) {
+            statePickerViewController.selectedState = self.destinationState;
+        }
+        
+        ShippingEntryViewController* __weak weakSelf = self;
+        statePickerViewController.selectionHandler = ^(State *selectedState) {
+            if (sender == weakSelf.sourcePickerButton.button) {
+                weakSelf.sourceState = selectedState;
+                // update button text
+                [weakSelf.sourcePickerButton updateSelectedState:selectedState];
+            } else if (sender == weakSelf.destinationPickerButton.button) {
+                weakSelf.destinationState = selectedState;
+                [weakSelf.destinationPickerButton updateSelectedState:selectedState];
+            }
+        };
+        
+        [self.navigationController pushViewController:statePickerViewController animated:NO];
+    }
 }
 
 - (void)calculateShippingCost {

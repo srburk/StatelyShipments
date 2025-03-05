@@ -9,7 +9,7 @@
 
 @interface UINavigationController (SheetControlAdditions)
 
-- (void)setMediumDetentOnly;
-- (void)setSmallDetentOnly;
+- (void)animateMediumDetent;
+- (void)animateSmallDetent;
 
 @end

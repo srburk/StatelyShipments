@@ -33,7 +33,6 @@
     
     [[StatesLoader shared] loadStatesFromPlistAtPath:@"States"]; // TODO: Remove this and hone init
     
-    NSLog(@"%@", [[StatesLoader shared] allStates]);
     for (State* state in [[StatesLoader shared] allStates]) {
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
         annotation.coordinate = CLLocationCoordinate2DMake([state.latitude doubleValue], [state.longitude doubleValue]);

@@ -70,7 +70,10 @@
         }
     }
     
-    self.allStates = countryGraph.allValues;
+    NSArray* statesAlphabetical = [countryGraph.allValues sortedArrayUsingComparator:^NSComparisonResult(State *state1, State *state2) {
+        return [state1.stateCode localizedCaseInsensitiveCompare:state2.stateCode];
+    }];
+    self.allStates = statesAlphabetical;
     
     return countryGraph;
 }

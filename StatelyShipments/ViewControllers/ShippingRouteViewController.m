@@ -14,25 +14,18 @@
 
 @property (nonatomic, strong) UITableView* tableView;
 
+- (void)closeTapped;
+
 @end
 
 @implementation ShippingRouteViewController
-
-//- (id)initWithRoute:(NSArray<State*>*)route andTotalCost:(float)totalCost {
-//    if (self = [super init]) {
-//        self.shippingRoute = route;
-//        self.totalCost = totalCost;
-//    } else {
-//        self.totalCost = 0.0;
-//    }
-//    return self;
+//
+//- (void)viewWillDisappear:(BOOL)animated {
+//    // hide navbar
+//    [super viewWillDisappear:animated];
+//    [self.navigationController animateSmallDetent];
+//    [self.navigationController setNavigationBarHidden:YES animated:YES];
 //}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    // hide navbar
-    [super viewWillDisappear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
 
 - (void)viewDidLoad {
     
@@ -44,8 +37,8 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     // force medium detent
-    [self.navigationController setMediumDetentOnly];
-    
+    [self.navigationController animateMediumDetent];
+
     // configure total cost label in nav bar
     UILabel *totalCostLabel = [[UILabel alloc] init];
     totalCostLabel.text = [NSString stringWithFormat:@"$%.2f", self.totalCost];
@@ -55,6 +48,22 @@
     // using a button because I need a label in the menu bar but don't want it to be interactive yet
     UIBarButtonItem *totalCostButton = [[UIBarButtonItem alloc] initWithCustomView:totalCostLabel];
     self.navigationItem.rightBarButtonItem = totalCostButton;
+    
+    // back button
+    UIButtonConfiguration* backButtonConfiguration = [UIButtonConfiguration plainButtonConfiguration];
+    
+    backButtonConfiguration.baseForegroundColor = [UIColor blackColor];
+    backButtonConfiguration.image = [UIImage systemImageNamed:@"chevron.backward"];
+    backButtonConfiguration.imagePadding = 0;
+    
+    UIButton *backButton = [UIButton buttonWithConfiguration:backButtonConfiguration primaryAction:nil];
+    [backButton setTitle:@"Back" forState:UIControlStateNormal];
+    
+    [backButton addTarget:self action:@selector(closeTapped) forControlEvents:UIControlEventTouchUpInside];
+    [backButton sizeToFit];
+
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    self.navigationItem.leftBarButtonItem = barButtonItem;
     
     // TODO: validate states
     self.navigationItem.title = [NSString stringWithFormat:@"%@ → %@", self.shippingRoute.firstObject.stateCode, self.shippingRoute.lastObject.stateCode];
@@ -74,6 +83,12 @@
         [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
     ]];
     
+}
+
+- (void)closeTapped {
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController animateSmallDetent];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 #pragma mark Delegate TableView Actions

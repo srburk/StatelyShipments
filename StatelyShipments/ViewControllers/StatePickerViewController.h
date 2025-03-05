@@ -5,8 +5,13 @@
 //  Created by Sam Burkhard on 3/5/25.
 //
 
-#ifndef StatePickerViewController_h
-#define StatePickerViewController_h
+#import <UIKit/UIKit.h>
+#import "../Models/State.h"
 
+@interface StatePickerViewController : UIViewController
 
-#endif /* StatePickerViewController_h */
+@property (nonatomic, strong) UINavigationController* navigationController;
+@property (nonatomic, strong) State* selectedState;
+@property (nonatomic, copy) void (^selectionHandler)(State *selectedState);
+
+@end

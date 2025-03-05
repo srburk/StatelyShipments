@@ -10,7 +10,7 @@
 
 @implementation UINavigationController (SheetControlAdditions)
 
-- (void)setSmallDetentOnly {
+- (void)animateSmallDetent {
     if (self.sheetPresentationController) {
         
         UISheetPresentationControllerDetent *smallDetent = [UISheetPresentationControllerDetent customDetentWithIdentifier:@"customSmall" resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext>  _Nonnull context) {
@@ -28,7 +28,7 @@
     
 }
 
-- (void)setMediumDetentOnly {
+- (void)animateMediumDetent {
     
     // check for sheetPresentationController
     if (self.sheetPresentationController) {

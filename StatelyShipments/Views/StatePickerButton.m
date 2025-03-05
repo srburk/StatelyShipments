@@ -30,6 +30,7 @@
 - (void)setupView {
         
     UIButtonConfiguration* buttonConfiguration = [UIButtonConfiguration grayButtonConfiguration];
+    
     NSString *buttonTitle = (self.selectedState) ? self.selectedState.stateCode : @"Select";
     NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:buttonTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2]}];
 
@@ -41,7 +42,7 @@
     self.button = [UIButton buttonWithConfiguration:buttonConfiguration primaryAction:nil];
     [self.button setAttributedTitle:attributedTitle forState:UIControlStateNormal];
     self.button.translatesAutoresizingMaskIntoConstraints = NO;
-    self.button.showsMenuAsPrimaryAction = YES;
+//    self.button.showsMenuAsPrimaryAction = YES;
     
     [self addSubview:self.button];
     
@@ -53,38 +54,49 @@
     
     [self addSubview:self.label];
     
+    // padding priority
+    NSLayoutConstraint *paddingConstraint = [self.button.topAnchor constraintEqualToAnchor:self.label.bottomAnchor constant:10];
+    paddingConstraint.priority = UILayoutPriorityDefaultHigh;
+    
     [NSLayoutConstraint activateConstraints:@[
        [self.label.topAnchor constraintEqualToAnchor:self.topAnchor],
        [self.label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
        [self.label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
        
        // top padding of 10 between them for breathing room
-       [self.button.topAnchor constraintEqualToAnchor:self.label.bottomAnchor constant:10],
+       paddingConstraint,
+       
        [self.button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
        [self.button.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-       [self.button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+       [self.button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
     ]];
     
     self.label.userInteractionEnabled = NO;
 }
 
-- (void)setupPickerMenu:(NSArray<State *> *)states {
-    NSMutableArray<UIAction *> *actions = [NSMutableArray array];
-    for (State *state in states) {
-        UIAction *action = [UIAction actionWithTitle:state.stateCode image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-            
-            [self updateSelectedState:state];
-            
-            if (self.selectionHandler) {
-                self.selectionHandler(self.selectedState);
-            }
-        }];
-        
-        [actions addObject:action];
-    }
-    UIMenu *menu = [UIMenu menuWithChildren:actions];
-    self.button.menu = menu;
-}
+//- (void)didTap {
+//    if (self.selectionHandler) {
+//        self.selectionHandler(self.selectedState);
+//    }
+//}
+
+//- (void)setupPickerMenu:(NSArray<State *> *)states {
+//    NSMutableArray<UIAction *> *actions = [NSMutableArray array];
+//    for (State *state in states) {
+//        UIAction *action = [UIAction actionWithTitle:state.stateCode image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+//            
+//            [self updateSelectedState:state];
+//            
+//            if (self.selectionHandler) {
+//                self.selectionHandler(self.selectedState);
+//            }
+//        }];
+//        
+//        [actions addObject:action];
+//    }
+//    UIMenu *menu = [UIMenu menuWithChildren:actions];
+//    self.button.menu = menu;
+//}
 
 - (void)updateSelectedState:(State*) newSelectedState {
     self.selectedState = newSelectedState;
