@@ -9,4 +9,7 @@
 
 @interface MainViewController: UIViewController
 
+- (void)clearMapOverlays;
+- (void)addMapOverlaysForRoute:(NSArray*)route;
+
 @end
