@@ -11,6 +11,10 @@
 
 @property NSString* stateCode;
 @property NSString* stateName;
+
+@property NSNumber* latitude;
+@property NSNumber* longitude;
+
 @property NSMutableArray* stateNeighbors; // holds array of weak references to States
 
 - (NSString *)description;

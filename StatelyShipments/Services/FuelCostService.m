@@ -26,7 +26,8 @@
 
 - (void)fuelCostBetweenNeighborStates:(State*)stateA andState:(State*)stateB completion: (void(^)(float result))completion {
     
-    int simulatedDelay = arc4random_uniform(4) + 1;
+//    int simulatedDelay = arc4random_uniform(4) + 1;
+    int simulatedDelay = 2; // for testing I need everything open for now
     int actualDelay = (simulatedDelay > TIMEOUT) ? TIMEOUT : simulatedDelay; // delay is max 3 seconds
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(actualDelay * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
