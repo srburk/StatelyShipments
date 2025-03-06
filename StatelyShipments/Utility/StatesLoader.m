@@ -11,7 +11,8 @@
 
 @interface StatesLoader ()
 
-@property (nonatomic, strong) NSArray<State*>* allStates;
+@property (nonatomic, strong) NSArray<State*>* allStatesAlphabetical;
+@property (nonatomic, strong) NSDictionary<NSArray*, State*>* allStatesGraph;
 
 @end
 
@@ -26,24 +27,16 @@
     return shared;
 }
 
-- (id)init {
-    if (self = [super init]) {
-        self.allStates = [NSArray array];
-    }
-    return self;
-}
-
-- (NSDictionary *)loadStatesFromPlistAtPath:(NSString*)path {
+- (void)loadStatesFromPlistAtPath:(NSString*)path {
     
     NSString* filePath = [[NSBundle mainBundle] pathForResource:path ofType:@"plist"];
     NSArray* plistArray = [NSArray arrayWithContentsOfFile:filePath];
     
     if (!plistArray) {
         NSLog(@"Error: Could not load %@.plist", path);
-        return @{};
     }
     
-    NSMutableDictionary *countryGraph = [[NSMutableDictionary alloc] init]; // stored as key = stateCode value = State
+    NSMutableDictionary *countryGraph = [NSMutableDictionary dictionary]; // stored as key = stateCode value = State
     
     // first pass
     for (NSDictionary *dict in plistArray) {
@@ -53,13 +46,11 @@
         newState.stateName = dict[@"stateName"];
         newState.longitude = @([dict[@"longitude"] floatValue]);
         newState.latitude = @([dict[@"latitude"] floatValue]);
-
         newState.stateNeighbors = [NSMutableArray array];
-        
         countryGraph[newState.stateCode] = newState;
     }
     
-    // second pass to link neighbors
+    // second pass to add neighbors
     for (NSDictionary *dict in plistArray) {
         State *state = countryGraph[dict[@"stateCode"]];
         for (NSString *neighborCode in dict[@"stateNeighbors"]) {
@@ -73,9 +64,9 @@
     NSArray* statesAlphabetical = [countryGraph.allValues sortedArrayUsingComparator:^NSComparisonResult(State *state1, State *state2) {
         return [state1.stateCode localizedCaseInsensitiveCompare:state2.stateCode];
     }];
-    self.allStates = statesAlphabetical;
     
-    return countryGraph;
+    self.allStatesAlphabetical = statesAlphabetical;
+    self.allStatesGraph = countryGraph;
 }
 
 @end

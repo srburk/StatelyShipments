@@ -18,9 +18,9 @@
 
 @implementation PriorityQueue
 
-- (id)initWithCapacity:(int)capacity comparator:(PriorityQueueComparator)comparator {
+- (id)initWithComparator:(PriorityQueueComparator)comparator {
     if (self = [super init]) {
-        self.items = [NSMutableArray arrayWithCapacity:capacity];
+        self.items = [NSMutableArray array];
         self.size = 0;
         self.comparator =  comparator ? comparator : ^NSComparisonResult(id obj1, id obj2) {
             return [obj1 compare:obj2];

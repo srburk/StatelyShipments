@@ -30,7 +30,7 @@
     int simulatedDelay = 2; // for testing I need everything open for now
     int actualDelay = (simulatedDelay > TIMEOUT) ? TIMEOUT : simulatedDelay; // delay is max 3 seconds
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(actualDelay * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(actualDelay * NSEC_PER_SEC)), dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         float result = (simulatedDelay > TIMEOUT) ? -1 : ((float)arc4random() / UINT32_MAX) * 100.0;
         
         if (completion) {

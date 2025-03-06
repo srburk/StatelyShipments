@@ -35,7 +35,7 @@
     
     [super viewDidLoad];
     
-    self.states = [[StatesLoader shared] allStates];
+    self.states = [[StatesLoader shared] allStatesAlphabetical];
     self.filteredStates = self.states;
     
     // force medium detent

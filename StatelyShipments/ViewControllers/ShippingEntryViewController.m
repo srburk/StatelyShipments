@@ -188,21 +188,6 @@
 
 - (void)calculateShippingCost {
     
-//    #ifdef DEBUG
-//    NSUInteger index1 = arc4random_uniform((uint32_t)self.shippingCostService.countryGraph.count);
-//    NSUInteger index2;
-//    
-//    do {
-//        index2 = arc4random_uniform((uint32_t)self.shippingCostService.countryGraph.count);
-//    } while (index1 == index2);
-//    
-//    State* state1 = self.shippingCostService.countryGraph[self.shippingCostService.countryGraph.allKeys[index1]];
-//    State* state2 = self.shippingCostService.countryGraph[self.shippingCostService.countryGraph.allKeys[index2]];
-//    
-//    [self.shippingCostService cheapestRouteBetweenStates:state1 andState:state2];
-//    return;
-//    #endif
-    
     NSLog(@"Triggered calculate shipping cost calculation");
     [self.spinnerView startAnimating];
     

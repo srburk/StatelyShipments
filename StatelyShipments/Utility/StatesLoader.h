@@ -10,11 +10,11 @@
 
 @interface StatesLoader : NSObject
 
-@property (nonatomic, strong, readonly) NSArray<State*>* allStates;
+@property (nonatomic, strong, readonly) NSDictionary<NSArray*, State*>* allStatesGraph;
+@property (nonatomic, strong, readonly) NSArray<State*>* allStatesAlphabetical;
 
 + (id)shared;
 
-- (id)init;
-- (NSDictionary *)loadStatesFromPlistAtPath:(NSString*)path;
+- (void)loadStatesFromPlistAtPath:(NSString*)path;
 
 @end

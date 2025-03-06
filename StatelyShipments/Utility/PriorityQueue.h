@@ -14,7 +14,7 @@ typedef NSComparisonResult (^PriorityQueueComparator)(id obj1, id obj2);
 @property int size;
 @property (nonatomic, copy) PriorityQueueComparator comparator;
 
-- (id)initWithCapacity:(int)capacity comparator:(PriorityQueueComparator)comparator;
+- (id)initWithComparator:(PriorityQueueComparator)comparator;
 
 - (void)heapifyUp:(int)index;
 - (void)heapifyDown:(int)index;

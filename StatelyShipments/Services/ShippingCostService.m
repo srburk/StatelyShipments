@@ -24,7 +24,6 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.countryGraph = [[StatesLoader shared] loadStatesFromPlistAtPath:@"States"];
         self.fuelCostCache = [NSMutableDictionary dictionary];
         self.stateBorderFee = 0.0;
         self.fuelCostGroup = dispatch_group_create();
@@ -52,7 +51,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         NSLog(@"Fetching fuel costs from %@ to %@", stateA.stateCode, stateB.stateCode);
-        for (State *state in self.countryGraph.allValues) {
+        for (State *state in [[StatesLoader shared] allStatesAlphabetical]) {
             for (State *neighbor in state.stateNeighbors) {
                 dispatch_group_enter(self.fuelCostGroup);
                 
@@ -86,7 +85,7 @@
         // wait for all fuel costs to be collected
         dispatch_group_wait(self.fuelCostGroup, DISPATCH_TIME_FOREVER);
                 
-        PriorityQueue *queue = [[PriorityQueue alloc] initWithCapacity:(int)self.countryGraph.count comparator:^NSComparisonResult(id obj1, id obj2) {
+        PriorityQueue *queue = [[PriorityQueue alloc] initWithComparator:^NSComparisonResult(id obj1, id obj2) {
             // we know how these objects are structured, but we'll check just in case
             if (![obj1 isKindOfClass:[NSArray class]] || ![obj2 isKindOfClass:[NSArray class]]) {
                 NSLog(@"Error: Priority Queue objects are not expected type");
@@ -101,12 +100,12 @@
         NSMutableDictionary *previous = [[NSMutableDictionary alloc] initWithCapacity:50];
         
         // initialize distances to INF (using INT_MAX) except for start, which is 0
-        for (NSString *stateCode in self.countryGraph.allKeys) {
+        for (State *state in [[StatesLoader shared] allStatesAlphabetical]) {
             // set distances to max, (bad for now, make better pq with heap later)
-            if ([stateCode isEqualToString:stateA.stateCode]) {
-                [distance setValue:@0 forKey:stateCode];
+            if ([state.stateCode isEqualToString:stateA.stateCode]) {
+                [distance setValue:@0 forKey:state.stateCode];
             } else {
-                [distance setValue:@INT_MAX forKey:stateCode];
+                [distance setValue:@INT_MAX forKey:state.stateCode];
             }
         }
 
@@ -117,7 +116,7 @@
         while (queue.size > 0) {
             NSArray* current = (NSArray*)[queue dequeue];
             NSString* currentStateCode = current[0];
-            State* currentState = (State*)self.countryGraph[currentStateCode];
+            State* currentState = [[[StatesLoader shared] allStatesGraph] valueForKey:currentStateCode];
             
             // MARK: Determine if you want to use early exit or instead cache everything for reuse with other destinations
             if ([currentState isEqual:stateB]) {
@@ -151,7 +150,7 @@
             
             NSString* currentStateCode = stateB.stateCode;
             while (currentStateCode) {
-                [route addObject:self.countryGraph[currentStateCode]];
+                [route addObject:[[[StatesLoader shared] allStatesGraph]valueForKey:currentStateCode]];
                 currentStateCode = previous[currentStateCode]; // next
             }
             

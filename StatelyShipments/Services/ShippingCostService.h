@@ -17,8 +17,6 @@
 @interface ShippingCostService : NSObject
 
 @property (weak) id <ShippingCostServiceDelegate> delegate;
-@property (nonatomic, strong) NSDictionary* countryGraph; // TODO: Maybe refactor  this so it's just an adjacency list and keep state codes alphabetically sorted seperately
-
 @property (nonatomic, assign) float stateBorderFee;
 
 -(id)init;

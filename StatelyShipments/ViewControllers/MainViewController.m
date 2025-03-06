@@ -46,7 +46,7 @@
         
     [[StatesLoader shared] loadStatesFromPlistAtPath:@"States"]; // TODO: Remove this and hone init
     
-    for (State* state in [[StatesLoader shared] allStates]) {
+    for (State* state in [[StatesLoader shared] allStatesAlphabetical]) {
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
         annotation.coordinate = CLLocationCoordinate2DMake([state.latitude doubleValue], [state.longitude doubleValue]);
         annotation.title = state.stateName;
