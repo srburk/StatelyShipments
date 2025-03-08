@@ -46,13 +46,13 @@
         
     [[StatesLoader shared] loadStatesFromPlistAtPath:@"States"]; // TODO: Remove this and hone init
     
-    for (State* state in [[StatesLoader shared] allStatesAlphabetical]) {
-        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-        annotation.coordinate = CLLocationCoordinate2DMake([state.latitude doubleValue], [state.longitude doubleValue]);
-        annotation.title = state.stateName;
-        
-        [self.mapView addAnnotation:annotation];
-    }
+//    for (State* state in [[StatesLoader shared] allStatesAlphabetical]) {
+//        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+//        annotation.coordinate = CLLocationCoordinate2DMake([state.latitude doubleValue], [state.longitude doubleValue]);
+//        annotation.title = state.stateName;
+//        
+//        [self.mapView addAnnotation:annotation];
+//    }
     
 //    self.mapView.map
     [self.view addSubview:self.mapView];

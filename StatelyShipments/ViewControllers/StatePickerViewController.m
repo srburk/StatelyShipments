@@ -59,6 +59,7 @@
     self.searchController.obscuresBackgroundDuringPresentation = NO;
     self.searchController.searchBar.placeholder = @"Search States";
     self.navigationItem.searchController = self.searchController;
+    
     self.navigationItem.hidesSearchBarWhenScrolling = NO;
     self.definesPresentationContext = YES;
     
@@ -144,8 +145,23 @@
     State *selectedState = self.filteredStates[indexPath.row];
     self.selectedState = selectedState;
     NSLog(@"Selected state %@", selectedState);
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [tableView reloadData];
+    [self.tableView reloadData];
+
+    if (self.searchController.isActive) {
+        [self.searchController setActive:NO];
+        
+        NSInteger mainIndex = [self.states indexOfObject:selectedState];
+        if (mainIndex != NSNotFound) {
+            NSIndexPath *mainIndexPath = [NSIndexPath indexPathForRow:mainIndex inSection:0];
+
+            // Delay scroll
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView scrollToRowAtIndexPath:mainIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+            });
+        }
+    }
 }
 
 @end
