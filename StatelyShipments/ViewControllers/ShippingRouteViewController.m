@@ -7,6 +7,7 @@
 
 #import "ShippingRouteViewController.h"
 #import "../Views/ShippingRouteViewCell.h"
+#import "../Views/ShippingRouteViewHeader.h"
 
 #import "../Utility/Extensions/UINavigationController+SheetControlAdditions.h"
 
@@ -38,16 +39,6 @@
     
     // force medium detent
     [self.navigationController animateMediumDetent];
-
-    // configure total cost label in nav bar
-    UILabel *totalCostLabel = [[UILabel alloc] init];
-    totalCostLabel.text = [NSString stringWithFormat:@"$%.2f", self.totalCost];
-    totalCostLabel.textColor = [UIColor blackColor];
-    totalCostLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-
-    // using a button because I need a label in the menu bar but don't want it to be interactive yet
-    UIBarButtonItem *totalCostButton = [[UIBarButtonItem alloc] initWithCustomView:totalCostLabel];
-    self.navigationItem.rightBarButtonItem = totalCostButton;
     
     // back button
     UIButtonConfiguration* backButtonConfiguration = [UIButtonConfiguration plainButtonConfiguration];
@@ -66,13 +57,17 @@
     self.navigationItem.leftBarButtonItem = barButtonItem;
     
     // TODO: validate states
-    self.navigationItem.title = [NSString stringWithFormat:@"%@ → %@", self.shippingRoute.firstObject.stateCode, self.shippingRoute.lastObject.stateCode];
+//    self.navigationItem.title = [NSString stringWithFormat:@"%@ → %@", self.shippingRoute.firstObject.stateCode, self.shippingRoute.lastObject.stateCode];
+    self.navigationItem.title = @"Route Details";
     
+    
+    // MARK: TableView
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.dataSource = self;
     self.tableView.scrollEnabled = YES;
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.delegate = self;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 60, 0, 25);
     
     [self.view addSubview:self.tableView];
     
@@ -83,6 +78,24 @@
         [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
     ]];
     
+    // MARK: Table Header
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 85)];
+    ShippingRouteViewHeader *headerCardView = [[ShippingRouteViewHeader alloc] initWithFrame:CGRectMake(15, 0, headerView.frame.size.width - 30, headerView.frame.size.height)];
+    headerCardView.totalCostLabel.text = [NSString stringWithFormat:@"$%.2f", self.totalCost];
+    
+    // error check for route display
+    if ([self.shippingRoute count] > 0) {
+        headerCardView.sourceStateLabel.text = self.shippingRoute.firstObject.stateCode;
+        headerCardView.destinationStateLabel.text = self.shippingRoute.lastObject.stateCode;
+    } else {
+        NSLog(@"Error no route");
+    }
+
+    [headerView addSubview:headerCardView];
+    
+    self.tableView.tableHeaderView = headerView;
+    
 }
 
 - (void)closeTapped {
@@ -91,7 +104,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
-#pragma mark Delegate TableView Actions
+// MARK: Delegate TableView Actions
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

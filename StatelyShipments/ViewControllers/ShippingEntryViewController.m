@@ -9,6 +9,7 @@
 #import "ShippingEntryViewController.h"
 
 #import "../Services/ShippingCostService.h"
+#import "../Utility/StatesLoader.h"
 #import "../Views/StatePickerButton.h"
 #import "../Views/GovernmentFeeInputView.h"
 
@@ -187,6 +188,22 @@
 }
 
 - (void)calculateShippingCost {
+    
+//#ifdef DEBUG
+//    NSUInteger index1 = arc4random_uniform((uint32_t)[[[StatesLoader shared] allStatesAlphabetical] count]);
+//    NSUInteger index2;
+//
+//    do {
+//        index2 = arc4random_uniform((uint32_t)[[[StatesLoader shared] allStatesAlphabetical] count]);
+//    } while (index1 == index2);
+//
+//    NSDictionary *countryGraph = [[StatesLoader shared] allStatesGraph];
+//    State* state1 = countryGraph[countryGraph.allKeys[index1]];
+//    State* state2 = countryGraph[countryGraph.allKeys[index2]];
+//
+//    [self.shippingCostService cheapestRouteBetweenStates:state1 andState:state2];
+//    return;
+//#endif
     
     NSLog(@"Triggered calculate shipping cost calculation");
     [self.spinnerView startAnimating];
