@@ -12,6 +12,7 @@
 // VCs
 #import "ViewControllers/ShippingEntryViewController.h"
 #import "ViewControllers/ShippingRouteViewController.h"
+#import "ViewControllers/MainViewController.h"
 
 // Views
 #import "ViewControllers/StatePickerViewController.h"
@@ -22,12 +23,15 @@
 @interface MainCoordinator () <ShippingCostServiceDelegate>
 
 @property (nonatomic, strong) ShippingCostService *shippingCostService;
-
 @property (nonatomic, strong) UINavigationController *navigationController;
+
+// State
 @property (nonatomic, strong) State* sourceState;
 @property (nonatomic, strong) State* destinationState;
+@property (nonatomic, strong) NSArray<State*>* route;
 
 @property (nonatomic, strong) ShippingEntryViewController* shippingEntryViewController;
+@property (nonatomic, strong) ShippingRouteViewController* shippingRouteViewController;
 
 @end
 
@@ -45,6 +49,7 @@
     }
     return self;
 }
+
 
 // MARK: Actions
 - (void)swapSelectedStates {
@@ -67,6 +72,7 @@
     self.shippingCostService.stateBorderFee = self.stateBorderFee;
     [self.shippingCostService cheapestRouteBetweenStates:self.sourceState andState:self.destinationState];
 }
+
 
 // MARK: Navigation Functions
 - (void)showShippingCalculator {
@@ -105,14 +111,14 @@
 }
 
 - (void)showShippingResultsForRoute:(NSArray *)route withCosts:(NSArray *)fuelCosts withTotalCost:(float)cost {
-    ShippingRouteViewController *shippingRouteViewController = [[ShippingRouteViewController alloc] init];
+    self.shippingRouteViewController = [[ShippingRouteViewController alloc] init];
     
-    shippingRouteViewController.shippingRoute = route;
-    shippingRouteViewController.fuelCosts = fuelCosts;
-    shippingRouteViewController.totalCost = cost;
-    shippingRouteViewController.coordinator = self;
+    self.shippingRouteViewController.shippingRoute = route;
+    self.shippingRouteViewController.fuelCosts = fuelCosts;
+    self.shippingRouteViewController.totalCost = cost;
+    self.shippingRouteViewController.coordinator = self;
     
-    [self.navigationController pushViewController:shippingRouteViewController animated:YES];
+    [self.navigationController pushViewController:self.shippingRouteViewController animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController animateMediumDetent];
 }
@@ -121,6 +127,39 @@
     [self.navigationController popViewControllerAnimated:YES];
     [self.navigationController animateSmallDetent];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    // reset map
+    [self.mainViewController clearMap];
+}
+
+- (void)focusMapOnRoute {
+    
+    // get framing points
+    if (self.route.count == 0) {
+        return;
+    }
+        
+    double minLat = DBL_MAX, maxLat = -DBL_MAX;
+    double minLon = DBL_MAX, maxLon = -DBL_MAX;
+    
+    for (State *state in self.route) {
+        double latitude = [state.latitude doubleValue];
+        double longitude = [state.longitude doubleValue];
+        
+        if (latitude < minLat) minLat = latitude;
+        if (latitude > maxLat) maxLat = latitude;
+        if (longitude < minLon) minLon = longitude;
+        if (longitude > maxLon) maxLon = longitude;
+    }
+    
+    CLLocationCoordinate2D coordinate1 = CLLocationCoordinate2DMake(minLat, minLon);
+    CLLocationCoordinate2D coordinate2 = CLLocationCoordinate2DMake(maxLat, maxLon);
+    
+    // animate set up focus on state route
+    MKMapPoint point1 = MKMapPointForCoordinate(coordinate1);
+    MKMapPoint point2 = MKMapPointForCoordinate(coordinate2);
+    
+    [self.mainViewController focusMapOnPoint:point1 andPoint:point2];
 }
 
 // MARK: Shipping Service Delegate Actions
@@ -134,8 +173,15 @@
 - (void)shippingCostServiceDidFindRoute:(NSArray *)route withCosts:(NSArray *)fuelCosts withTotalCost:(float)cost {
         
     dispatch_async(dispatch_get_main_queue(), ^{
+        
         [self.shippingEntryViewController.spinnerView stopAnimating];
         [self showShippingResultsForRoute:route withCosts:fuelCosts withTotalCost:cost];
+        
+        self.route = route;
+        [self focusMapOnRoute];
+        
+        // draw route
+        [self.mainViewController drawRoute:route];
     });
 }
 

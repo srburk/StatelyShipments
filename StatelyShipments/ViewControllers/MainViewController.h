@@ -16,7 +16,8 @@
 
 @property (nonatomic, strong, readonly) MKMapView* mapView;
 
-- (void)clearMapOverlays;
-- (void)addMapOverlaysForRoute:(NSArray*)route;
+- (void)clearMap;
+- (void)drawRoute:(NSArray*)route;
+- (void)focusMapOnPoint:(MKMapPoint)point1 andPoint:(MKMapPoint)point2;
 
 @end

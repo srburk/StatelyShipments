@@ -8,10 +8,14 @@
 #import <UIKit/UIKit.h>
 #import "Models/State.h"
 
+@class MainViewController;
+
 // main coordinator for managing application state
 @interface MainCoordinator: NSObject
 
 @property (nonatomic, strong, readonly) UINavigationController *navigationController;
+
+@property (nonatomic, strong) MainViewController *mainViewController;
 
 // MARK: Application State
 @property (nonatomic, strong, readonly) State* sourceState;
@@ -30,5 +34,6 @@
 - (void)closeStateSelection;
 - (void)showShippingResultsForRoute:(NSArray *)route withCosts:(NSArray *)fuelCosts withTotalCost:(float)cost;
 - (void)closeShippingResults;
+- (void)focusMapOnRoute;
 
 @end

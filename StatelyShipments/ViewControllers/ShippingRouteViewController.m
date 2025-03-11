@@ -38,11 +38,20 @@
 
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = barButtonItem;
-    
-    // TODO: validate states
-//    self.navigationItem.title = [NSString stringWithFormat:@"%@ → %@", self.shippingRoute.firstObject.stateCode, self.shippingRoute.lastObject.stateCode];
     self.navigationItem.title = @"Route Details";
     
+    // re-center route
+    UIButtonConfiguration* refocusButtonConfiguration = [UIButtonConfiguration plainButtonConfiguration];
+    refocusButtonConfiguration.baseForegroundColor = [UIColor blackColor];
+    refocusButtonConfiguration.image = [UIImage systemImageNamed:@"arrow.up.left.and.arrow.down.right.square"];
+    refocusButtonConfiguration.imagePadding = 0;
+    
+    UIButton *refocusButton = [UIButton buttonWithConfiguration:refocusButtonConfiguration primaryAction:nil];
+    [refocusButton addTarget:self.coordinator action:@selector(focusMapOnRoute) forControlEvents:UIControlEventTouchUpInside];
+    [refocusButton sizeToFit];
+    
+    UIBarButtonItem *refocusBarButton = [[UIBarButtonItem alloc] initWithCustomView:refocusButton];
+    self.navigationItem.rightBarButtonItem = refocusBarButton;
     
     // MARK: TableView
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];

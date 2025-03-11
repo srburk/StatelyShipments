@@ -32,6 +32,8 @@
     
     MainViewController *mainViewController = [[MainViewController alloc] init];
     mainViewController.coordinator = self.mainCoordinator;
+    
+    self.mainCoordinator.mainViewController = mainViewController;
 
     self.window.rootViewController = mainViewController;
     [self.window makeKeyAndVisible];
