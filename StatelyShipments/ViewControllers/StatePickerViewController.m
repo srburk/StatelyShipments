@@ -29,6 +29,11 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    // scroll to selected state if it exists
+    [self scrollToState:self.selectedState];
+}
+
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -70,9 +75,6 @@
         [self.tableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
     ]];
-    
-    // scroll to selected state if it exists
-    [self scrollToState:self.selectedState];
 }
 
 #pragma mark Delegate SearchField Actions
@@ -135,7 +137,6 @@
         if (mainIndex != NSNotFound) {
             NSIndexPath *mainIndexPath = [NSIndexPath indexPathForRow:mainIndex inSection:0];
 
-            // Delay scroll
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView scrollToRowAtIndexPath:mainIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
             });

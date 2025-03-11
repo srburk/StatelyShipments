@@ -28,15 +28,13 @@
     
     backButtonConfiguration.baseForegroundColor = [UIColor blackColor];
     backButtonConfiguration.image = [UIImage systemImageNamed:@"chevron.backward"];
-    backButtonConfiguration.imagePadding = 0;
+    backButtonConfiguration.imagePadding = 5;
     backButtonConfiguration.baseBackgroundColor = [UIColor clearColor];
     backButtonConfiguration.baseForegroundColor = [UIColor colorNamed: @"PrimaryColor"];
     
     UIButton *backButton = [UIButton buttonWithConfiguration:backButtonConfiguration primaryAction:nil];
     [backButton setTitle:@"Back" forState:UIControlStateNormal];
-    
     [backButton addTarget:self.coordinator action:@selector(closeShippingResults) forControlEvents:UIControlEventTouchUpInside];
-    [backButton sizeToFit];
 
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = barButtonItem;
@@ -52,7 +50,6 @@
     
     UIButton *refocusButton = [UIButton buttonWithConfiguration:refocusButtonConfiguration primaryAction:nil];
     [refocusButton addTarget:self.coordinator action:@selector(focusMapOnRoute) forControlEvents:UIControlEventTouchUpInside];
-    [refocusButton sizeToFit];
     
     UIBarButtonItem *refocusBarButton = [[UIBarButtonItem alloc] initWithCustomView:refocusButton];
     self.navigationItem.rightBarButtonItem = refocusBarButton;
@@ -76,7 +73,7 @@
     
     // MARK: Table Header
     
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 85)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 100)];
     ShippingRouteViewHeader *headerCardView = [[ShippingRouteViewHeader alloc] initWithFrame:CGRectMake(15, 0, headerView.frame.size.width - 30, headerView.frame.size.height)];
     headerCardView.totalCostLabel.text = [NSString stringWithFormat:@"$%.2f", self.totalCost];
     

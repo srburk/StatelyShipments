@@ -29,6 +29,13 @@
     self.layer.cornerCurve = kCACornerCurveCircular;
     self.backgroundColor = [UIColor tintColor];
     
+    // subtle drop shadow
+    self.layer.shadowColor = [UIColor labelColor].CGColor;
+    self.layer.shadowOpacity = 0.2;
+    self.layer.shadowOffset = CGSizeMake(0, 2);
+    self.layer.shadowRadius = 4;
+    self.layer.masksToBounds = NO;
+    
     // MARK: Header View
     
     UIStackView *headerLabelStackView = [[UIStackView alloc] init];
@@ -40,7 +47,7 @@
         
     UILabel *routeHeaderLabel = [[UILabel alloc] init];
     routeHeaderLabel.text = @"Route";
-    routeHeaderLabel.textColor = [UIColor blackColor];
+    routeHeaderLabel.textColor = [UIColor whiteColor];
     routeHeaderLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     routeHeaderLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -48,7 +55,7 @@
     
     UILabel *totalCostLabelHeader = [[UILabel alloc] init];
     totalCostLabelHeader.text = @"Total Cost";
-    totalCostLabelHeader.textColor = [UIColor blackColor];
+    totalCostLabelHeader.textColor = [UIColor whiteColor];
     totalCostLabelHeader.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     totalCostLabelHeader.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -72,7 +79,7 @@
     routeShorthandLabelStackView.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.sourceStateLabel = [[UILabel alloc] init];
-    self.sourceStateLabel.textColor = [UIColor blackColor];
+    self.sourceStateLabel.textColor = [UIColor whiteColor];
     self.sourceStateLabel.font = [UIFont fontWithDescriptor:boldTitle1Descriptor size:0];
     self.sourceStateLabel.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -80,7 +87,7 @@
     
     UIImage *arrowImage = [UIImage systemImageNamed:@"arrow.right" withConfiguration:[UIImageSymbolConfiguration configurationWithFont:[UIFont fontWithDescriptor:boldTitle1Descriptor size:0]]];
     UIImageView *arrowImageView = [[UIImageView alloc] initWithImage:arrowImage];
-    arrowImageView.tintColor = [UIColor blackColor];
+    arrowImageView.tintColor = [UIColor whiteColor];
     arrowImageView.translatesAutoresizingMaskIntoConstraints = NO;
     arrowImageView.contentMode = UIViewContentModeScaleAspectFit;
 
@@ -88,7 +95,7 @@
     [routeShorthandLabelStackView addArrangedSubview:arrowImageView];
     
     self.destinationStateLabel = [[UILabel alloc] init];
-    self.destinationStateLabel.textColor = [UIColor blackColor];
+    self.destinationStateLabel.textColor = [UIColor whiteColor];
     self.destinationStateLabel.font = [UIFont fontWithDescriptor:boldTitle1Descriptor size:0];
     self.destinationStateLabel.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -98,7 +105,7 @@
 
     // cost label
     self.totalCostLabel = [[UILabel alloc] init];
-    self.totalCostLabel.textColor = [UIColor blackColor];
+    self.totalCostLabel.textColor = [UIColor whiteColor];
     self.totalCostLabel.font = [UIFont fontWithDescriptor:boldTitle1Descriptor size:0];
     self.totalCostLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -118,8 +125,8 @@
     [self addSubview:mainStackView];
     
     [NSLayoutConstraint activateConstraints:@[
-        [headerLabelStackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:15],
-        [headerLabelStackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-15],
+        [headerLabelStackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:20],
+        [headerLabelStackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-20],
     ]];
     
     [NSLayoutConstraint activateConstraints:@[

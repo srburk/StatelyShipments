@@ -52,6 +52,7 @@
     self.label.text = @"Label Text";
     self.label.textAlignment = NSTextAlignmentLeft;
     self.label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.label.textColor = [UIColor labelColor];
     
     [self addSubview:self.label];
     

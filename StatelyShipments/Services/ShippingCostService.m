@@ -42,7 +42,7 @@
 - (void)cheapestRouteBetweenStates:(State*)stateA andState:(State*)stateB {
     
     // check that states are not nil
-    if (![stateA isKindOfClass:[State class]] || ![stateA isKindOfClass:[State class]]) {
+    if (![stateA isKindOfClass:[State class]] || ![stateB isKindOfClass:[State class]]) {
         if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFailWithMessage:)]) {
             [self.delegate shippingCostServiceDidFailWithMessage:@"Please choose a source and destination state."];
         }

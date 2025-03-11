@@ -103,7 +103,7 @@ static const CGFloat mapViewPadding = 75;
         UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:insetRect];
         [[UIColor whiteColor] setFill];
         [circlePath fill];
-        [[UIColor systemCyanColor] setStroke];
+        [[UIColor tintColor] setStroke];
         circlePath.lineWidth = 5;
         [circlePath stroke];
     }];
@@ -136,7 +136,7 @@ static const CGFloat mapViewPadding = 75;
     if ([overlay isKindOfClass:[MKGeodesicPolyline class]]) {
         MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:(MKGeodesicPolyline*)overlay];
         renderer.lineWidth = 5;
-        renderer.strokeColor = [UIColor systemCyanColor];
+        renderer.strokeColor = [UIColor tintColor];
         return renderer;
     } else {
         return [[MKOverlayRenderer alloc] initWithOverlay:overlay];

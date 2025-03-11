@@ -48,7 +48,7 @@
     // vertical line going through all cells
     UIView *verticalLine = [[UIView alloc] init];
     verticalLine.translatesAutoresizingMaskIntoConstraints = NO;
-    verticalLine.backgroundColor = [UIColor systemCyanColor];
+    verticalLine.backgroundColor = [UIColor tintColor];
     
     [self.contentView addSubview:verticalLine];
     
@@ -72,7 +72,7 @@
     CAShapeLayer *circleShapeLayer = [CAShapeLayer layer];
     circleShapeLayer.path = circlePath.CGPath;
     circleShapeLayer.fillColor = [UIColor systemBackgroundColor].CGColor;
-    circleShapeLayer.strokeColor = [UIColor systemCyanColor].CGColor;
+    circleShapeLayer.strokeColor = [UIColor tintColor].CGColor;
     circleShapeLayer.lineWidth = 5;
     [circleView.layer addSublayer:circleShapeLayer];
     

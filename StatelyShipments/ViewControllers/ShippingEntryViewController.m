@@ -22,6 +22,7 @@
 
 @property (nonatomic, strong) StatePickerButton* sourcePickerButton;
 @property (nonatomic, strong) StatePickerButton* destinationPickerButton;
+@property (nonatomic, strong) UIButton *calculateButton;
 
 @property (nonatomic, strong) GovernmentFeeInputView* feeInputView;
 
@@ -68,7 +69,6 @@
     
     // source picker
     self.sourcePickerButton = [[StatePickerButton alloc] init];
-    [self.sourcePickerButton.button setTitle:@"Pick me" forState:UIControlStateNormal];
     [self.sourcePickerButton.label setText:@"Source"];
     
     [statePickerHStack addArrangedSubview:self.sourcePickerButton];
@@ -88,7 +88,6 @@
     // destination picker
     self.destinationPickerButton = [[StatePickerButton alloc] init];
     self.destinationPickerButton.label.textAlignment = NSTextAlignmentRight;
-    [self.destinationPickerButton.button setTitle:@"Pick me" forState:UIControlStateNormal];
     [self.destinationPickerButton.label setText:@"Destination"];
 
     [statePickerHStack addArrangedSubview:self.destinationPickerButton];
@@ -101,28 +100,28 @@
     UIButtonConfiguration *calculateButtonConfiguration = [UIButtonConfiguration filledButtonConfiguration];
     NSAttributedString *calculateButtonAttributedTitle = [[NSAttributedString alloc] initWithString:@"Calculate" attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]}];
     calculateButtonConfiguration.attributedTitle =calculateButtonAttributedTitle;
-    calculateButtonConfiguration.baseBackgroundColor = [UIColor blackColor];
+    calculateButtonConfiguration.baseBackgroundColor = [UIColor tintColor];
     calculateButtonConfiguration.baseForegroundColor = [UIColor whiteColor];
     calculateButtonConfiguration.cornerStyle = UIButtonConfigurationCornerStyleLarge;
-    UIButton *calculateButton = [UIButton buttonWithConfiguration:calculateButtonConfiguration primaryAction:nil];
-    [calculateButton addTarget:self.coordinator action:@selector(calculateCheapestRoute) forControlEvents:UIControlEventTouchUpInside];
+    self.calculateButton = [UIButton buttonWithConfiguration:calculateButtonConfiguration primaryAction:nil];
+    [self.calculateButton addTarget:self.coordinator action:@selector(calculateCheapestRoute) forControlEvents:UIControlEventTouchUpInside];
     
     self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     self.spinnerView.hidesWhenStopped = YES;
     self.spinnerView.color = [UIColor whiteColor];
     self.spinnerView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [calculateButton addSubview:self.spinnerView];
+    [self.calculateButton addSubview:self.spinnerView];
     
-    [mainStackView addArrangedSubview:calculateButton];
+    [mainStackView addArrangedSubview:self.calculateButton];
     
     [NSLayoutConstraint activateConstraints:@[
-        [calculateButton.bottomAnchor constraintEqualToAnchor:mainStackView.bottomAnchor],
-        [calculateButton.heightAnchor constraintEqualToConstant:55],
+        [self.calculateButton.bottomAnchor constraintEqualToAnchor:mainStackView.bottomAnchor],
+        [self.calculateButton.heightAnchor constraintEqualToConstant:55],
         
         // put spinner label to the left of button label
-        [self.spinnerView.trailingAnchor constraintEqualToAnchor:calculateButton.titleLabel.leadingAnchor constant:-10],
-        [self.spinnerView.centerYAnchor constraintEqualToAnchor:calculateButton.titleLabel.centerYAnchor],
+        [self.spinnerView.trailingAnchor constraintEqualToAnchor:self.calculateButton.titleLabel.leadingAnchor constant:-10],
+        [self.spinnerView.centerYAnchor constraintEqualToAnchor:self.calculateButton.titleLabel.centerYAnchor],
     ]];
     
 }
