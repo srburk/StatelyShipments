@@ -75,9 +75,6 @@ static const CGFloat mapViewPadding = 75;
 // reset map
 - (void)clearMap {
     
-    [self.mapView removeAnnotations:self.mapView.annotations];
-    [self.mapView removeOverlays:self.mapView.overlays];
-    
     // center of the US
     CLLocationCoordinate2D topLeft = CLLocationCoordinate2DMake(49.38, -124.77);
     CLLocationCoordinate2D bottomRight = CLLocationCoordinate2DMake(24.52, -66.95);
@@ -86,7 +83,11 @@ static const CGFloat mapViewPadding = 75;
     MKMapPoint point2 = MKMapPointForCoordinate(bottomRight);
     MKMapRect boundingRect = [self makeBoundingMapRectFromPoint:point1 toPoint:point2];
     UIEdgeInsets edgePadding = UIEdgeInsetsMake(0, 20, mapViewPadding, 20);
+    
     [self.mapView setVisibleMapRect:boundingRect edgePadding:edgePadding animated:YES];
+    
+    [self.mapView removeAnnotations:self.mapView.annotations];
+    [self.mapView removeOverlays:self.mapView.overlays];
     
 }
 
@@ -102,13 +103,10 @@ static const CGFloat mapViewPadding = 75;
         UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:insetRect];
         [[UIColor whiteColor] setFill];
         [circlePath fill];
-        [[UIColor systemGray5Color] setStroke];
+        [[UIColor systemCyanColor] setStroke];
         circlePath.lineWidth = 5;
         [circlePath stroke];
     }];
-    
-    // MARK: Validate route
-    NSLog(@"Route: %@", route);
     
     // add annotations
     for (State* state in route) {
@@ -128,19 +126,17 @@ static const CGFloat mapViewPadding = 75;
         coords[i] = CLLocationCoordinate2DMake([state.latitude doubleValue], [state.longitude doubleValue]);
     }
     
-    MKPolyline *polyline = [MKPolyline polylineWithCoordinates:coords count:count];
+    MKGeodesicPolyline *polyline = [MKGeodesicPolyline polylineWithCoordinates:coords count:count];
     [self.mapView addOverlay:polyline level:MKOverlayLevelAboveLabels];
     free(coords);
 }
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay {
     
-    if ([overlay isKindOfClass:[MKPolyline class]]) {
+    if ([overlay isKindOfClass:[MKGeodesicPolyline class]]) {
         MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:(MKGeodesicPolyline*)overlay];
         renderer.lineWidth = 5;
-        renderer.strokeColor = [UIColor systemGray5Color];
-//        renderer.fillColor = [UIColor systemBlueColor];
-//        renderer.alpha = 0.5;
+        renderer.strokeColor = [UIColor systemCyanColor];
         return renderer;
     } else {
         return [[MKOverlayRenderer alloc] initWithOverlay:overlay];

@@ -48,7 +48,7 @@
     // vertical line going through all cells
     UIView *verticalLine = [[UIView alloc] init];
     verticalLine.translatesAutoresizingMaskIntoConstraints = NO;
-    verticalLine.backgroundColor = [UIColor systemGray5Color];
+    verticalLine.backgroundColor = [UIColor systemCyanColor];
     
     [self.contentView addSubview:verticalLine];
     
@@ -60,7 +60,6 @@
     ]];
     
     // Circle View
-    
     UIView *circleView = [[UIView alloc] init];
     circleView.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -72,8 +71,8 @@
     
     CAShapeLayer *circleShapeLayer = [CAShapeLayer layer];
     circleShapeLayer.path = circlePath.CGPath;
-    circleShapeLayer.fillColor = [UIColor whiteColor].CGColor;
-    circleShapeLayer.strokeColor = [UIColor systemGray5Color].CGColor;
+    circleShapeLayer.fillColor = [UIColor systemBackgroundColor].CGColor;
+    circleShapeLayer.strokeColor = [UIColor systemCyanColor].CGColor;
     circleShapeLayer.lineWidth = 5;
     [circleView.layer addSublayer:circleShapeLayer];
     

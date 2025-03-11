@@ -300,6 +300,7 @@
 				DEVELOPMENT_TEAM = 3B52K98W7P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StatelyShipments/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Shipments;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -330,6 +331,7 @@
 				DEVELOPMENT_TEAM = 3B52K98W7P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = StatelyShipments/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Shipments;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";

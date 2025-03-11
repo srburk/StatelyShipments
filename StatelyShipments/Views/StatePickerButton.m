@@ -35,7 +35,8 @@
     NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:buttonTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1]}];
 
     buttonConfiguration.attributedTitle = attributedTitle;
-    buttonConfiguration.baseForegroundColor = [UIColor blackColor];
+    buttonConfiguration.baseForegroundColor = [UIColor colorNamed:@"PrimaryColor"];
+    buttonConfiguration.baseBackgroundColor = [UIColor systemGray5Color];
     buttonConfiguration.image = [UIImage systemImageNamed:@"chevron.up.chevron.down"];
     buttonConfiguration.imagePadding = 5;
     

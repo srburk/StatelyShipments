@@ -129,7 +129,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     State *selectedState = self.filteredStates[indexPath.row];
     self.selectedState = selectedState;
-    NSLog(@"Selected state %@", selectedState);
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.tableView reloadData];

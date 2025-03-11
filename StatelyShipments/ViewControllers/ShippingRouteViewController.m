@@ -29,6 +29,8 @@
     backButtonConfiguration.baseForegroundColor = [UIColor blackColor];
     backButtonConfiguration.image = [UIImage systemImageNamed:@"chevron.backward"];
     backButtonConfiguration.imagePadding = 0;
+    backButtonConfiguration.baseBackgroundColor = [UIColor clearColor];
+    backButtonConfiguration.baseForegroundColor = [UIColor colorNamed: @"PrimaryColor"];
     
     UIButton *backButton = [UIButton buttonWithConfiguration:backButtonConfiguration primaryAction:nil];
     [backButton setTitle:@"Back" forState:UIControlStateNormal];
@@ -41,9 +43,11 @@
     self.navigationItem.title = @"Route Details";
     
     // re-center route
-    UIButtonConfiguration* refocusButtonConfiguration = [UIButtonConfiguration plainButtonConfiguration];
+    UIButtonConfiguration* refocusButtonConfiguration = [UIButtonConfiguration tintedButtonConfiguration];
     refocusButtonConfiguration.baseForegroundColor = [UIColor blackColor];
     refocusButtonConfiguration.image = [UIImage systemImageNamed:@"arrow.up.left.and.arrow.down.right.square"];
+    refocusButtonConfiguration.baseForegroundColor = [UIColor colorNamed: @"PrimaryColor"];
+    refocusButtonConfiguration.baseBackgroundColor = [UIColor clearColor];
     refocusButtonConfiguration.imagePadding = 0;
     
     UIButton *refocusButton = [UIButton buttonWithConfiguration:refocusButtonConfiguration primaryAction:nil];

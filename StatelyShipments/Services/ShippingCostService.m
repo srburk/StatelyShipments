@@ -137,7 +137,7 @@
                 if ([distance[neighbor.stateCode] floatValue] > tentativeDistance) {
                     [distance setValue:[[NSNumber alloc] initWithFloat:tentativeDistance] forKey:neighbor.stateCode];
                     [previous setValue:currentState.stateCode forKey:neighbor.stateCode];
-//                    NSLog(@"\t Set neighbor %@ to %f", neighbor.stateCode, tentativeDistance);
+
                     // queue for exploration
                     [queue enqueue:@[neighbor.stateCode, distance[neighbor.stateCode]]];
                 }

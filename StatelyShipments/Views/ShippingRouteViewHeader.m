@@ -27,7 +27,7 @@
     
     self.layer.cornerRadius = 12.5;
     self.layer.cornerCurve = kCACornerCurveCircular;
-    self.backgroundColor = [UIColor systemGray5Color];
+    self.backgroundColor = [UIColor tintColor];
     
     // MARK: Header View
     
