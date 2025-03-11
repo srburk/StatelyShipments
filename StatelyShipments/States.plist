@@ -4,18 +4,6 @@
 <array>
 	<dict>
 		<key>latitude</key>
-		<string>63.588753</string>
-		<key>longitude</key>
-		<string>-154.493062</string>
-		<key>stateCode</key>
-		<string>AK</string>
-		<key>stateName</key>
-		<string>Alaska</string>
-		<key>stateNeighbors</key>
-		<array/>
-	</dict>
-	<dict>
-		<key>latitude</key>
 		<string>32.318231</string>
 		<key>longitude</key>
 		<string>-86.902298</string>
@@ -80,7 +68,6 @@
 		<key>stateNeighbors</key>
 		<array>
 			<string>AZ</string>
-			<string>HI</string>
 			<string>NV</string>
 			<string>OR</string>
 		</array>
@@ -168,20 +155,6 @@
 			<string>NC</string>
 			<string>SC</string>
 			<string>TN</string>
-		</array>
-	</dict>
-	<dict>
-		<key>latitude</key>
-		<string>19.898682</string>
-		<key>longitude</key>
-		<string>-155.665857</string>
-		<key>stateCode</key>
-		<string>HI</string>
-		<key>stateName</key>
-		<string>Hawaii</string>
-		<key>stateNeighbors</key>
-		<array>
-			<string>CA</string>
 		</array>
 	</dict>
 	<dict>
@@ -809,7 +782,6 @@
 		<string>Washington</string>
 		<key>stateNeighbors</key>
 		<array>
-			<string>AK</string>
 			<string>ID</string>
 			<string>OR</string>
 		</array>

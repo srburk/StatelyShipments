@@ -57,6 +57,7 @@
 @property XCTestExpectation* preWeightedRoutesExpectation;
 
 @property (nonatomic, strong) ShippingCostService* shippingCostService;
+@property (nonatomic, strong) TestFuelCostService* testFuelCostService;
 @property (nonatomic, strong) StatesLoader* statesLoader;
 
 @end
@@ -73,9 +74,9 @@
     self.statesLoader = [[StatesLoader alloc] init];
     [self.statesLoader loadStatesFromPlistAtPath:@"States"];
     
-    TestFuelCostService* testFuelCostService = [[TestFuelCostService alloc] initWithFuelCosts:testFuelCosts roadUsability:@{}];
+    self.testFuelCostService = [[TestFuelCostService alloc] initWithFuelCosts:testFuelCosts roadUsability:@{}];
     self.shippingCostService = [[ShippingCostService alloc] init];
-    self.shippingCostService.fuelCostService = testFuelCostService;
+    self.shippingCostService.fuelCostService = self.testFuelCostService;
     self.shippingCostService.delegate = self;
     
     self.route = [NSMutableArray array];
@@ -90,6 +91,9 @@
     NSDictionary *expectedTestResults = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
     XCTAssertNil(error, @"Error parsing expected results JSON: %@", error);
     
+    // test conducted at border fee = $50
+    self.shippingCostService.stateBorderFee = 50;
+    
     for (NSDictionary* expectedResult in expectedTestResults) {
         
         self.route = [NSMutableArray array];
@@ -101,10 +105,12 @@
         
         [self.shippingCostService cheapestRouteBetweenStates:source andState:destination];
         
-        [self waitForExpectations:@[self.preWeightedRoutesExpectation]];
+        [self waitForExpectations:@[self.preWeightedRoutesExpectation] timeout:20];
+                
+        NSLog(@"Starting pre-calculated test #%@", expectedResult[@"test_number"]);
                 
         for (int i = 0; i < [self.route count]; i++) {
-            XCTAssertTrue([self.route[i] isEqualToString:expectedResult[@"route"][i]]);
+            XCTAssertTrue([self.route[i] isEqualToString:expectedResult[@"route"][i]], @"Route does not match expected value");
             NSNumber *expectedCost = expectedResult[@"cost"];
             XCTAssertEqualWithAccuracy(self.totalCost, [expectedCost floatValue], 0.0001, @"Total cost does not match expected value");
         }

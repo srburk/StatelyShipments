@@ -141,7 +141,7 @@
                 }
                 
                 // calculate what the distance be if used
-                float tentativeDistance = [distance[currentStateCode] floatValue] + weight;
+                float tentativeDistance = [distance[currentStateCode] floatValue] + weight + self.stateBorderFee;
                 if ([distance[neighbor.stateCode] floatValue] > tentativeDistance) {
                     [distance setValue:[[NSNumber alloc] initWithFloat:tentativeDistance] forKey:neighbor.stateCode];
                     [previous setValue:currentState.stateCode forKey:neighbor.stateCode];
@@ -177,8 +177,8 @@
                         
             // use delegate pattern for return info
             if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFindRoute: withCosts: withTotalCost:)]) {
-                float totalCost = (reversedRoute.count * self.stateBorderFee) + [distance[stateB.stateCode] floatValue];
-//                [self.delegate shippingCostServiceDidFindRoute:reversedRoute withTotalCost:totalCost];
+//                float totalCost = (reversedRoute.count * self.stateBorderFee) + [distance[stateB.stateCode] floatValue];
+                float totalCost = [distance[stateB.stateCode] floatValue];
                 [self.delegate shippingCostServiceDidFindRoute:reversedRoute withCosts:borderCrossingCosts withTotalCost:totalCost];
             }
             

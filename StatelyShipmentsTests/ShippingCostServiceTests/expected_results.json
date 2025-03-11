@@ -1,10 +1,12 @@
 [
   {
     "test_number": 1,
-    "start": "KY",
+    "start": "MI",
     "goal": "MO",
-    "cost": 4.25,
+    "cost": 167.26,
     "route": [
+      "MI",
+      "IN",
       "KY",
       "MO"
     ]
@@ -12,29 +14,26 @@
   {
     "test_number": 2,
     "start": "FL",
-    "goal": "ME",
-    "cost": 93.39000000000001,
+    "goal": "ND",
+    "cost": 347.21,
     "route": [
       "FL",
       "AL",
       "TN",
-      "VA",
-      "MD",
-      "PA",
-      "NY",
-      "VT",
-      "NH",
-      "ME"
+      "MO",
+      "NE",
+      "SD",
+      "ND"
     ]
   },
   {
     "test_number": 3,
-    "start": "OR",
+    "start": "KS",
     "goal": "UT",
-    "cost": 11.83,
+    "cost": 123.83999999999999,
     "route": [
-      "OR",
-      "ID",
+      "KS",
+      "CO",
       "UT"
     ]
   },
@@ -42,87 +41,75 @@
     "test_number": 4,
     "start": "NV",
     "goal": "OK",
-    "cost": 12.71,
+    "cost": 165.3,
     "route": [
       "NV",
       "AZ",
       "NM",
-      "TX",
-      "AR",
       "OK"
     ]
   },
   {
     "test_number": 5,
-    "start": "ME",
+    "start": "ND",
     "goal": "LA",
-    "cost": 97.16999999999999,
+    "cost": 301.98,
     "route": [
-      "ME",
-      "NH",
-      "VT",
-      "NY",
-      "PA",
-      "MD",
-      "VA",
-      "TN",
+      "ND",
+      "SD",
+      "NE",
+      "MO",
       "AR",
-      "TX",
       "LA"
     ]
   },
   {
     "test_number": 6,
-    "start": "VA",
-    "goal": "ME",
-    "cost": 71.88,
+    "start": "WV",
+    "goal": "ND",
+    "cost": 297.18,
     "route": [
-      "VA",
-      "MD",
-      "PA",
-      "NY",
-      "VT",
-      "NH",
-      "ME"
+      "WV",
+      "KY",
+      "MO",
+      "NE",
+      "SD",
+      "ND"
     ]
   },
   {
     "test_number": 7,
-    "start": "SD",
+    "start": "WI",
     "goal": "AR",
-    "cost": 19.73,
+    "cost": 184.87,
     "route": [
-      "SD",
-      "NE",
-      "CO",
-      "AZ",
-      "NM",
-      "TX",
+      "WI",
+      "IL",
+      "MO",
       "AR"
     ]
   },
   {
     "test_number": 8,
-    "start": "MT",
-    "goal": "NJ",
-    "cost": 59.40000000000001,
+    "start": "WA",
+    "goal": "PA",
+    "cost": 389.88000000000005,
     "route": [
-      "MT",
-      "SD",
+      "WA",
+      "ID",
+      "WY",
       "NE",
       "MO",
-      "TN",
-      "VA",
-      "MD",
-      "DE",
-      "NJ"
+      "KY",
+      "OH",
+      "PA"
     ]
   },
   {
     "test_number": 9,
     "start": "MS",
     "goal": "FL",
-    "cost": 19.380000000000003,
+    "cost": 119.38000000000001,
     "route": [
       "MS",
       "AL",
@@ -133,7 +120,7 @@
     "test_number": 10,
     "start": "AR",
     "goal": "NM",
-    "cost": 3.7800000000000002,
+    "cost": 103.78,
     "route": [
       "AR",
       "TX",
@@ -143,33 +130,24 @@
   {
     "test_number": 11,
     "start": "NV",
-    "goal": "IL",
-    "cost": 29.270000000000003,
+    "goal": "MN",
+    "cost": 228.99,
     "route": [
       "NV",
-      "AZ",
-      "NM",
-      "TX",
-      "AR",
-      "OK",
-      "MO",
-      "KY",
-      "IL"
+      "ID",
+      "WY",
+      "SD",
+      "MN"
     ]
   },
   {
     "test_number": 12,
-    "start": "WA",
+    "start": "IN",
     "goal": "FL",
-    "cost": 41.86,
+    "cost": 230.52,
     "route": [
-      "WA",
-      "ID",
-      "NV",
-      "AZ",
-      "NM",
-      "TX",
-      "AR",
+      "IN",
+      "KY",
       "TN",
       "AL",
       "FL"
@@ -177,207 +155,67 @@
   },
   {
     "test_number": 13,
-    "start": "WI",
+    "start": "ID",
     "goal": "CO",
-    "cost": 25.84,
+    "cost": 109.37,
     "route": [
-      "WI",
-      "IA",
-      "NE",
+      "ID",
+      "WY",
       "CO"
     ]
   },
   {
     "test_number": 14,
+    "start": "VT",
+    "goal": "OH",
+    "cost": 188.02,
+    "route": [
+      "VT",
+      "NY",
+      "PA",
+      "OH"
+    ]
+  },
+  {
+    "test_number": 15,
     "start": "NH",
-    "goal": "MI",
-    "cost": 52.14999999999999,
+    "goal": "WI",
+    "cost": 365.73,
     "route": [
       "NH",
       "VT",
       "NY",
       "PA",
       "OH",
-      "IN",
-      "MI"
-    ]
-  },
-  {
-    "test_number": 15,
-    "start": "WV",
-    "goal": "SD",
-    "cost": 32.36,
-    "route": [
-      "WV",
-      "MD",
-      "VA",
-      "TN",
-      "MO",
-      "NE",
-      "SD"
+      "MI",
+      "WI"
     ]
   },
   {
     "test_number": 16,
-    "start": "MD",
+    "start": "NJ",
     "goal": "NV",
-    "cost": 28.290000000000003,
+    "cost": 455.28000000000003,
     "route": [
-      "MD",
-      "VA",
-      "TN",
-      "AR",
-      "TX",
-      "NM",
-      "AZ",
-      "NV"
-    ]
-  },
-  {
-    "test_number": 17,
-    "start": "PA",
-    "goal": "MT",
-    "cost": 44.129999999999995,
-    "route": [
+      "NJ",
       "PA",
       "OH",
-      "IN",
-      "KY",
-      "MO",
-      "NE",
-      "SD",
-      "MT"
-    ]
-  },
-  {
-    "test_number": 18,
-    "start": "OR",
-    "goal": "AL",
-    "cost": 31.520000000000003,
-    "route": [
-      "OR",
-      "ID",
-      "NV",
-      "AZ",
-      "NM",
-      "TX",
-      "AR",
-      "TN",
-      "AL"
-    ]
-  },
-  {
-    "test_number": 19,
-    "start": "ND",
-    "goal": "AZ",
-    "cost": 25.130000000000003,
-    "route": [
-      "ND",
-      "SD",
-      "NE",
-      "CO",
-      "AZ"
-    ]
-  },
-  {
-    "test_number": 20,
-    "start": "WV",
-    "goal": "NJ",
-    "cost": 22.12,
-    "route": [
-      "WV",
-      "PA",
-      "NJ"
-    ]
-  },
-  {
-    "test_number": 21,
-    "start": "CT",
-    "goal": "OR",
-    "cost": 68.79,
-    "route": [
-      "CT",
-      "NY",
-      "PA",
-      "OH",
-      "IN",
       "KY",
       "MO",
       "NE",
       "WY",
       "ID",
-      "OR"
+      "NV"
     ]
   },
   {
-    "test_number": 22,
-    "start": "TX",
-    "goal": "NM",
-    "cost": 2.21,
-    "route": [
-      "TX",
-      "NM"
-    ]
-  },
-  {
-    "test_number": 23,
-    "start": "ND",
-    "goal": "CT",
-    "cost": 69.55000000000001,
-    "route": [
-      "ND",
-      "SD",
-      "NE",
-      "MO",
-      "KY",
-      "IN",
-      "OH",
-      "PA",
-      "NY",
-      "CT"
-    ]
-  },
-  {
-    "test_number": 24,
-    "start": "LA",
-    "goal": "AR",
-    "cost": 13.15,
-    "route": [
-      "LA",
-      "TX",
-      "AR"
-    ]
-  },
-  {
-    "test_number": 25,
-    "start": "RI",
-    "goal": "LA",
-    "cost": 67.98,
-    "route": [
-      "RI",
-      "CT",
-      "NY",
-      "PA",
-      "MD",
-      "VA",
-      "TN",
-      "AR",
-      "TX",
-      "LA"
-    ]
-  },
-  {
-    "test_number": 26,
-    "start": "MA",
+    "test_number": 17,
+    "start": "NC",
     "goal": "WA",
-    "cost": 75.59,
+    "cost": 330.41999999999996,
     "route": [
-      "MA",
-      "NY",
-      "PA",
-      "OH",
-      "IN",
-      "KY",
+      "NC",
+      "TN",
       "MO",
       "NE",
       "WY",
@@ -386,114 +224,28 @@
     ]
   },
   {
-    "test_number": 27,
-    "start": "HI",
-    "goal": "MS",
-    "cost": 39.730000000000004,
+    "test_number": 18,
+    "start": "KS",
+    "goal": "AL",
+    "cost": 179.73,
     "route": [
-      "HI",
-      "CA",
+      "KS",
+      "MO",
+      "TN",
+      "AL"
+    ]
+  },
+  {
+    "test_number": 19,
+    "start": "AZ",
+    "goal": "NH",
+    "cost": 526.75,
+    "route": [
       "AZ",
       "NM",
-      "TX",
-      "AR",
-      "MS"
-    ]
-  },
-  {
-    "test_number": 28,
-    "start": "VT",
-    "goal": "NC",
-    "cost": 58.169999999999995,
-    "route": [
-      "VT",
-      "NY",
-      "PA",
-      "MD",
-      "VA",
-      "TN",
-      "NC"
-    ]
-  },
-  {
-    "test_number": 29,
-    "start": "SD",
-    "goal": "MO",
-    "cost": 12.450000000000001,
-    "route": [
-      "SD",
-      "NE",
-      "MO"
-    ]
-  },
-  {
-    "test_number": 30,
-    "start": "RI",
-    "goal": "AR",
-    "cost": 54.83,
-    "route": [
-      "RI",
-      "CT",
-      "NY",
-      "PA",
-      "MD",
-      "VA",
-      "TN",
-      "AR"
-    ]
-  },
-  {
-    "test_number": 31,
-    "start": "WI",
-    "goal": "KS",
-    "cost": 37.06,
-    "route": [
-      "WI",
-      "IL",
-      "KY",
-      "MO",
       "OK",
-      "KS"
-    ]
-  },
-  {
-    "test_number": 32,
-    "start": "KY",
-    "goal": "IN",
-    "cost": 8.03,
-    "route": [
-      "KY",
-      "IN"
-    ]
-  },
-  {
-    "test_number": 33,
-    "start": "NY",
-    "goal": "ID",
-    "cost": 56.059999999999995,
-    "route": [
-      "NY",
-      "PA",
-      "OH",
-      "IN",
-      "KY",
-      "MO",
-      "NE",
-      "WY",
-      "ID"
-    ]
-  },
-  {
-    "test_number": 34,
-    "start": "CO",
-    "goal": "NH",
-    "cost": 70.29,
-    "route": [
-      "CO",
-      "NE",
       "MO",
       "KY",
-      "IN",
       "OH",
       "PA",
       "NY",
@@ -502,238 +254,411 @@
     ]
   },
   {
-    "test_number": 35,
-    "start": "TN",
-    "goal": "MS",
-    "cost": 11.47,
+    "test_number": 20,
+    "start": "PA",
+    "goal": "MA",
+    "cost": 136.46,
     "route": [
+      "PA",
+      "NY",
+      "MA"
+    ]
+  },
+  {
+    "test_number": 21,
+    "start": "KS",
+    "goal": "TX",
+    "cost": 126.52,
+    "route": [
+      "KS",
+      "OK",
+      "TX"
+    ]
+  },
+  {
+    "test_number": 22,
+    "start": "NM",
+    "goal": "MA",
+    "cost": 421.83,
+    "route": [
+      "NM",
+      "OK",
+      "MO",
+      "KY",
+      "OH",
+      "PA",
+      "NY",
+      "MA"
+    ]
+  },
+  {
+    "test_number": 23,
+    "start": "LA",
+    "goal": "AR",
+    "cost": 64.99,
+    "route": [
+      "LA",
+      "AR"
+    ]
+  },
+  {
+    "test_number": 24,
+    "start": "DE",
+    "goal": "LA",
+    "cost": 286.06000000000006,
+    "route": [
+      "DE",
+      "MD",
+      "VA",
       "TN",
-      "AL",
+      "AR",
+      "LA"
+    ]
+  },
+  {
+    "test_number": 25,
+    "start": "NY",
+    "goal": "IN",
+    "cost": 176.74,
+    "route": [
+      "NY",
+      "PA",
+      "OH",
+      "IN"
+    ]
+  },
+  {
+    "test_number": 26,
+    "start": "OR",
+    "goal": "MS",
+    "cost": 339.73,
+    "route": [
+      "OR",
+      "ID",
+      "WY",
+      "NE",
+      "MO",
+      "TN",
       "MS"
     ]
   },
   {
-    "test_number": 36,
-    "start": "OH",
-    "goal": "NV",
-    "cost": 36.5,
+    "test_number": 27,
+    "start": "ME",
+    "goal": "SC",
+    "cost": 500.4199999999999,
     "route": [
-      "OH",
-      "PA",
-      "MD",
-      "VA",
-      "TN",
-      "AR",
-      "TX",
-      "NM",
-      "AZ",
-      "NV"
-    ]
-  },
-  {
-    "test_number": 37,
-    "start": "AK",
-    "goal": "KS",
-    "cost": 40.79,
-    "route": [
-      "AK",
-      "WA",
-      "ID",
-      "WY",
-      "NE",
-      "KS"
-    ]
-  },
-  {
-    "test_number": 38,
-    "start": "AR",
-    "goal": "NV",
-    "cost": 10.06,
-    "route": [
-      "AR",
-      "TX",
-      "NM",
-      "AZ",
-      "NV"
-    ]
-  },
-  {
-    "test_number": 39,
-    "start": "LA",
-    "goal": "RI",
-    "cost": 67.98000000000002,
-    "route": [
-      "LA",
-      "TX",
-      "AR",
-      "TN",
-      "VA",
-      "MD",
-      "PA",
-      "NY",
-      "CT",
-      "RI"
-    ]
-  },
-  {
-    "test_number": 40,
-    "start": "OR",
-    "goal": "NC",
-    "cost": 31.450000000000003,
-    "route": [
-      "OR",
-      "ID",
-      "NV",
-      "AZ",
-      "NM",
-      "TX",
-      "AR",
-      "TN",
-      "NC"
-    ]
-  },
-  {
-    "test_number": 41,
-    "start": "KY",
-    "goal": "NY",
-    "cost": 34.769999999999996,
-    "route": [
-      "KY",
-      "IN",
-      "OH",
-      "PA",
-      "NY"
-    ]
-  },
-  {
-    "test_number": 42,
-    "start": "AZ",
-    "goal": "NY",
-    "cost": 49.95,
-    "route": [
-      "AZ",
-      "NM",
-      "TX",
-      "AR",
-      "TN",
-      "VA",
-      "MD",
-      "PA",
-      "NY"
-    ]
-  },
-  {
-    "test_number": 43,
-    "start": "MA",
-    "goal": "NM",
-    "cost": 65.46000000000001,
-    "route": [
-      "MA",
-      "NY",
-      "PA",
-      "MD",
-      "VA",
-      "TN",
-      "AR",
-      "TX",
-      "NM"
-    ]
-  },
-  {
-    "test_number": 44,
-    "start": "OH",
-    "goal": "OR",
-    "cost": 40.72,
-    "route": [
-      "OH",
-      "IN",
-      "KY",
-      "MO",
-      "NE",
-      "WY",
-      "ID",
-      "OR"
-    ]
-  },
-  {
-    "test_number": 45,
-    "start": "WV",
-    "goal": "VA",
-    "cost": 11.1,
-    "route": [
-      "WV",
-      "MD",
-      "VA"
-    ]
-  },
-  {
-    "test_number": 46,
-    "start": "MI",
-    "goal": "TN",
-    "cost": 17.11,
-    "route": [
-      "MI",
-      "IN",
-      "KY",
-      "TN"
-    ]
-  },
-  {
-    "test_number": 47,
-    "start": "WA",
-    "goal": "KY",
-    "cost": 23.810000000000002,
-    "route": [
-      "WA",
-      "ID",
-      "WY",
-      "NE",
-      "MO",
-      "KY"
-    ]
-  },
-  {
-    "test_number": 48,
-    "start": "AZ",
-    "goal": "SD",
-    "cost": 14.45,
-    "route": [
-      "AZ",
-      "CO",
-      "NE",
-      "SD"
-    ]
-  },
-  {
-    "test_number": 49,
-    "start": "VT",
-    "goal": "UT",
-    "cost": 74.05,
-    "route": [
+      "ME",
+      "NH",
       "VT",
       "NY",
       "PA",
       "MD",
       "VA",
+      "NC",
+      "SC"
+    ]
+  },
+  {
+    "test_number": 28,
+    "start": "WI",
+    "goal": "MO",
+    "cost": 121.01,
+    "route": [
+      "WI",
+      "IL",
+      "MO"
+    ]
+  },
+  {
+    "test_number": 29,
+    "start": "DE",
+    "goal": "AR",
+    "cost": 221.07000000000002,
+    "route": [
+      "DE",
+      "MD",
+      "VA",
+      "TN",
+      "AR"
+    ]
+  },
+  {
+    "test_number": 30,
+    "start": "ID",
+    "goal": "NE",
+    "cost": 107.32,
+    "route": [
+      "ID",
+      "WY",
+      "NE"
+    ]
+  },
+  {
+    "test_number": 31,
+    "start": "MI",
+    "goal": "KY",
+    "cost": 113.01,
+    "route": [
+      "MI",
+      "IN",
+      "KY"
+    ]
+  },
+  {
+    "test_number": 32,
+    "start": "RI",
+    "goal": "MT",
+    "cost": 524.49,
+    "route": [
+      "RI",
+      "CT",
+      "NY",
+      "PA",
+      "OH",
+      "KY",
+      "MO",
+      "NE",
+      "SD",
+      "MT"
+    ]
+  },
+  {
+    "test_number": 33,
+    "start": "CO",
+    "goal": "VT",
+    "cost": 417.96,
+    "route": [
+      "CO",
+      "NE",
+      "MO",
+      "KY",
+      "OH",
+      "PA",
+      "NY",
+      "VT"
+    ]
+  },
+  {
+    "test_number": 34,
+    "start": "TN",
+    "goal": "MS",
+    "cost": 61.67,
+    "route": [
+      "TN",
+      "MS"
+    ]
+  },
+  {
+    "test_number": 35,
+    "start": "VA",
+    "goal": "NV",
+    "cost": 322.19999999999993,
+    "route": [
+      "VA",
       "TN",
       "AR",
       "TX",
       "NM",
-      "UT"
+      "AZ",
+      "NV"
+    ]
+  },
+  {
+    "test_number": 36,
+    "start": "NE",
+    "goal": "AR",
+    "cost": 123.58,
+    "route": [
+      "NE",
+      "MO",
+      "AR"
+    ]
+  },
+  {
+    "test_number": 37,
+    "start": "NV",
+    "goal": "LA",
+    "cost": 220.07000000000002,
+    "route": [
+      "NV",
+      "AZ",
+      "NM",
+      "TX",
+      "LA"
+    ]
+  },
+  {
+    "test_number": 38,
+    "start": "DE",
+    "goal": "KS",
+    "cost": 286.54,
+    "route": [
+      "DE",
+      "MD",
+      "VA",
+      "TN",
+      "MO",
+      "KS"
+    ]
+  },
+  {
+    "test_number": 39,
+    "start": "SC",
+    "goal": "MI",
+    "cost": 280.87,
+    "route": [
+      "SC",
+      "NC",
+      "TN",
+      "KY",
+      "IN",
+      "MI"
+    ]
+  },
+  {
+    "test_number": 40,
+    "start": "RI",
+    "goal": "AZ",
+    "cost": 516.4799999999999,
+    "route": [
+      "RI",
+      "CT",
+      "NY",
+      "PA",
+      "OH",
+      "KY",
+      "MO",
+      "OK",
+      "NM",
+      "AZ"
+    ]
+  },
+  {
+    "test_number": 41,
+    "start": "RI",
+    "goal": "NY",
+    "cost": 110.16,
+    "route": [
+      "RI",
+      "CT",
+      "NY"
+    ]
+  },
+  {
+    "test_number": 42,
+    "start": "NM",
+    "goal": "VA",
+    "cost": 215.92000000000002,
+    "route": [
+      "NM",
+      "TX",
+      "AR",
+      "TN",
+      "VA"
+    ]
+  },
+  {
+    "test_number": 43,
+    "start": "KS",
+    "goal": "NH",
+    "cost": 429.0,
+    "route": [
+      "KS",
+      "MO",
+      "KY",
+      "OH",
+      "PA",
+      "NY",
+      "VT",
+      "NH"
+    ]
+  },
+  {
+    "test_number": 44,
+    "start": "WV",
+    "goal": "OH",
+    "cost": 64.69,
+    "route": [
+      "WV",
+      "OH"
+    ]
+  },
+  {
+    "test_number": 45,
+    "start": "TN",
+    "goal": "IN",
+    "cost": 112.13,
+    "route": [
+      "TN",
+      "KY",
+      "IN"
+    ]
+  },
+  {
+    "test_number": 46,
+    "start": "MI",
+    "goal": "AZ",
+    "cost": 293.41999999999996,
+    "route": [
+      "MI",
+      "WI",
+      "IA",
+      "NE",
+      "CO",
+      "AZ"
+    ]
+  },
+  {
+    "test_number": 47,
+    "start": "WI",
+    "goal": "ME",
+    "cost": 434.65,
+    "route": [
+      "WI",
+      "MI",
+      "OH",
+      "PA",
+      "NY",
+      "VT",
+      "NH",
+      "ME"
+    ]
+  },
+  {
+    "test_number": 48,
+    "start": "UT",
+    "goal": "AZ",
+    "cost": 63.35,
+    "route": [
+      "UT",
+      "AZ"
+    ]
+  },
+  {
+    "test_number": 49,
+    "start": "SC",
+    "goal": "DE",
+    "cost": 237.47000000000003,
+    "route": [
+      "SC",
+      "NC",
+      "VA",
+      "MD",
+      "DE"
     ]
   },
   {
     "test_number": 50,
-    "start": "AZ",
-    "goal": "NC",
-    "cost": 19.47,
+    "start": "KS",
+    "goal": "MI",
+    "cost": 236.05999999999997,
     "route": [
-      "AZ",
-      "NM",
-      "TX",
-      "AR",
-      "TN",
-      "NC"
+      "KS",
+      "MO",
+      "KY",
+      "IN",
+      "MI"
     ]
   }
 ]
