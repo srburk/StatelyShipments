@@ -15,15 +15,6 @@
 
 @implementation FuelCostService
 
-+ (id) shared {
-    static dispatch_once_t pred = 0;
-    static id _sharedObject = nil;
-    dispatch_once(&pred, ^{
-        _sharedObject = [[self alloc] init];
-    });
-    return _sharedObject;
-}
-
 - (void)fuelCostBetweenNeighborStates:(State*)stateA andState:(State*)stateB completion: (void(^)(float result))completion {
     
 //    int simulatedDelay = arc4random_uniform(4) + 1;
@@ -41,13 +32,6 @@
 
 - (BOOL)isRoadUsableBetweenNeighborStates:(State*)stateA andState:(State*)stateB {
     return arc4random_uniform(100) < 75;
-}
-
-- (id)init {
-    if (self = [super init]) {
-
-    }
-    return self;
 }
 
 @end

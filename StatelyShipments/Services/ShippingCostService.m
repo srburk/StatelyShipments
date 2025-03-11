@@ -10,7 +10,6 @@
 #import "../Utility/PriorityQueue.h"
 
 #import "ShippingCostService.h"
-#import "FuelCostService.h"
 
 @interface ShippingCostService ()
 
@@ -57,14 +56,6 @@
             for (State *neighbor in state.stateNeighbors) {
                 dispatch_group_enter(self.fuelCostGroup);
                 
-//                NSString *cacheKey = [self standardizedCacheKeyForState:state.stateCode andNeighbor:neighbor.stateCode];
-//                
-//                if ([self.fuelCostCache valueForKey:cacheKey]) {
-//                    // already exists in cache, exit this iteration early
-//                    dispatch_group_leave(self.fuelCostGroup);
-//                    continue;
-//                }
-                
                 NSString *cacheKey = [self standardizedCacheKeyForState:state.stateCode andNeighbor:neighbor.stateCode];
                 __block BOOL cacheContainsKey = NO;
                 dispatch_sync(self.fuelCostCacheQueue, ^{
@@ -75,9 +66,9 @@
                     continue;
                 }
                 
-                if ([[FuelCostService shared] isRoadUsableBetweenNeighborStates:state andState:neighbor]) {
+                if ([self.fuelCostService isRoadUsableBetweenNeighborStates:state andState:neighbor]) {
                     
-                    [[FuelCostService shared] fuelCostBetweenNeighborStates:state andState:neighbor completion:^(float result) {
+                    [self.fuelCostService fuelCostBetweenNeighborStates:state andState:neighbor completion:^(float result) {
                         dispatch_barrier_async(self.fuelCostCacheQueue, ^{
                             [self.fuelCostCache setObject:[NSNumber numberWithFloat:(roundf(result * 100) / 100)] forKey:cacheKey];
                         });
@@ -138,7 +129,7 @@
             for (State* neighbor in currentState.stateNeighbors) {
                 
                 __block NSNumber* fuelCost;
-                dispatch_barrier_async(self.fuelCostCacheQueue, ^{
+                dispatch_barrier_sync(self.fuelCostCacheQueue, ^{
                     fuelCost = self.fuelCostCache[[self standardizedCacheKeyForState:currentState.stateCode andNeighbor:neighbor.stateCode]];
                 });
                 

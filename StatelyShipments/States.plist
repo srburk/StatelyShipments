@@ -339,7 +339,6 @@
 		<string>Maryland</string>
 		<key>stateNeighbors</key>
 		<array>
-			<string>DC</string>
 			<string>DE</string>
 			<string>PA</string>
 			<string>VA</string>
@@ -776,7 +775,6 @@
 		<string>Virginia</string>
 		<key>stateNeighbors</key>
 		<array>
-			<string>DC</string>
 			<string>KY</string>
 			<string>MD</string>
 			<string>NC</string>

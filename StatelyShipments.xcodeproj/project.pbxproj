@@ -35,6 +35,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2276E10B2D80897900AE965C /* Exceptions for "StatelyShipments" folder in "StatelyShipmentsTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				States.plist,
+			);
+			target = 22C3B1AD2D7519B2000392B1 /* StatelyShipmentsTests */;
+		};
 		22C3B1C02D7519B2000392B1 /* Exceptions for "StatelyShipments" folder in "StatelyShipments" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -49,6 +56,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				22C3B1C02D7519B2000392B1 /* Exceptions for "StatelyShipments" folder in "StatelyShipments" target */,
+				2276E10B2D80897900AE965C /* Exceptions for "StatelyShipments" folder in "StatelyShipmentsTests" target */,
 			);
 			path = StatelyShipments;
 			sourceTree = "<group>";

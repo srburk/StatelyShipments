@@ -6,7 +6,9 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "../Models/State.h"
+#import "FuelCostService.h"
 
 @protocol ShippingCostServiceDelegate <NSObject>
 //- (void)shippingCostServiceDidFindRoute:(NSArray *)route withTotalCost:(float)cost;
@@ -17,6 +19,8 @@
 @interface ShippingCostService : NSObject
 
 @property (weak) id <ShippingCostServiceDelegate> delegate;
+@property (weak) FuelCostService* fuelCostService;
+
 @property (nonatomic, assign) float stateBorderFee;
 
 -(id)init;

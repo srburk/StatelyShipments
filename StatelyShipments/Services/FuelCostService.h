@@ -13,7 +13,4 @@
 - (void)fuelCostBetweenNeighborStates:(State*)stateA andState:(State*)stateB completion: (void(^)(float result))completion;
 - (BOOL)isRoadUsableBetweenNeighborStates:(State*)stateA andState:(State*)stateB;
 
-+ (id) shared;
-- (id)init;
-
 @end

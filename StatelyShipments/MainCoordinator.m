@@ -23,6 +23,7 @@
 @interface MainCoordinator () <ShippingCostServiceDelegate>
 
 @property (nonatomic, strong) ShippingCostService *shippingCostService;
+@property (nonatomic, strong) FuelCostService *fuelCostService;
 @property (nonatomic, strong) UINavigationController *navigationController;
 
 // State
@@ -44,8 +45,11 @@
         self.navigationController.navigationBarHidden = YES;
         self.navigationController.navigationBar.tintColor = [UIColor blackColor];
         
+        self.fuelCostService = [[FuelCostService alloc] init];
+        
         self.shippingCostService = [[ShippingCostService alloc] init];
         self.shippingCostService.delegate = self;
+        self.shippingCostService.fuelCostService = self.fuelCostService;
     }
     return self;
 }
