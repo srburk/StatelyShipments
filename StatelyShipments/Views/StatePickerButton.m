@@ -75,30 +75,6 @@
     self.label.userInteractionEnabled = NO;
 }
 
-//- (void)didTap {
-//    if (self.selectionHandler) {
-//        self.selectionHandler(self.selectedState);
-//    }
-//}
-
-//- (void)setupPickerMenu:(NSArray<State *> *)states {
-//    NSMutableArray<UIAction *> *actions = [NSMutableArray array];
-//    for (State *state in states) {
-//        UIAction *action = [UIAction actionWithTitle:state.stateCode image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-//            
-//            [self updateSelectedState:state];
-//            
-//            if (self.selectionHandler) {
-//                self.selectionHandler(self.selectedState);
-//            }
-//        }];
-//        
-//        [actions addObject:action];
-//    }
-//    UIMenu *menu = [UIMenu menuWithChildren:actions];
-//    self.button.menu = menu;
-//}
-
 - (void)updateSelectedState:(State*) newSelectedState {
     self.selectedState = newSelectedState;
     

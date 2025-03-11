@@ -70,6 +70,9 @@
         [self.tableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
     ]];
+    
+    // scroll to selected state if it exists
+    [self scrollToState:self.selectedState];
 }
 
 #pragma mark Delegate SearchField Actions
@@ -126,6 +129,20 @@
     return self.filteredStates.count;
 }
 
+- (void)scrollToState:(State*)state {
+    if (state) {
+        NSInteger mainIndex = [self.states indexOfObject:state];
+        if (mainIndex != NSNotFound) {
+            NSIndexPath *mainIndexPath = [NSIndexPath indexPathForRow:mainIndex inSection:0];
+
+            // Delay scroll
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView scrollToRowAtIndexPath:mainIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+            });
+        }
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     State *selectedState = self.filteredStates[indexPath.row];
     self.selectedState = selectedState;
@@ -136,15 +153,7 @@
     if (self.searchController.isActive) {
         [self.searchController setActive:NO];
         
-        NSInteger mainIndex = [self.states indexOfObject:selectedState];
-        if (mainIndex != NSNotFound) {
-            NSIndexPath *mainIndexPath = [NSIndexPath indexPathForRow:mainIndex inSection:0];
-
-            // Delay scroll
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView scrollToRowAtIndexPath:mainIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-            });
-        }
+        [self scrollToState:selectedState];
     }
 }
 

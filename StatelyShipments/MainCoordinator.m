@@ -91,6 +91,7 @@
 - (void)showStateSelectionForSource:(BOOL)isSource {
     StatePickerViewController *statePickerViewController = [[StatePickerViewController alloc] init];
     statePickerViewController.coordinator = self;
+    statePickerViewController.selectedState = (isSource) ? self.sourceState : self.destinationState;
     
     __weak typeof(self) weakSelf = self;
     statePickerViewController.selectionHandler = ^(State *selectedState) {
