@@ -27,6 +27,7 @@
 // MARK: Actions
 - (void)swapSelectedStates;
 - (void)calculateCheapestRoute;
+- (void)showErrorWithTitle:(NSString*)title andMessage:(NSString*)message;
 
 // MARK: Navigation Functions
 - (void)showShippingCalculator;

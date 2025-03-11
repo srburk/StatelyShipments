@@ -42,7 +42,7 @@
     // check that states are not nil
     if (![stateA isKindOfClass:[State class]] || ![stateA isKindOfClass:[State class]]) {
         if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFailWithMessage:)]) {
-            [self.delegate shippingCostServiceDidFailWithMessage:@"Please provide valid State objects"];
+            [self.delegate shippingCostServiceDidFailWithMessage:@"Please choose a source and destination state."];
         }
         return;
     }
@@ -50,7 +50,6 @@
     // do everything in the background to keep main thread running well
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        NSLog(@"Fetching fuel costs from %@ to %@", stateA.stateCode, stateB.stateCode);
         for (State *state in [[StatesLoader shared] allStatesAlphabetical]) {
             for (State *neighbor in state.stateNeighbors) {
                 dispatch_group_enter(self.fuelCostGroup);
@@ -176,7 +175,7 @@
             
         } else {
             if ([self.delegate respondsToSelector:@selector(shippingCostServiceDidFailWithMessage:)]) {
-                [self.delegate shippingCostServiceDidFailWithMessage:@"Route does not exist"];
+                [self.delegate shippingCostServiceDidFailWithMessage:@"Route does not exist."];
             }
         }
         

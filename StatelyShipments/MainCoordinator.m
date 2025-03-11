@@ -66,13 +66,17 @@
 
     // get float value
     self.stateBorderFee = [self.shippingEntryViewController getStateBorderFee];
-
-    NSLog(@"Using fee: %f", self.stateBorderFee);
-
     self.shippingCostService.stateBorderFee = self.stateBorderFee;
     [self.shippingCostService cheapestRouteBetweenStates:self.sourceState andState:self.destinationState];
 }
 
+- (void)showErrorWithTitle:(NSString*)title andMessage:(NSString*)message {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+       handler:^(UIAlertAction * action) {}];
+    [alert addAction:defaultAction];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
+}
 
 // MARK: Navigation Functions
 - (void)showShippingCalculator {
@@ -164,9 +168,10 @@
 
 // MARK: Shipping Service Delegate Actions
 - (void)shippingCostServiceDidFailWithMessage:(NSString *)message {
-    NSLog(@"Failed to find route: %@", message);
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.shippingEntryViewController.spinnerView stopAnimating];
+        [self showErrorWithTitle:@"Error Finding Route" andMessage:message];
     });
 }
 
