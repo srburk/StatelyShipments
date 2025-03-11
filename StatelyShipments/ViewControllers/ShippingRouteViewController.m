@@ -6,8 +6,8 @@
 //
 
 #import "ShippingRouteViewController.h"
-#import "../Views/ShippingRouteViewCell.h"
-#import "../Views/ShippingRouteViewHeader.h"
+#import "../Views/ShippingRouteCellView.h"
+#import "../Views/ShippingRouteHeaderView.h"
 
 @interface ShippingRouteViewController ()
 
@@ -74,7 +74,7 @@
     // MARK: Table Header
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 100)];
-    ShippingRouteViewHeader *headerCardView = [[ShippingRouteViewHeader alloc] initWithFrame:CGRectMake(15, 0, headerView.frame.size.width - 30, headerView.frame.size.height)];
+    ShippingRouteHeaderView *headerCardView = [[ShippingRouteHeaderView alloc] initWithFrame:CGRectMake(15, 0, headerView.frame.size.width - 30, headerView.frame.size.height)];
     headerCardView.totalCostLabel.text = [NSString stringWithFormat:@"$%.2f", self.totalCost];
     
     // error check for route display
@@ -88,7 +88,6 @@
     [headerView addSubview:headerCardView];
     
     self.tableView.tableHeaderView = headerView;
-    
 }
 
 // MARK: Delegate TableView Actions
@@ -104,17 +103,22 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath { 
     static NSString * const cellIdentifier = @"ShippingRouteViewCell";
-    ShippingRouteViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    ShippingRouteCellView *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
-         cell = [[ShippingRouteViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+         cell = [[ShippingRouteCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     cell.textLabel.text = self.shippingRoute[indexPath.row].stateName;
     
     if (indexPath.row > 0) {
-        cell.fuelCostLabel.text = [NSString stringWithFormat:@"+$%.2f", [self.fuelCosts[indexPath.row - 1] floatValue]];
+        cell.fuelCostLabel.text = [NSString stringWithFormat:@"+$%.2f", ([self.fuelCosts[indexPath.row - 1] floatValue] + self.coordinator.stateBorderFee)];
+    }
+    
+    if (indexPath.row == self.shippingRoute.count - 1) {
+        cell.isLastCell = YES;
+    } else {
+        cell.isLastCell = NO;
     }
     
     return cell;

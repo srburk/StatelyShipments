@@ -1,5 +1,5 @@
 //
-//  ShippingRouteViewHeader.m
+//  ShippingRouteHeaderView.m
 //  StatelyShipments
 //
 //  Created by Sam Burkhard on 3/9/25.
@@ -7,9 +7,9 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ShippingRouteViewHeader.h"
+#import "ShippingRouteHeaderView.h"
 
-@implementation ShippingRouteViewHeader
+@implementation ShippingRouteHeaderView
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

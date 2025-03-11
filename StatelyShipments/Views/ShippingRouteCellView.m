@@ -1,21 +1,24 @@
 //
-//  ShippingRouteViewCell.m
+//  ShippingRouteCellView.m
 //  StatelyShipments
 //
 //  Created by Sam Burkhard on 3/5/25.
 //
 
 #import <Foundation/Foundation.h>
-#import "ShippingRouteViewCell.h"
+#import "ShippingRouteCellView.h"
 
-@interface ShippingRouteViewCell ()
+@interface ShippingRouteCellView ()
 
 @property (nonatomic, strong) UILabel *stateLabel;
 @property (nonatomic, strong) UILabel *fuelCostLabel;
 
+@property (nonatomic, strong) NSLayoutConstraint *verticalBarHeight;
+@property (nonatomic, strong) UIView *verticalBar;
+
 @end
 
-@implementation ShippingRouteViewCell
+@implementation ShippingRouteCellView
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
@@ -25,9 +28,7 @@
 }
 
 - (void)setupView {
-    
-//    self.contentView.layoutMargins = UIEdgeInsetsMake(10, 50, 10, 0);
-    
+        
     self.stateLabel = [[UILabel alloc] init];
     self.stateLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.stateLabel.font = [UIFont boldSystemFontOfSize:17];
@@ -46,17 +47,19 @@
     ]];
     
     // vertical line going through all cells
-    UIView *verticalLine = [[UIView alloc] init];
-    verticalLine.translatesAutoresizingMaskIntoConstraints = NO;
-    verticalLine.backgroundColor = [UIColor tintColor];
+    self.verticalBar = [[UIView alloc] init];
+    self.verticalBar.translatesAutoresizingMaskIntoConstraints = NO;
+    self.verticalBar.backgroundColor = [UIColor tintColor];
     
-    [self.contentView addSubview:verticalLine];
+    [self.contentView addSubview:self.verticalBar];
+    
+    self.verticalBarHeight = [self.verticalBar.heightAnchor constraintEqualToAnchor:self.heightAnchor];
     
     [NSLayoutConstraint activateConstraints:@[
-        [verticalLine.widthAnchor constraintEqualToConstant:10],
-        [verticalLine.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
-        [verticalLine.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor],
-        [verticalLine.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant: 35]
+        [self.verticalBar.widthAnchor constraintEqualToConstant:10],
+        self.verticalBarHeight,
+        [self.verticalBar.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
+        [self.verticalBar.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant: 35]
     ]];
     
     // Circle View
@@ -84,6 +87,23 @@
         [circleView.widthAnchor constraintEqualToConstant:CIRCLE_SIZE],
         [circleView.heightAnchor constraintEqualToConstant:CIRCLE_SIZE]
     ]];
+}
+
+- (void)setIsLastCell:(BOOL)isLastCell {
+    if (isLastCell != _isLastCell) {
+        
+        CGFloat multiplier = isLastCell ? 0.5 : 1.0;
+        
+        if (self.verticalBarHeight) {
+            [NSLayoutConstraint deactivateConstraints:@[self.verticalBarHeight]];
+        }
+        self.verticalBarHeight = [self.verticalBar.heightAnchor constraintEqualToAnchor:self.heightAnchor multiplier:multiplier];
+        self.verticalBarHeight.active = YES;
+        
+        [self setNeedsLayout];
+        [self layoutIfNeeded];
+    }
+    _isLastCell = isLastCell;
 }
 
 - (void)prepareForReuse {
