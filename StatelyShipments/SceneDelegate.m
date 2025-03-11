@@ -8,8 +8,12 @@
 #import "SceneDelegate.h"
 
 #import "ViewControllers/MainViewController.h"
+#import "MainCoordinator.h"
 
 @interface SceneDelegate ()
+
+@property (nonatomic, strong) MainCoordinator *mainCoordinator;
+
 @end
 
 @implementation SceneDelegate
@@ -22,8 +26,14 @@
     
     UIWindowScene *windowScene = (UIWindowScene *)scene;
     self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
-
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    self.mainCoordinator = [[MainCoordinator alloc] initWithNavigationController:navigationController];
+    
     MainViewController *mainViewController = [[MainViewController alloc] init];
+    mainViewController.coordinator = self.mainCoordinator;
+    
+    self.mainCoordinator.mainViewController = mainViewController;
 
     self.window.rootViewController = mainViewController;
     [self.window makeKeyAndVisible];

@@ -9,31 +9,18 @@
 
 #import "MainViewController.h"
 #import "ShippingEntryViewController.h"
-#import <MapKit/MapKit.h>
-
 #import "../Utility/StatesLoader.h"
+
+static const CGFloat mapViewPadding = 75;
 
 @interface MainViewController () <MKMapViewDelegate>
 
-@property (nonatomic, strong) UINavigationController* drawerNavigationController;
 @property (nonatomic, strong) MKMapView* mapView;
-
 @property (nonatomic, strong) UIImage* statePinImage;
 
 @end
 
 @implementation MainViewController
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        UIImageSymbolConfiguration *config = [UIImageSymbolConfiguration configurationWithPointSize:10 weight:UIImageSymbolWeightRegular];
-        UIImage *annotationImage = [UIImage systemImageNamed:@"circle.circle.fill" withConfiguration:config];
-        self.statePinImage = annotationImage;
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     
@@ -45,16 +32,7 @@
     self.mapView.delegate = self;
         
     [[StatesLoader shared] loadStatesFromPlistAtPath:@"States"]; // TODO: Remove this and hone init
-    
-//    for (State* state in [[StatesLoader shared] allStatesAlphabetical]) {
-//        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-//        annotation.coordinate = CLLocationCoordinate2DMake([state.latitude doubleValue], [state.longitude doubleValue]);
-//        annotation.title = state.stateName;
-//        
-//        [self.mapView addAnnotation:annotation];
-//    }
-    
-//    self.mapView.map
+
     [self.view addSubview:self.mapView];
     
     [NSLayoutConstraint activateConstraints:@[
@@ -64,36 +42,84 @@
         [self.mapView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
     ]];
     
-    self.drawerNavigationController = [[UINavigationController alloc] init];
-    self.drawerNavigationController.modalInPresentation = YES;
-    self.drawerNavigationController.navigationBarHidden = YES;
+    // clear map at beginning
+    [self clearMap];
     
-    self.drawerNavigationController.navigationBar.tintColor = [UIColor blackColor];
-    
-    ShippingEntryViewController *root = [[ShippingEntryViewController alloc] initWithNavigationController:self.drawerNavigationController];
-    
-    [self.drawerNavigationController setViewControllers:@[root]];
+    // start navigation controller
+    [self.coordinator showShippingCalculator];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    [self presentViewController:self.drawerNavigationController animated:NO completion:nil];
+    // start drawer presentation
+    [self presentViewController:self.coordinator.navigationController animated:NO completion:nil];
 }
 
-// MARK: These methods should be in a coordinator
-- (void)clearMapOverlays {
+
+- (MKMapRect)makeBoundingMapRectFromPoint:(MKMapPoint)point1 toPoint:(MKMapPoint)point2 {
+    double minX = MIN(point1.x, point2.x);
+    double minY = MIN(point1.y, point2.y);
+    double maxX = MAX(point1.x, point2.x);
+    double maxY = MAX(point1.y, point2.y);
+    MKMapRect boundingRect = MKMapRectMake(minX, minY, maxX - minX, maxY - minY);
+    return boundingRect;
+}
+
+- (void)focusMapOnPoint:(MKMapPoint)point1 andPoint:(MKMapPoint)point2 {
     
+    MKMapRect boundingRect = [self makeBoundingMapRectFromPoint:point1 toPoint:point2];
+
+    UIEdgeInsets edgePadding = UIEdgeInsetsMake(mapViewPadding, mapViewPadding, (self.mapView.bounds.size.height / 2), mapViewPadding);
+    [self.mapView setVisibleMapRect:boundingRect edgePadding:edgePadding animated:YES];
+}
+
+// reset map
+- (void)clearMap {
+    
+    // center of the US
+    CLLocationCoordinate2D topLeft = CLLocationCoordinate2DMake(49.38, -124.77);
+    CLLocationCoordinate2D bottomRight = CLLocationCoordinate2DMake(24.52, -66.95);
+
+    MKMapPoint point1 = MKMapPointForCoordinate(topLeft);
+    MKMapPoint point2 = MKMapPointForCoordinate(bottomRight);
+    MKMapRect boundingRect = [self makeBoundingMapRectFromPoint:point1 toPoint:point2];
+    UIEdgeInsets edgePadding = UIEdgeInsetsMake(0, 20, mapViewPadding, 20);
+    
+    [self.mapView setVisibleMapRect:boundingRect edgePadding:edgePadding animated:YES];
+    
+    [self.mapView removeAnnotations:self.mapView.annotations];
     [self.mapView removeOverlays:self.mapView.overlays];
     
 }
 
-- (void)addMapOverlaysForRoute:(NSArray *)route {
+// draw route and destinations
+- (void)drawRoute:(NSArray *)route {
     
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"stateCode == %@ || stateCode == %@ || stateCode == %@", @"OH", @"KY", @"TN"];
-//    NSArray *filteredArray = [[[StatesLoader shared] allStates] filteredArrayUsingPredicate:predicate];
+    // TODO: Make this a UIConstant
+    CGRect rect = CGRectMake(0, 0, 20, 20);
+    CGRect insetRect = CGRectInset(rect, 5 / 2.0, 5 / 2.0);
+    UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:rect.size];
+    self.statePinImage = [renderer imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull context) {
+        // Draw the circle
+        UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:insetRect];
+        [[UIColor whiteColor] setFill];
+        [circlePath fill];
+        [[UIColor systemCyanColor] setStroke];
+        circlePath.lineWidth = 5;
+        [circlePath stroke];
+    }];
     
-    NSLog(@"Route: %@", route);
-    
-    NSUInteger count = [route count];
+    // add annotations
+    for (State* state in route) {
+        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+        annotation.coordinate = CLLocationCoordinate2DMake([state.latitude doubleValue], [state.longitude doubleValue]);
+        annotation.title = state.stateName;
+
+        [self.mapView addAnnotation:annotation];
+    }
+
+    // draw overlay
+    int count = (int)[route count];
+                      
     CLLocationCoordinate2D *coords = malloc(sizeof(CLLocationCoordinate2D) * count);
     for (NSUInteger i = 0; i < count; i++) {
         State *state = route[i];  // filteredArray should contain NSValue objects.
@@ -109,10 +135,8 @@
     
     if ([overlay isKindOfClass:[MKGeodesicPolyline class]]) {
         MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:(MKGeodesicPolyline*)overlay];
-        renderer.lineWidth = 2;
-        renderer.strokeColor = [UIColor systemBlueColor];
-        renderer.fillColor = [UIColor systemBlueColor];
-        renderer.alpha = 0.5;
+        renderer.lineWidth = 5;
+        renderer.strokeColor = [UIColor systemCyanColor];
         return renderer;
     } else {
         return [[MKOverlayRenderer alloc] initWithOverlay:overlay];

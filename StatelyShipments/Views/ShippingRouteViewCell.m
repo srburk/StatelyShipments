@@ -26,7 +26,7 @@
 
 - (void)setupView {
     
-    self.contentView.layoutMargins = UIEdgeInsetsMake(10, 0, 10, 0);
+//    self.contentView.layoutMargins = UIEdgeInsetsMake(10, 50, 10, 0);
     
     self.stateLabel = [[UILabel alloc] init];
     self.stateLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -39,16 +39,50 @@
     [self.contentView addSubview:self.fuelCostLabel];
 
     [NSLayoutConstraint activateConstraints:@[
-//        [self.stateLabel.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:15],
-        [self.stateLabel.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-15],
         [self.stateLabel.centerYAnchor constraintEqualToAnchor:self.contentView.centerYAnchor],
-//        [self.stateLabel.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:10],
 
-//        [self.fuelCostLabel.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:15],
-        [self.fuelCostLabel.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-15],
+        [self.fuelCostLabel.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-25],
         [self.fuelCostLabel.centerYAnchor constraintEqualToAnchor:self.contentView.centerYAnchor],
-//        [self.fuelCostLabel.topAnchor constraintEqualToAnchor:self.stateLabel.bottomAnchor constant:5],
-//        [self.fuelCostLabel.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:-10]
+    ]];
+    
+    // vertical line going through all cells
+    UIView *verticalLine = [[UIView alloc] init];
+    verticalLine.translatesAutoresizingMaskIntoConstraints = NO;
+    verticalLine.backgroundColor = [UIColor systemCyanColor];
+    
+    [self.contentView addSubview:verticalLine];
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [verticalLine.widthAnchor constraintEqualToConstant:10],
+        [verticalLine.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
+        [verticalLine.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor],
+        [verticalLine.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant: 35]
+    ]];
+    
+    // Circle View
+    UIView *circleView = [[UIView alloc] init];
+    circleView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+#define CIRCLE_SIZE 20
+#define STROKE_WIDTH 5
+    
+    // destination indicator
+    UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, CIRCLE_SIZE, CIRCLE_SIZE)];
+    
+    CAShapeLayer *circleShapeLayer = [CAShapeLayer layer];
+    circleShapeLayer.path = circlePath.CGPath;
+    circleShapeLayer.fillColor = [UIColor systemBackgroundColor].CGColor;
+    circleShapeLayer.strokeColor = [UIColor systemCyanColor].CGColor;
+    circleShapeLayer.lineWidth = 5;
+    [circleView.layer addSublayer:circleShapeLayer];
+    
+    [self.contentView addSubview:circleView];
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [circleView.centerYAnchor constraintEqualToAnchor:self.contentView.centerYAnchor],
+        [circleView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant: 30],
+        [circleView.widthAnchor constraintEqualToConstant:CIRCLE_SIZE],
+        [circleView.heightAnchor constraintEqualToConstant:CIRCLE_SIZE]
     ]];
 }
 

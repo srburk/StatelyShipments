@@ -31,11 +31,12 @@
         
     UIButtonConfiguration* buttonConfiguration = [UIButtonConfiguration grayButtonConfiguration];
     
-    NSString *buttonTitle = (self.selectedState) ? self.selectedState.stateCode : @"Select";
-    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:buttonTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2]}];
+    NSString *buttonTitle = (self.selectedState) ? self.selectedState.stateCode : @"State";
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:buttonTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1]}];
 
     buttonConfiguration.attributedTitle = attributedTitle;
-    buttonConfiguration.baseForegroundColor = [UIColor blackColor];
+    buttonConfiguration.baseForegroundColor = [UIColor colorNamed:@"PrimaryColor"];
+    buttonConfiguration.baseBackgroundColor = [UIColor systemGray5Color];
     buttonConfiguration.image = [UIImage systemImageNamed:@"chevron.up.chevron.down"];
     buttonConfiguration.imagePadding = 5;
     
@@ -74,36 +75,12 @@
     self.label.userInteractionEnabled = NO;
 }
 
-//- (void)didTap {
-//    if (self.selectionHandler) {
-//        self.selectionHandler(self.selectedState);
-//    }
-//}
-
-//- (void)setupPickerMenu:(NSArray<State *> *)states {
-//    NSMutableArray<UIAction *> *actions = [NSMutableArray array];
-//    for (State *state in states) {
-//        UIAction *action = [UIAction actionWithTitle:state.stateCode image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-//            
-//            [self updateSelectedState:state];
-//            
-//            if (self.selectionHandler) {
-//                self.selectionHandler(self.selectedState);
-//            }
-//        }];
-//        
-//        [actions addObject:action];
-//    }
-//    UIMenu *menu = [UIMenu menuWithChildren:actions];
-//    self.button.menu = menu;
-//}
-
 - (void)updateSelectedState:(State*) newSelectedState {
     self.selectedState = newSelectedState;
     
-    NSString *newTitle = ([self.selectedState isKindOfClass:[State class]]) ? self.selectedState.stateCode : @"Select";
+    NSString *newTitle = ([self.selectedState isKindOfClass:[State class]]) ? self.selectedState.stateCode : @"State";
     
-    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2]}];
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1]}];
     [self.button setAttributedTitle:attributedTitle forState:UIControlStateNormal];
 }
 
