@@ -4,6 +4,12 @@
 
 The objective of this project was to develop an iOS app in Objective-C with UIKit. It should take in 2 states as input and calculate the cheapest shipping route along the contiguous United States. The government has imposed a fee on crossing state borders that I allow the user to set, and the fuel cost from state to state can vary and requires a 3rd-party API to get access.
 
+# Table of Contents
+1. [Architecture Breakdown](#architecture-breakdown)
+2. [Tests](#tests)
+3. [Design](#design)
+4. [Development Process](#development-process)
+
 ## Architecture Breakdown
 
 ### States
@@ -52,6 +58,35 @@ These views encapsulate specific UI elements to keep the view controllers lean: 
 
 Errors are primarily encountered in the `ShippingCostService` class and must be handled appropriately. The service halts operation and delivers a message to be displayed over the navigation drawer. This is delivered to the `MainCoordinator` with the delegate protocol of the `ShippingCostService`.
 
+## Tests
+
+#TODO Finish this section
+I built a dummy implementation of the 3rd-party API callers to give back random fuel costs and road usability values throughout the testing process. I called this class `FuelCostService`. This service simulated delays for the fuel cost access to mimic the behavior of a network call.
+
+I built an XCTest suite to use externally loaded JSON data. I used a Python script to build a list of weights and come up with 50 random state pairs with a state border fee of $50. I found the optimal route in Python using Dijkstra's algorithm and outputed the results into `expected_results.json`. Each test follows this pattern:
+
+```
+  {
+    "test_number": 40,
+    "start": "RI",
+    "goal": "AZ",
+    "cost": 516.4799999999999,
+    "route": [
+      "RI",
+      "CT",
+      "NY",
+      "PA",
+      "OH",
+      "KY",
+      "MO",
+      "OK",
+      "NM",
+      "AZ"
+    ]
+  },
+```
+The XCTest queries the `ShippingCostService` with the provided weights and the calculated route and total cost are compared with the expected results.
+
 ## Design
 
 Because this is a simple app, I thought the UI shoud be kept simple and clean. A busy UI would distract from the primary purpose of the app.
@@ -59,13 +94,6 @@ Because this is a simple app, I thought the UI shoud be kept simple and clean. A
 ![Simulator Screen Recording - iPhone 16 Pro - 2025-03-11 at 17 29 02](https://github.com/user-attachments/assets/328a80b3-cc80-4c95-a4bf-db752b58aff4)
 
 ## Development Process
-
-### Tests
-
-#TODO Finish this section
-I built a "dummy" implementation of the 3rd-party API callers to give back random information throughout the testing process. 
-
-I built tests externally using Python for loading.
 
 ### Wireframe UI
 
