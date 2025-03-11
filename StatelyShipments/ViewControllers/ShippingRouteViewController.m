@@ -9,36 +9,19 @@
 #import "../Views/ShippingRouteViewCell.h"
 #import "../Views/ShippingRouteViewHeader.h"
 
-#import "../Utility/Extensions/UINavigationController+SheetControlAdditions.h"
-
 @interface ShippingRouteViewController ()
 
 @property (nonatomic, strong) UITableView* tableView;
 
-- (void)closeTapped;
-
 @end
 
 @implementation ShippingRouteViewController
-//
-//- (void)viewWillDisappear:(BOOL)animated {
-//    // hide navbar
-//    [super viewWillDisappear:animated];
-//    [self.navigationController animateSmallDetent];
-//    [self.navigationController setNavigationBarHidden:YES animated:YES];
-//}
 
 - (void)viewDidLoad {
     
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor systemBackgroundColor];
-    
-    // show navbar
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    
-    // force medium detent
-    [self.navigationController animateMediumDetent];
     
     // back button
     UIButtonConfiguration* backButtonConfiguration = [UIButtonConfiguration plainButtonConfiguration];
@@ -50,7 +33,7 @@
     UIButton *backButton = [UIButton buttonWithConfiguration:backButtonConfiguration primaryAction:nil];
     [backButton setTitle:@"Back" forState:UIControlStateNormal];
     
-    [backButton addTarget:self action:@selector(closeTapped) forControlEvents:UIControlEventTouchUpInside];
+    [backButton addTarget:self.coordinator action:@selector(closeShippingResults) forControlEvents:UIControlEventTouchUpInside];
     [backButton sizeToFit];
 
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -96,12 +79,6 @@
     
     self.tableView.tableHeaderView = headerView;
     
-}
-
-- (void)closeTapped {
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.navigationController animateSmallDetent];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 // MARK: Delegate TableView Actions

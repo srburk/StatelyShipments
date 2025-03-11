@@ -8,15 +8,15 @@
 // for showing visual of completed route
 
 #import "../Models/State.h"
+#import "../MainCoordinator.h"
 #import <UIKit/UIKit.h>
 
 @interface ShippingRouteViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property(nonatomic, strong) UINavigationController* navigationController;
+@property (nonatomic, weak) MainCoordinator *coordinator;
+
 @property (nonatomic, strong) NSArray<State*>* shippingRoute;
 @property (nonatomic, strong) NSArray<NSNumber*>* fuelCosts;
 @property (nonatomic, assign) float totalCost;
-
-//- (id)initWithRoute:(NSArray<State*>*)route andTotalCost:(float)totalCost;
 
 @end

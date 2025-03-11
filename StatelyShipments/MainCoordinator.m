@@ -1,0 +1,142 @@
+//
+//  MainCoordinator.m
+//  StatelyShipments
+//
+//  Created by Sam Burkhard on 3/10/25.
+//
+
+#import <Foundation/Foundation.h>
+#import "MainCoordinator.h"
+#import "Utility/Extensions/UINavigationController+SheetControlAdditions.h"
+
+// VCs
+#import "ViewControllers/ShippingEntryViewController.h"
+#import "ViewControllers/ShippingRouteViewController.h"
+
+// Views
+#import "ViewControllers/StatePickerViewController.h"
+
+// Services
+#import "Services/ShippingCostService.h"
+
+@interface MainCoordinator () <ShippingCostServiceDelegate>
+
+@property (nonatomic, strong) ShippingCostService *shippingCostService;
+
+@property (nonatomic, strong) UINavigationController *navigationController;
+@property (nonatomic, strong) State* sourceState;
+@property (nonatomic, strong) State* destinationState;
+
+@property (nonatomic, strong) ShippingEntryViewController* shippingEntryViewController;
+
+@end
+
+@implementation MainCoordinator
+
+- (id)initWithNavigationController:(UINavigationController *)navigationController {
+    if (self = [super init]) {
+        self.navigationController = navigationController;
+        self.navigationController.modalInPresentation = YES;
+        self.navigationController.navigationBarHidden = YES;
+        self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+        
+        self.shippingCostService = [[ShippingCostService alloc] init];
+        self.shippingCostService.delegate = self;
+    }
+    return self;
+}
+
+// MARK: Actions
+- (void)swapSelectedStates {
+    State *temp = self.sourceState;
+    self.sourceState = self.destinationState;
+    self.destinationState = temp;
+    
+    [self.shippingEntryViewController.sourcePickerButton updateSelectedState:self.sourceState];
+    [self.shippingEntryViewController.destinationPickerButton updateSelectedState:self.destinationState];
+}
+
+- (void)calculateCheapestRoute {
+    [self.shippingEntryViewController.spinnerView startAnimating];
+
+    // get float value
+    self.stateBorderFee = [self.shippingEntryViewController getStateBorderFee];
+
+    NSLog(@"Using fee: %f", self.stateBorderFee);
+
+    self.shippingCostService.stateBorderFee = self.stateBorderFee;
+    [self.shippingCostService cheapestRouteBetweenStates:self.sourceState andState:self.destinationState];
+}
+
+// MARK: Navigation Functions
+- (void)showShippingCalculator {
+    self.shippingEntryViewController = [[ShippingEntryViewController alloc] init];
+    self.shippingEntryViewController.coordinator = self;
+    [self.navigationController animateSmallDetent];
+
+    [self.navigationController setViewControllers:@[self.shippingEntryViewController]];
+    [self.navigationController animateSmallDetent];
+}
+
+- (void)showStateSelectionForSource:(BOOL)isSource {
+    StatePickerViewController *statePickerViewController = [[StatePickerViewController alloc] init];
+    statePickerViewController.coordinator = self;
+    
+    __weak typeof(self) weakSelf = self;
+    statePickerViewController.selectionHandler = ^(State *selectedState) {
+        if (isSource) {
+            weakSelf.sourceState = selectedState;
+            [weakSelf.shippingEntryViewController.sourcePickerButton updateSelectedState:selectedState];
+        } else {
+            weakSelf.destinationState = selectedState;
+            [weakSelf.shippingEntryViewController.destinationPickerButton updateSelectedState:selectedState];
+        }
+    };
+    
+    [self.navigationController pushViewController:statePickerViewController animated:NO];
+    [self.navigationController animateMediumDetent];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)closeStateSelection {
+    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController animateSmallDetent];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+- (void)showShippingResultsForRoute:(NSArray *)route withCosts:(NSArray *)fuelCosts withTotalCost:(float)cost {
+    ShippingRouteViewController *shippingRouteViewController = [[ShippingRouteViewController alloc] init];
+    
+    shippingRouteViewController.shippingRoute = route;
+    shippingRouteViewController.fuelCosts = fuelCosts;
+    shippingRouteViewController.totalCost = cost;
+    shippingRouteViewController.coordinator = self;
+    
+    [self.navigationController pushViewController:shippingRouteViewController animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController animateMediumDetent];
+}
+
+- (void)closeShippingResults {
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController animateSmallDetent];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+// MARK: Shipping Service Delegate Actions
+- (void)shippingCostServiceDidFailWithMessage:(NSString *)message {
+    NSLog(@"Failed to find route: %@", message);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.shippingEntryViewController.spinnerView stopAnimating];
+    });
+}
+
+- (void)shippingCostServiceDidFindRoute:(NSArray *)route withCosts:(NSArray *)fuelCosts withTotalCost:(float)cost {
+        
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.shippingEntryViewController.spinnerView stopAnimating];
+        [self showShippingResultsForRoute:route withCosts:fuelCosts withTotalCost:cost];
+    });
+}
+
+@end

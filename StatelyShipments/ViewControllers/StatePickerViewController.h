@@ -6,11 +6,14 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#import "../MainCoordinator.h"
 #import "../Models/State.h"
 
 @interface StatePickerViewController : UIViewController
 
-@property (nonatomic, strong) UINavigationController* navigationController;
+@property (nonatomic, weak) MainCoordinator *coordinator;
+
 @property (nonatomic, strong) State* selectedState;
 @property (nonatomic, copy) void (^selectionHandler)(State *selectedState);
 

@@ -8,54 +8,31 @@
 #import <Foundation/Foundation.h>
 #import "ShippingEntryViewController.h"
 
-#import "../Services/ShippingCostService.h"
 #import "../Utility/StatesLoader.h"
-#import "../Views/StatePickerButton.h"
 #import "../Views/GovernmentFeeInputView.h"
 
 #import "ShippingRouteViewController.h"
 #import "StatePickerViewController.h"
 #import "MainViewController.h"
 
-#import "../Utility/Extensions/UINavigationController+SheetControlAdditions.h"
-
-@interface ShippingEntryViewController () <ShippingCostServiceDelegate>
-
-@property (nonatomic, strong) ShippingCostService* shippingCostService;
+@interface ShippingEntryViewController ()
 
 // indicator that shipping calculation is happening
 @property (nonatomic, strong) UIActivityIndicatorView* spinnerView;
 
 @property (nonatomic, strong) StatePickerButton* sourcePickerButton;
-@property (nonatomic, strong) State* sourceState;
 @property (nonatomic, strong) StatePickerButton* destinationPickerButton;
-@property (nonatomic, strong) State* destinationState;
 
 @property (nonatomic, strong) GovernmentFeeInputView* feeInputView;
-
-- (void)navigateToStateSelection:(UIButton *)sender;
 
 @end
 
 @implementation ShippingEntryViewController
 
-- (id)initWithNavigationController:(UINavigationController *)navController {
-    if (self = [super init]) {
-        self.navigationController = navController;
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
-    [self.navigationController animateSmallDetent];
-    
-    // assign services
-    self.shippingCostService = [[ShippingCostService alloc] init];
-    self.shippingCostService.delegate = self;
-    
+        
     self.view.backgroundColor = [UIColor systemBackgroundColor];
     
     // main vertical stack
@@ -83,8 +60,8 @@
     // horizontal section for state pickers and swap button
     UIStackView *statePickerHStack = [[UIStackView alloc] init];
     statePickerHStack.axis = UILayoutConstraintAxisHorizontal;
-    statePickerHStack.alignment = UIStackViewAlignmentTop;
-    statePickerHStack.distribution = UIStackViewDistributionEqualCentering;
+    statePickerHStack.alignment = UIStackViewAlignmentCenter;
+    statePickerHStack.distribution = UIStackViewDistributionFillEqually;
     statePickerHStack.spacing = 0;
     statePickerHStack.translatesAutoresizingMaskIntoConstraints = NO;
     [mainStackView addArrangedSubview: statePickerHStack];
@@ -96,11 +73,12 @@
     
     [statePickerHStack addArrangedSubview:self.sourcePickerButton];
     [self.sourcePickerButton.button addTarget:self action:@selector(navigateToStateSelection:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     // swap button
     UIButton *swapButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    swapButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [swapButton setImage:[UIImage systemImageNamed:@"arrow.left.arrow.right"] forState:UIControlStateNormal];
-    [swapButton addTarget:self action:@selector(swapStates) forControlEvents:UIControlEventTouchUpInside];
+    [swapButton addTarget:self.coordinator action:@selector(swapSelectedStates) forControlEvents:UIControlEventTouchUpInside];
     
     swapButton.tintColor = [UIColor blackColor];
     swapButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -109,12 +87,12 @@
     
     // destination picker
     self.destinationPickerButton = [[StatePickerButton alloc] init];
+    self.destinationPickerButton.label.textAlignment = NSTextAlignmentRight;
     [self.destinationPickerButton.button setTitle:@"Pick me" forState:UIControlStateNormal];
     [self.destinationPickerButton.label setText:@"Destination"];
 
     [statePickerHStack addArrangedSubview:self.destinationPickerButton];
     [self.destinationPickerButton.button addTarget:self action:@selector(navigateToStateSelection:) forControlEvents:UIControlEventTouchUpInside];
-    
     // government fee input
     self.feeInputView = [[GovernmentFeeInputView alloc] init];
     [mainStackView addArrangedSubview:self.feeInputView];
@@ -127,7 +105,7 @@
     calculateButtonConfiguration.baseForegroundColor = [UIColor whiteColor];
     calculateButtonConfiguration.cornerStyle = UIButtonConfigurationCornerStyleLarge;
     UIButton *calculateButton = [UIButton buttonWithConfiguration:calculateButtonConfiguration primaryAction:nil];
-    [calculateButton addTarget:self action:@selector(calculateShippingCost) forControlEvents:UIControlEventTouchUpInside];
+    [calculateButton addTarget:self.coordinator action:@selector(calculateCheapestRoute) forControlEvents:UIControlEventTouchUpInside];
     
     self.spinnerView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     self.spinnerView.hidesWhenStopped = YES;
@@ -149,104 +127,23 @@
     
 }
 
-#pragma mark Button Actions
-
-- (void)swapStates {
-    NSLog(@"Swapping states...");
-    State *temp = self.sourceState;
-    self.sourceState = self.destinationState;
-    self.destinationState = temp;
-    [self.sourcePickerButton updateSelectedState:self.sourceState];
-    [self.destinationPickerButton updateSelectedState:self.destinationState];
-}
-
-- (void)navigateToStateSelection:(UIButton *)sender {
-    if ([self.navigationController isKindOfClass:[UINavigationController class]]) {
-        StatePickerViewController *statePickerViewController = [[StatePickerViewController alloc] init];
-        statePickerViewController.navigationController = self.navigationController;
-        
-        if (sender == self.sourcePickerButton.button) {
-            statePickerViewController.selectedState = self.sourceState;
-        } else if (sender == self.destinationPickerButton.button) {
-            statePickerViewController.selectedState = self.destinationState;
-        }
-        
-        ShippingEntryViewController* __weak weakSelf = self;
-        statePickerViewController.selectionHandler = ^(State *selectedState) {
-            if (sender == weakSelf.sourcePickerButton.button) {
-                weakSelf.sourceState = selectedState;
-                // update button text
-                [weakSelf.sourcePickerButton updateSelectedState:selectedState];
-            } else if (sender == weakSelf.destinationPickerButton.button) {
-                weakSelf.destinationState = selectedState;
-                [weakSelf.destinationPickerButton updateSelectedState:selectedState];
-            }
-        };
-        
-        [self.navigationController pushViewController:statePickerViewController animated:NO];
-    }
-}
-
-- (void)calculateShippingCost {
-    
-//#ifdef DEBUG
-//    NSUInteger index1 = arc4random_uniform((uint32_t)[[[StatesLoader shared] allStatesAlphabetical] count]);
-//    NSUInteger index2;
-//
-//    do {
-//        index2 = arc4random_uniform((uint32_t)[[[StatesLoader shared] allStatesAlphabetical] count]);
-//    } while (index1 == index2);
-//
-//    NSDictionary *countryGraph = [[StatesLoader shared] allStatesGraph];
-//    State* state1 = countryGraph[countryGraph.allKeys[index1]];
-//    State* state2 = countryGraph[countryGraph.allKeys[index2]];
-//
-//    [self.shippingCostService cheapestRouteBetweenStates:state1 andState:state2];
-//    return;
-//#endif
-    
-    NSLog(@"Triggered calculate shipping cost calculation");
-    [self.spinnerView startAnimating];
-    
-    // get float value
+- (double)getStateBorderFee {
     NSCharacterSet *nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
     NSString *digitsOnly = [[self.feeInputView.textField.text componentsSeparatedByCharactersInSet:nonDigits] componentsJoinedByString:@""];
-        
+
     double fee = [digitsOnly doubleValue] / 100.0;
-        
-    NSLog(@"Using fee: %f", fee);
-    
-    self.shippingCostService.stateBorderFee = fee;
-    
-    [self.shippingCostService cheapestRouteBetweenStates:self.sourceState andState:self.destinationState];
+    return fee;
 }
 
-#pragma mark Delegate Actions
+#pragma mark Button Actions
 
-- (void)shippingCostServiceDidFailWithMessage:(NSString *)message {
-    NSLog(@"Failed to find route: %@", message);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.spinnerView stopAnimating];
-    });
-}
-
-- (void)shippingCostServiceDidFindRoute:(NSArray *)route withCosts:(NSArray *)fuelCosts withTotalCost:(float)cost {
+- (void)navigateToStateSelection:(UIButton *)sender {
         
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [self.spinnerView stopAnimating];
-        
-        if ([self.navigationController isKindOfClass:[UINavigationController class]]) {
-            ShippingRouteViewController *shippingRouteViewController = [[ShippingRouteViewController alloc] init];
-            shippingRouteViewController.shippingRoute = route;
-            shippingRouteViewController.fuelCosts = fuelCosts;
-            shippingRouteViewController.totalCost = cost;
-            
-            shippingRouteViewController.navigationController = self.navigationController;
-            
-            [self.navigationController pushViewController:shippingRouteViewController animated:YES];
-        }
-    });
+    if (sender == self.sourcePickerButton.button) {
+        [self.coordinator showStateSelectionForSource:YES];
+    } else if (sender == self.destinationPickerButton.button) {
+        [self.coordinator showStateSelectionForSource:NO];
+    }
 }
 
 @end

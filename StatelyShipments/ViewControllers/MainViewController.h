@@ -6,8 +6,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+
+#import "../MainCoordinator.h"
 
 @interface MainViewController: UIViewController
+
+@property (nonatomic, weak) MainCoordinator *coordinator;
+
+@property (nonatomic, strong, readonly) MKMapView* mapView;
 
 - (void)clearMapOverlays;
 - (void)addMapOverlaysForRoute:(NSArray*)route;

@@ -6,11 +6,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "../MainCoordinator.h"
+#import "../Views/StatePickerButton.h"
 
 @interface ShippingEntryViewController : UIViewController
 
-@property(nonatomic, strong) UINavigationController* navigationController;
+@property (nonatomic, weak) MainCoordinator *coordinator;
 
-- (id)initWithNavigationController:(UINavigationController*)navController;
+@property (nonatomic, strong, readonly) StatePickerButton* sourcePickerButton;
+@property (nonatomic, strong, readonly) StatePickerButton* destinationPickerButton;
+@property (nonatomic, strong, readonly) UIActivityIndicatorView* spinnerView;
+
+-(double)getStateBorderFee;
 
 @end

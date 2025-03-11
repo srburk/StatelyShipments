@@ -18,8 +18,6 @@
 @property (nonatomic, strong) NSArray<State*>* states;
 @property (nonatomic, strong) NSArray<State*>* filteredStates;
 
-- (void)closeTapped;
-
 @end
 
 @implementation StatePickerViewController
@@ -38,20 +36,13 @@
     self.states = [[StatesLoader shared] allStatesAlphabetical];
     self.filteredStates = self.states;
     
-    // force medium detent
-    [self.navigationController animateMediumDetent];
-    
-    // set up navigation bar
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    
     // custom back button
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeClose];
-    [closeButton addTarget:self action:@selector(closeTapped) forControlEvents:UIControlEventTouchUpInside];
+    [closeButton addTarget:self.coordinator action:@selector(closeStateSelection) forControlEvents:UIControlEventTouchUpInside];
     [closeButton sizeToFit];
 
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:closeButton];
     self.navigationItem.leftBarButtonItem = barButtonItem;
-    
     self.navigationItem.title = @"Select a State";
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -79,12 +70,6 @@
         [self.tableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
     ]];
-}
-
-- (void)closeTapped {
-    [self.navigationController popViewControllerAnimated:NO];
-    [self.navigationController animateSmallDetent];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 #pragma mark Delegate SearchField Actions

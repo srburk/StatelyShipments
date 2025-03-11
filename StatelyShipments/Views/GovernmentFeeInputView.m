@@ -33,16 +33,11 @@
     // set up leading label
     self.label = [[UILabel alloc] init];
     self.label.translatesAutoresizingMaskIntoConstraints = NO;
-    self.label.text = @"State Border Fee";
+    self.label.text = @"State Border Fee:";
     self.label.textAlignment = NSTextAlignmentLeft;
     self.label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     
     [self addSubview:self.label];
-    
-    [NSLayoutConstraint activateConstraints:@[
-        [self.label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-        [self.label.topAnchor constraintEqualToAnchor:self.topAnchor]
-    ]];
     
     // set up government state border fees
     self.textField = [[UITextField alloc] init];
@@ -61,6 +56,9 @@
         [self.textField.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
         [self.textField.topAnchor constraintEqualToAnchor:self.topAnchor],
         [self.textField.widthAnchor constraintEqualToAnchor:self.widthAnchor multiplier:0.45],
+        
+        [self.label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [self.label.centerYAnchor constraintEqualToAnchor:self.textField.centerYAnchor],
     ]];
     
 }

@@ -31,8 +31,8 @@
         
     UIButtonConfiguration* buttonConfiguration = [UIButtonConfiguration grayButtonConfiguration];
     
-    NSString *buttonTitle = (self.selectedState) ? self.selectedState.stateCode : @"Select";
-    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:buttonTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2]}];
+    NSString *buttonTitle = (self.selectedState) ? self.selectedState.stateCode : @"State";
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:buttonTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1]}];
 
     buttonConfiguration.attributedTitle = attributedTitle;
     buttonConfiguration.baseForegroundColor = [UIColor blackColor];
@@ -101,9 +101,9 @@
 - (void)updateSelectedState:(State*) newSelectedState {
     self.selectedState = newSelectedState;
     
-    NSString *newTitle = ([self.selectedState isKindOfClass:[State class]]) ? self.selectedState.stateCode : @"Select";
+    NSString *newTitle = ([self.selectedState isKindOfClass:[State class]]) ? self.selectedState.stateCode : @"State";
     
-    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2]}];
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:newTitle attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1]}];
     [self.button setAttributedTitle:attributedTitle forState:UIControlStateNormal];
 }
 

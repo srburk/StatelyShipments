@@ -9,15 +9,13 @@
 
 #import "MainViewController.h"
 #import "ShippingEntryViewController.h"
-#import <MapKit/MapKit.h>
 
 #import "../Utility/StatesLoader.h"
 
 @interface MainViewController () <MKMapViewDelegate>
 
-@property (nonatomic, strong) UINavigationController* drawerNavigationController;
 @property (nonatomic, strong) MKMapView* mapView;
-
+//@property (nonatomic, strong) UINavigationController* drawerNavigationController;
 @property (nonatomic, strong) UIImage* statePinImage;
 
 @end
@@ -56,7 +54,6 @@
     
 //    self.mapView.map
     [self.view addSubview:self.mapView];
-    
     [NSLayoutConstraint activateConstraints:@[
         [self.mapView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
         [self.mapView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
@@ -64,19 +61,27 @@
         [self.mapView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
     ]];
     
-    self.drawerNavigationController = [[UINavigationController alloc] init];
-    self.drawerNavigationController.modalInPresentation = YES;
-    self.drawerNavigationController.navigationBarHidden = YES;
+    // start navigation controller
+    [self.coordinator showShippingCalculator];
     
-    self.drawerNavigationController.navigationBar.tintColor = [UIColor blackColor];
-    
-    ShippingEntryViewController *root = [[ShippingEntryViewController alloc] initWithNavigationController:self.drawerNavigationController];
-    
-    [self.drawerNavigationController setViewControllers:@[root]];
+    // Debug button to trigger overlay drawing
+    UIButton *debugButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [debugButton setTitle:@"Debug Overlay" forState:UIControlStateNormal];
+    debugButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [debugButton addTarget:self action:@selector(addMapOverlaysForRoute:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:debugButton];
+
+    [NSLayoutConstraint activateConstraints:@[
+        [debugButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-20],
+        [debugButton.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:80],
+        [debugButton.widthAnchor constraintEqualToConstant:120],
+        [debugButton.heightAnchor constraintEqualToConstant:44]
+    ]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    [self presentViewController:self.drawerNavigationController animated:NO completion:nil];
+    // start drawer presentation
+    [self presentViewController:self.coordinator.navigationController animated:NO completion:nil];
 }
 
 // MARK: These methods should be in a coordinator
@@ -88,26 +93,33 @@
 
 - (void)addMapOverlaysForRoute:(NSArray *)route {
     
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"stateCode == %@ || stateCode == %@ || stateCode == %@", @"OH", @"KY", @"TN"];
-//    NSArray *filteredArray = [[[StatesLoader shared] allStates] filteredArrayUsingPredicate:predicate];
+#ifdef DEBUG
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"stateCode == %@ || stateCode == %@ || stateCode == %@ || stateCode == %@ || stateCode == %@", @"CO", @"KS", @"NE", @"SD", @"WY"];
+    NSArray *filteredArray = [[[StatesLoader shared] allStatesAlphabetical] filteredArrayUsingPredicate:predicate];
+    route = filteredArray;
+#endif
     
+    // MARK: Validate route
     NSLog(@"Route: %@", route);
-    
-    NSUInteger count = [route count];
+    int count = (int)[route count];
+                      
     CLLocationCoordinate2D *coords = malloc(sizeof(CLLocationCoordinate2D) * count);
     for (NSUInteger i = 0; i < count; i++) {
         State *state = route[i];  // filteredArray should contain NSValue objects.
         coords[i] = CLLocationCoordinate2DMake([state.latitude doubleValue], [state.longitude doubleValue]);
     }
     
-    MKGeodesicPolyline *polyline = [MKGeodesicPolyline polylineWithCoordinates:coords count:count];
+    MKPolyline *polyline = [MKPolyline polylineWithCoordinates:coords count:count];
+//    [UIView animateWithDuration:10 animations:^{
     [self.mapView addOverlay:polyline level:MKOverlayLevelAboveLabels];
+//    }];
+    
     free(coords);
 }
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay {
     
-    if ([overlay isKindOfClass:[MKGeodesicPolyline class]]) {
+    if ([overlay isKindOfClass:[MKPolyline class]]) {
         MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:(MKGeodesicPolyline*)overlay];
         renderer.lineWidth = 2;
         renderer.strokeColor = [UIColor systemBlueColor];
