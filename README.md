@@ -2,7 +2,7 @@
 
 # Stately Shipments
 
-The objective of this project was to develop an iOS app in Objective-C with UIKit.
+The objective of this project was to develop an iOS app in Objective-C with UIKit. It should take in 2 states as input and calculate the cheapest shipping route along the contiguous United States. The government has imposed a fee on crossing state borders that I allow the user to set, and the fuel cost from state to state can vary and requires a 3rd-party API to get access.
 
 ## Architecture Breakdown
 
@@ -54,12 +54,15 @@ Errors are primarily encountered in the `ShippingCostService` class and must be 
 
 ## Design
 
-![Simulator Screen Recording - iPhone 16 Pro - 2025-03-11 at 16 45 03](https://github.com/user-attachments/assets/37c09221-b04f-4078-90c6-a00bb6d3ed11)
+Because this is a simple app, I thought the UI shoud be kept simple and clean. A busy UI would distract from the primary purpose of the app.
+
+![Simulator Screen Recording - iPhone 16 Pro - 2025-03-11 at 17 29 02](https://github.com/user-attachments/assets/328a80b3-cc80-4c95-a4bf-db752b58aff4)
 
 ## Development Process
 
 ### Tests
 
+#TODO Finish this section
 I built a "dummy" implementation of the 3rd-party API callers to give back random information throughout the testing process. 
 
 I built tests externally using Python for loading.
