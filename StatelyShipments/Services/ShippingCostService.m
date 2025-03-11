@@ -13,8 +13,10 @@
 #import "FuelCostService.h"
 
 @interface ShippingCostService ()
+
 @property (atomic) NSMutableDictionary *fuelCostCache;
 @property (nonatomic) dispatch_group_t fuelCostGroup;
+@property (nonatomic, strong) dispatch_queue_t fuelCostCacheQueue;
 
 - (NSString *)standardizedCacheKeyForState:(NSString *)stateA andNeighbor:(NSString *)stateB;
 
@@ -26,6 +28,7 @@
     if (self = [super init]) {
         self.fuelCostCache = [NSMutableDictionary dictionary];
         self.stateBorderFee = 0.0;
+        self.fuelCostCacheQueue = dispatch_queue_create("com.statelyshipments.fuelCostCacheQueue", DISPATCH_QUEUE_CONCURRENT);
         self.fuelCostGroup = dispatch_group_create();
     }
     return self;
@@ -54,10 +57,20 @@
             for (State *neighbor in state.stateNeighbors) {
                 dispatch_group_enter(self.fuelCostGroup);
                 
-                NSString *cacheKey = [self standardizedCacheKeyForState:state.stateCode andNeighbor:neighbor.stateCode];
+//                NSString *cacheKey = [self standardizedCacheKeyForState:state.stateCode andNeighbor:neighbor.stateCode];
+//                
+//                if ([self.fuelCostCache valueForKey:cacheKey]) {
+//                    // already exists in cache, exit this iteration early
+//                    dispatch_group_leave(self.fuelCostGroup);
+//                    continue;
+//                }
                 
-                if ([self.fuelCostCache valueForKey:cacheKey]) {
-                    // already exists in cache, exit this iteration early
+                NSString *cacheKey = [self standardizedCacheKeyForState:state.stateCode andNeighbor:neighbor.stateCode];
+                __block BOOL cacheContainsKey = NO;
+                dispatch_sync(self.fuelCostCacheQueue, ^{
+                    cacheContainsKey = ([self.fuelCostCache objectForKey:cacheKey] != nil);
+                });
+                if (cacheContainsKey) {
                     dispatch_group_leave(self.fuelCostGroup);
                     continue;
                 }
@@ -65,17 +78,17 @@
                 if ([[FuelCostService shared] isRoadUsableBetweenNeighborStates:state andState:neighbor]) {
                     
                     [[FuelCostService shared] fuelCostBetweenNeighborStates:state andState:neighbor completion:^(float result) {
-                        @synchronized (self.fuelCostCache) {
+                        dispatch_barrier_async(self.fuelCostCacheQueue, ^{
                             [self.fuelCostCache setObject:[NSNumber numberWithFloat:(roundf(result * 100) / 100)] forKey:cacheKey];
-                        }
+                        });
                         dispatch_group_leave(self.fuelCostGroup);
                     }];
                     
                 } else {
                     
-                    @synchronized (self.fuelCostCache) {
+                    dispatch_barrier_async(self.fuelCostCacheQueue, ^{
                         [self.fuelCostCache setObject:[NSNumber numberWithFloat:-1] forKey:cacheKey];
-                    }
+                    });
                     dispatch_group_leave(self.fuelCostGroup);
                 }
             }
@@ -83,7 +96,7 @@
         
         // wait for all fuel costs to be collected
         dispatch_group_wait(self.fuelCostGroup, DISPATCH_TIME_FOREVER);
-                
+        
         PriorityQueue *queue = [[PriorityQueue alloc] initWithComparator:^NSComparisonResult(id obj1, id obj2) {
             // we know how these objects are structured, but we'll check just in case
             if (![obj1 isKindOfClass:[NSArray class]] || ![obj2 isKindOfClass:[NSArray class]]) {
@@ -124,7 +137,12 @@
             
             for (State* neighbor in currentState.stateNeighbors) {
                 
-                float weight = [(NSNumber*)self.fuelCostCache[[self standardizedCacheKeyForState:currentState.stateCode andNeighbor:neighbor.stateCode]] floatValue];
+                __block NSNumber* fuelCost;
+                dispatch_barrier_async(self.fuelCostCacheQueue, ^{
+                    fuelCost = self.fuelCostCache[[self standardizedCacheKeyForState:currentState.stateCode andNeighbor:neighbor.stateCode]];
+                });
+                
+                float weight = [fuelCost floatValue];
                 
                 if (weight < 0) {
                     // can't traverse for whatever reason, move to next iteration
