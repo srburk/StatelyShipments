@@ -89,7 +89,7 @@ I built an XCTest suite to use externally loaded JSON data. I used a Python scri
     ]
   },
 ```
-The XCTest queries the `ShippingCostService` with the provided weights and the calculated route and total cost are compared with the expected results.
+The XCTest queries the `ShippingCostService` with the provided weights and the calculated route and total cost are compared with the expected results. To test edge cases like unusable roads, I forced North Dakota to be completely off limits and included test cases where it was the destination or source.
 
 ## Design
 

@@ -35,6 +35,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		227400252D8111D6001AF23A /* Exceptions for "StatelyShipmentsTests" folder in "StatelyShipmentsTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ShippingCostServiceTests/generate_test_cases.py,
+			);
+			target = 22C3B1AD2D7519B2000392B1 /* StatelyShipmentsTests */;
+		};
 		2276E10B2D80897900AE965C /* Exceptions for "StatelyShipments" folder in "StatelyShipmentsTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -63,6 +70,9 @@
 		};
 		22C3B1B12D7519B2000392B1 /* StatelyShipmentsTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				227400252D8111D6001AF23A /* Exceptions for "StatelyShipmentsTests" folder in "StatelyShipmentsTests" target */,
+			);
 			path = StatelyShipmentsTests;
 			sourceTree = "<group>";
 		};
