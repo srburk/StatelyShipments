@@ -15,27 +15,27 @@ The objective of this project was to develop an iOS app in Objective-C with UIKi
 
 ### States
 
-U.S. States were modeled in a simple Objective-C class `State`. Instances of this class stored information about the state, like its name, state code, coordinates, and references to neighboring states.
+U.S. States were modeled in a simple Objective-C class `State`. Instances of this class store information about the state, like its name, state code, coordinates, and references to neighboring states.
 
 The `StatesLoader` utility class builds `State` objects from a local plist in the app bundle. The app's `StatesLoader` instance keeps references to all states in an alphabetically sorted array and a state-code indexed dictionary called `allStatesGraph`.
 
 ### ShippingCostService
 
-The `ShippingCostService` class finds the shortest path between 2 arbitrary `State` objects. We can view the problem as a weighted graph problem where `allStatesGraph` represents the graph organized in an adjacency list. We can use [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) to solve this class of problems. I built a [Priority Queue](https://en.wikipedia.org/wiki/Priority_queue) using a [Min-Heap](https://en.wikipedia.org/wiki/Min-max_heap) data structure to achieve fast access times.
+The `ShippingCostService` class finds the shortest path between two arbitrary `State` objects. We can view the problem as a weighted graph problem where `allStatesGraph` represents the graph organized in an adjacency list. We can use [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) to solve this class of problems. I built a [Priority Queue](https://en.wikipedia.org/wiki/Priority_queue) using a [Min-Heap](https://en.wikipedia.org/wiki/Min-max_heap) data structure to achieve fast access times.
 
 First, we need to get the weights, or fuel cost plus state border crossing fee, from the API. We can access that information with this function defined in the problem statement:
 
 `float FuelCostBetweenNeighborStates(State *stateA, State *stateB);`
 
-Unfortunately, this is a blocking call with a 3-second response timeout. We can save some time by first calling the other given function to check if the road is usable:
+Unfortunately, this is a blocking call with a 3-second response timeout. We optimize this by first calling the other given function to check if the road is usable:
 
 `BOOL IsRoadUsableBetweenNeighborStates(State *stateA, State *stateB);`
 
-If it's not usable, we can avoid fetching the fuel cost. We still need to get the cost for the usable roads, so calling the first function is unavoidable. Calling this on the main thread would freeze up the application and make it unresponsive. A better solution would be to use a threading model like [Grand Central Dispatch (GCD)](https://developer.apple.com/documentation/dispatch?language=objc). The entire implementation of Dijkstra's algorithm runs on a background thread to avoid blocking the main thread. 
+If it's not usable, we can avoid fetching the fuel cost. We still need to get the cost for the usable roads, so calling the first function is unavoidable. Calling this on the main thread would freeze the application and make it unresponsive. A better solution would be to use a threading model like [Grand Central Dispatch (GCD)](https://developer.apple.com/documentation/dispatch?language=objc). The entire implementation of Dijkstra's algorithm runs on a background thread to avoid blocking the main thread. 
 
 To avoid data races on the cached fuel costs, the `ShippingCostService` defines a custom dispatch_group and dispatch_queue purely for cached fuel access. These reads and writes are carefully protected to preserve the correct app state.
 
-The `ShippingCostService` instance needs to let the rest of the application know that a calculation has been completed. To accomplish this, I defined a delegate protocol called `ShippingCostServiceDelegate`. Classes conforming to this protocol can respond to success and fail states presented by the `ShippingCostService`.
+The `ShippingCostService` instance needs to notify the rest of the application know that a calculation has been completed. To accomplish this, I defined a delegate protocol called `ShippingCostServiceDelegate`. Classes conforming to this protocol can respond to success and fail states presented by the `ShippingCostService`.
 
 ### MainCoordinator
 
@@ -45,7 +45,7 @@ The `MainCoordinator` object manages a global NavigationController and is respon
 
 ### UI Code
 
-I opted for code-defined UI instead of storyboards provides direct visibility into layout and rendering without reliance on Interface Builder.
+I opted for code-defined UI instead of storyboards to provide direct visibility into layout and rendering without reliance on Interface Builder.
 The app uses 4 ViewControllers for each of the distinct UIs:
 
 * `MainViewController` is the root view controller and manages MKMapView management and modal navigation view presentation.
@@ -59,11 +59,11 @@ These views encapsulate specific UI elements to keep the view controllers lean: 
 
 ### Error Handling
 
-Errors are primarily encountered in the `ShippingCostService` class and must be handled appropriately. The service halts operation and delivers a message to be displayed over the navigation drawer. This is communicated to the `MainCoordinator` via the `ShippingCostServiceDelegate` protocol.
+Errors primarily occur in the `ShippingCostService` class and must be handled appropriately. The service halts operation and delivers a message to be displayed over the navigation drawer. This is communicated to the `MainCoordinator` via the `ShippingCostServiceDelegate` protocol.
 
 ## Tests
 
-I built a dummy implementation of the 3rd-party API callers to give back random fuel costs and road usability values throughout the testing process. I called this class `FuelCostService`. This service simulated delays for the fuel cost access to mimic the behavior of a network call.
+I built a dummy implementation of the third-party API callers to return random fuel costs and road usability values throughout the testing process. I called this class `FuelCostService`. This service simulated delays for the fuel cost access to mimic the behavior of a network call.
 
 I used the debugger heavily throughout development to identify threading issues with thread sanitizer, control flow errors, and UI bugs.
 
@@ -89,7 +89,7 @@ I built an XCTest suite to use externally loaded JSON data. I used a Python scri
     ]
   },
 ```
-The XCTest queries the `ShippingCostService` with the provided weights and the calculated route and total cost are compared with the expected results. To test edge cases like unusable roads, I forced North Dakota to be completely off limits and included test cases where it was the destination or source.
+The XCTest queries the `ShippingCostService` with the provided weights and the calculated route and total cost are compared with the expected results. To test edge cases like unusable roads, I made North Dakota completely off limits and included test cases where it was the destination or source.
 
 ## Design
 
