@@ -43,7 +43,6 @@
     self.button = [UIButton buttonWithConfiguration:buttonConfiguration primaryAction:nil];
     [self.button setAttributedTitle:attributedTitle forState:UIControlStateNormal];
     self.button.translatesAutoresizingMaskIntoConstraints = NO;
-//    self.button.showsMenuAsPrimaryAction = YES;
     
     [self addSubview:self.button];
     

@@ -133,9 +133,9 @@
 }
 
 - (void)closeShippingResults {
-    [self.navigationController popViewControllerAnimated:YES];
     [self.navigationController animateSmallDetent];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
     
     // reset map
     [self.mainViewController clearMap];

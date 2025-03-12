@@ -43,12 +43,22 @@
     self.textField = [[UITextField alloc] init];
     self.textField.placeholder = @"$0";
     self.textField.borderStyle = UITextBorderStyleRoundedRect;
+    self.textField.backgroundColor = [UIColor systemGray5Color];
     self.textField.translatesAutoresizingMaskIntoConstraints = NO;
     self.textField.keyboardType = UIKeyboardTypeDecimalPad;
     self.textField.textAlignment = NSTextAlignmentRight;
     
     // delegate for handling closes and changing input to number
     self.textField.delegate = self;
+    
+    // button for closing keyboard
+    UIToolbar *toolbar = [[UIToolbar alloc] init];
+    [toolbar sizeToFit];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
+    toolbar.items = @[flexibleSpace, doneButton];
+    self.textField.inputAccessoryView = toolbar;
+    
     
     [self addSubview:self.textField];
     

@@ -77,6 +77,7 @@
     // swap button
     UIButton *swapButton = [UIButton buttonWithType:UIButtonTypeSystem];
     swapButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    swapButton.tintColor = [UIColor colorNamed:@"PrimaryColor"];
     [swapButton setImage:[UIImage systemImageNamed:@"arrow.left.arrow.right"] forState:UIControlStateNormal];
     [swapButton addTarget:self.coordinator action:@selector(swapSelectedStates) forControlEvents:UIControlEventTouchUpInside];
     

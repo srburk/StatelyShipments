@@ -8,6 +8,9 @@
 #import <Foundation/Foundation.h>
 #import "ShippingRouteCellView.h"
 
+static const int circleSize = 20;
+static const int strokeSize = 5;
+
 @interface ShippingRouteCellView ()
 
 @property (nonatomic, strong) UILabel *stateLabel;
@@ -66,17 +69,14 @@
     UIView *circleView = [[UIView alloc] init];
     circleView.translatesAutoresizingMaskIntoConstraints = NO;
     
-#define CIRCLE_SIZE 20
-#define STROKE_WIDTH 5
-    
     // destination indicator
-    UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, CIRCLE_SIZE, CIRCLE_SIZE)];
+    UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, circleSize, circleSize)];
     
     CAShapeLayer *circleShapeLayer = [CAShapeLayer layer];
     circleShapeLayer.path = circlePath.CGPath;
     circleShapeLayer.fillColor = [UIColor systemBackgroundColor].CGColor;
     circleShapeLayer.strokeColor = [UIColor tintColor].CGColor;
-    circleShapeLayer.lineWidth = 5;
+    circleShapeLayer.lineWidth = strokeSize;
     [circleView.layer addSublayer:circleShapeLayer];
     
     [self.contentView addSubview:circleView];
@@ -84,8 +84,8 @@
     [NSLayoutConstraint activateConstraints:@[
         [circleView.centerYAnchor constraintEqualToAnchor:self.contentView.centerYAnchor],
         [circleView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant: 30],
-        [circleView.widthAnchor constraintEqualToConstant:CIRCLE_SIZE],
-        [circleView.heightAnchor constraintEqualToConstant:CIRCLE_SIZE]
+        [circleView.widthAnchor constraintEqualToConstant:circleSize],
+        [circleView.heightAnchor constraintEqualToConstant:circleSize]
     ]];
 }
 
